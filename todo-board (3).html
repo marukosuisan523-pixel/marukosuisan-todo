@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圓子水産 Todo Board</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #080c14; font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; overflow-x: auto; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
+  input::placeholder { color: #334155; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ============================================================
+// ★ 設定欄 — ここだけ編集すればOK
+// ============================================================
+const GAS_URL = "https://script.google.com/macros/s/AKfycbw80XwvvHwnKKefadqkluQGOi3KSqhovK_HSYepqzOfY59M970QzunYw2OCYyTLy78h/exec";
+const ANTHROPIC_API_KEY = ""; // AnthropicのAPIキーをここに貼る（sk-ant-...）
+
+const DEFAULT_EMPLOYEES = [
+  "小川翔", "生駒ひなた", "千葉義昭", "並木じゅき",
+  "白岡流衣", "田中響", "大石ゆうや"
+];
+// ============================================================
+
+const STORAGE_KEY_TODOS = "marukosuisan-todos-v3";
+const STORAGE_KEY_EMPLOYEES = "marukosuisan-employees-v3";
+
+const ONBOARDING_ADMIN = (name, date) => [
+  { text: "雇用契約書の作成",        priority: "high",   deadline: date || "" },
+  { text: "社会保険の加入手続き",    priority: "high",   deadline: "" },
+  { text: "マイナンバーの収集",      priority: "normal", deadline: "" },
+  { text: "給与振込口座の確認",      priority: "normal", deadline: "" },
+  { text: "健康保険証の発行確認",    priority: "normal", deadline: "" },
+  { text: `${name}をマスターに登録`, priority: "high",   deadline: date || "" },
+];
+const ONBOARDING_MEMBER = () => [
+  { text: "年金手帳を提出",   priority: "high",   deadline: "" },
+  { text: "銀行口座を連絡",   priority: "high",   deadline: "" },
+  { text: "マイナンバーを提出", priority: "normal", deadline: "" },
+  { text: "緊急連絡先を連絡", priority: "normal", deadline: "" },
+];
+
+const PRIORITY = {
+  high:   { label: "急", color: "#f87171", bg: "rgba(248,113,113,0.15)" },
+  normal: { label: "普", color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
+  low:    { label: "低", color: "#94a3b8", bg: "rgba(148,163,184,0.10)" },
+};
+const COLORS = ["#4f6ef7","#06b6d4","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899","#f97316","#14b8a6"];
+
+const SYSTEM_PROMPT = `あなたは圓子水産のTodo管理AIです。
+現在の社員リスト：{EMPLOYEES}
+現在のTodoリスト（JSON）:
+{TODOS}
+
+ユーザーの指示に従い、以下のJSON形式のみで返答。説明文・コードブロック不要：
+{"action":"update","todos":[...更新後の全Todo...],"employees":[...更新後の社員リスト...],"message":"一言で","onboarding":null}
+
+【ルール】
+- 「〇〇が入社」「〇〇を追加」 → employeesに追加 + onboardingを{"name":"名前","date":"日付"}にセット
+- 「〇〇が退職」「〇〇を削除」 → employeesから削除（Todoは残す）
+- 「終わったやつ消して」→ done:trueのTodoを削除
+- 優先度はhigh/normal/lowのみ
+各Todoの形式: {"id":number,"person":"社員名","text":"内容","priority":"high|normal|low","deadline":"例:4/1","done":false,"elapsed":0}`;
+
+function fmt(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  if (h) return `${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function load(key, def) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch { return def; }
+}
+function save(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+// ====== TodoCard ======
+function TodoCard({ todo, col, onToggle, onStart, onStop, isRunning, elapsedSec, isDone, onDragStart }) {
+  const p = PRIORITY[todo.priority] || PRIORITY.normal;
+  const sec = elapsedSec || todo.elapsed || 0;
+  return (
+    <div
+      draggable={!isDone}
+      onDragStart={e => { e.dataTransfer.setData("todoId", todo.id); if(onDragStart) onDragStart(todo.id); }}
+      style={{
+        background: isDone ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.035)",
+        border: `1px solid ${isDone ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.08)"}`,
+        borderLeft: isDone ? undefined : `2px solid ${col}60`,
+        borderRadius: 9, padding: "9px 10px", opacity: isDone ? 0.4 : 1, marginBottom: 4,
+        cursor: isDone ? "default" : "grab",
+      }}>
+      <div style={{ display:"flex", alignItems:"flex-start", gap:7 }}>
+        <span style={{ fontSize:9, fontWeight:700, padding:"2px 5px", borderRadius:3,
+          color:p.color, background:p.bg, flexShrink:0, marginTop:1 }}>{p.label}</span>
+        <span style={{ flex:1, fontSize:11, color: isDone?"#475569":"#cbd5e1",
+          textDecoration: isDone?"line-through":"none", lineHeight:1.45 }}>{todo.text}</span>
+        <button onClick={() => onToggle(todo.id)} style={{
+          width:17, height:17, borderRadius:4, flexShrink:0,
+          border: isDone?"none":"1.5px solid #334155",
+          background: isDone?"#22c55e":"transparent",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          cursor:"pointer", fontSize:10, color:"#fff" }}>{isDone?"✓":""}</button>
+      </div>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
+        <div style={{ display:"flex", gap:8 }}>
+          {todo.deadline && <span style={{ fontSize:9, color:"#475569" }}>📅 {todo.deadline}</span>}
+          {sec > 0 && <span style={{ fontSize:9, color: isRunning?col:"#475569", fontVariantNumeric:"tabular-nums" }}>⏱ {fmt(sec)}</span>}
+        </div>
+        {!isDone && (
+          <button onClick={() => isRunning ? onStop(todo.id) : onStart(todo.id)} style={{
+            fontSize:8, padding:"2px 7px", borderRadius:5, cursor:"pointer",
+            border:`1px solid ${isRunning?"#ef4444":col+"60"}`,
+            background: isRunning?"rgba(239,68,68,0.15)":"rgba(255,255,255,0.03)",
+            color: isRunning?"#ef4444":"#64748b" }}>{isRunning?"■ 停止":"▶ 開始"}</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ====== メイン ======
+function App() {
+  const [employees, setEmployees] = useState(() => load(STORAGE_KEY_EMPLOYEES, DEFAULT_EMPLOYEES));
+  const [todos, setTodos] = useState(() => load(STORAGE_KEY_TODOS, []));
+  const [timers, setTimers] = useState({});
+  const [elapsed, setElapsed] = useState({});
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [now, setNow] = useState(new Date());
+  const [filter, setFilter] = useState(null);
+  const [masterStatus, setMasterStatus] = useState(GAS_URL ? "接続中…" : "ローカルモード");
+  const inputRef = useRef(null);
+  const msgEnd = useRef(null);
+
+  // 時計
+  useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
+
+  // タイマー
+  useEffect(() => {
+    const t = setInterval(() => {
+      setElapsed(prev => {
+        const u = {...prev};
+        Object.entries(timers).forEach(([id, start]) => {
+          const base = todos.find(td => td.id === Number(id))?.elapsed || 0;
+          u[id] = Math.floor((Date.now()-start)/1000) + base;
+        });
+        return u;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [timers, todos]);
+
+  // GAS起動時読み込み（カレンダー同期済みTodoも取得）
+  useEffect(() => {
+    if (!GAS_URL) return;
+    fetch(`${GAS_URL}?action=getAll`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.employees?.length) {
+          setEmployees(data.employees);
+          save(STORAGE_KEY_EMPLOYEES, data.employees);
+        }
+        if (data.todos?.length) {
+          setTodos(data.todos);
+          save(STORAGE_KEY_TODOS, data.todos);
+        }
+        setMasterStatus(`カレンダー連携済み（社員${data.employees?.length||0}名）`);
+      })
+      .catch(() => setMasterStatus("GAS接続失敗"));
+  }, []);
+
+  useEffect(() => { msgEnd.current?.scrollIntoView({behavior:"smooth"}); }, [messages]);
+  useEffect(() => { if (showAdmin) setTimeout(() => inputRef.current?.focus(), 100); }, [showAdmin]);
+
+  const flash = (msg) => { setFeedback(msg); setTimeout(() => setFeedback(""), 3000); };
+
+  const [syncing, setSyncing] = useState(false);
+
+  const syncNow = async () => {
+    if (!GAS_URL || syncing) return;
+    setSyncing(true);
+    setMasterStatus("同期中…");
+    try {
+      const res = await fetch(`${GAS_URL}?action=syncNow`);
+      const data = await res.json();
+      if (data.employees?.length) { setEmployees(data.employees); save(STORAGE_KEY_EMPLOYEES, data.employees); }
+      if (data.todos) { setTodos(data.todos); save(STORAGE_KEY_TODOS, data.todos); }
+      const newCount = data.todos?.length || 0;
+      setMasterStatus(`カレンダー連携済み（社員${data.employees?.length||0}名）`);
+      flash(`🔄 同期完了（Todo ${newCount}件）`);
+    } catch {
+      setMasterStatus("同期失敗");
+      flash("❌ 同期に失敗しました");
+    }
+    setSyncing(false);
+  };
+
+  const persist = (newTodos, newEmployees) => {
+    const t = newTodos ?? todos;
+    const e = newEmployees ?? employees;
+    if (newTodos) setTodos(t);
+    if (newEmployees) setEmployees(e);
+    save(STORAGE_KEY_TODOS, t);
+    save(STORAGE_KEY_EMPLOYEES, e);
+    if (GAS_URL) {
+      fetch(GAS_URL, { method:"POST", body: JSON.stringify({action:"setAll", todos:t, employees:e}) }).catch(()=>{});
+    }
+  };
+
+  const genOnboarding = (name, date, curTodos, curEmp) => {
+    const uid = () => Date.now() + Math.random();
+    const at = ONBOARDING_ADMIN(name, date).map(t => ({id:uid(), person:"管理者", done:false, elapsed:0, ...t}));
+    const mt = ONBOARDING_MEMBER().map(t => ({id:uid(), person:name, done:false, elapsed:0, ...t}));
+    const newT = [...curTodos, ...at, ...mt];
+    const newE = curEmp.includes(name) ? curEmp : [...curEmp, name];
+    persist(newT, newE);
+    flash(`✅ ${name}さんの入社手続きTodo ${at.length+mt.length}件を生成しました`);
+  };
+
+  const toggleDone = (id) => {
+    if (timers[id]) stopTimer(id);
+    const todo = todos.find(t => t.id === id);
+    const nowDone = !todo?.done;
+    const updated = todos.map(t => t.id===id ? {...t, done:nowDone} : t);
+    persist(updated, null);
+    if (nowDone && todo?.calEventId && GAS_URL) {
+      fetch(GAS_URL, { method:"POST", body: JSON.stringify({action:"completeTodo", eventId:todo.calEventId, todoText:todo.text}) }).catch(()=>{});
+      flash("✅ 完了（カレンダーにも反映）");
+    } else {
+      flash(nowDone ? "✅ 完了にしました" : "↩ 未完了に戻しました");
+    }
+  };
+
+  const startTimer = (id) => { setTimers(p => ({...p, [id]: Date.now()})); flash("タイマー開始"); };
+  const stopTimer = (id) => {
+    const added = Math.floor((Date.now()-timers[id])/1000);
+    setTimers(p => { const n={...p}; delete n[id]; return n; });
+    const updated = todos.map(t => t.id===id ? {...t, elapsed:(t.elapsed||0)+added} : t);
+    persist(updated, null);
+    flash(`タイマー停止 (+${fmt(added)})`);
+  };
+
+  const getElapsed = (todo) => (timers[todo.id] ? elapsed[todo.id] : null) ?? todo.elapsed ?? 0;
+
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
+    if (!ANTHROPIC_API_KEY) { flash("❌ APIキーが未設定です（HTMLファイルの設定欄に記入）"); return; }
+    const msg = input.trim();
+    setInput("");
+    setMessages(p => [...p, {role:"user", content:msg}]);
+    setLoading(true);
+    try {
+      const prompt = SYSTEM_PROMPT
+        .replace("{EMPLOYEES}", employees.join("、"))
+        .replace("{TODOS}", JSON.stringify(todos));
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers:{"Content-Type":"application/json","x-api-key":ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01"},
+        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, system:prompt,
+          messages:[{role:"user", content:msg}] })
+      });
+      const data = await res.json();
+      const text = data.content?.[0]?.text || "";
+      try {
+        const parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
+        if (parsed.onboarding?.name) {
+          genOnboarding(parsed.onboarding.name, parsed.onboarding.date||"", parsed.todos||todos, parsed.employees||employees);
+          setMessages(p => [...p, {role:"assistant", content:`${parsed.onboarding.name}さんの入社手続きを開始しました！管理者・本人側のTodoを自動生成しています。`}]);
+        } else {
+          persist(parsed.todos||todos, parsed.employees||employees);
+          setMessages(p => [...p, {role:"assistant", content: parsed.message||"更新しました"}]);
+        }
+      } catch {
+        setMessages(p => [...p, {role:"assistant", content:text}]);
+      }
+    } catch(e) {
+      setMessages(p => [...p, {role:"assistant", content:"エラーが発生しました: "+e.message}]);
+    }
+    setLoading(false);
+  };
+
+  const timeStr = now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"});
+  const dateStr = now.toLocaleDateString("ja-JP",{month:"long",day:"numeric",weekday:"short"});
+  const cols = filter ? [filter] : ["管理者", ...employees];
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#080c14", color:"#cbd5e1", position:"relative" }}>
+      {/* グリッド */}
+      <div style={{ position:"fixed", inset:0, opacity:0.025, pointerEvents:"none",
+        backgroundImage:"linear-gradient(#4f6ef7 1px,transparent 1px),linear-gradient(90deg,#4f6ef7 1px,transparent 1px)",
+        backgroundSize:"48px 48px" }} />
+
+      {/* ヘッダー */}
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
+        padding:"14px 20px", background:"rgba(8,12,20,0.97)",
+        borderBottom:"1px solid rgba(79,110,247,0.12)", position:"sticky", top:0, zIndex:50 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:14, flexWrap:"wrap" }}>
+          <div>
+            <div style={{ fontSize:9, letterSpacing:4, color:"#4f6ef7", fontWeight:700 }}>圓子水産</div>
+            <div style={{ fontSize:15, fontWeight:700, color:"#e2e8f0", letterSpacing:2 }}>TODO BOARD</div>
+          </div>
+          <div style={{ fontSize:9, color: GAS_URL?"#22c55e":"#475569",
+            border:`1px solid ${GAS_URL?"#22c55e30":"#47556930"}`, borderRadius:6, padding:"2px 8px" }}>
+            {masterStatus}
+          </div>
+          {/* フィルター */}
+          <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+            {["全員","管理者",...employees].map(emp => (
+              <button key={emp} onClick={() => setFilter(emp==="全員" ? null : (filter===emp?null:emp))}
+                style={{ fontSize:10, padding:"3px 9px", borderRadius:20, cursor:"pointer",
+                  border:`1px solid ${(emp==="全員"&&!filter)||(filter===emp)?"#4f6ef7":"rgba(255,255,255,0.08)"}`,
+                  background: (emp==="全員"&&!filter)||(filter===emp)?"rgba(79,110,247,0.2)":"transparent",
+                  color: (emp==="全員"&&!filter)||(filter===emp)?"#818cf8":"#64748b" }}>
+                {emp==="全員"?"全員":emp.slice(0,3)}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div style={{ textAlign:"right", flexShrink:0 }}>
+          <div style={{ fontSize:28, fontWeight:200, letterSpacing:3, color:"#e2e8f0" }}>{timeStr}</div>
+          <div style={{ fontSize:10, color:"#475569" }}>{dateStr}</div>
+        </div>
+      </div>
+
+      {/* カラム */}
+      <div style={{ display:"grid", gridTemplateColumns:`repeat(${cols.length}, minmax(150px, 1fr))`,
+        gap:1, minHeight:"calc(100vh - 70px)", overflowX:"auto" }}>
+        {cols.map((emp, ei) => {
+          const col = COLORS[ei % COLORS.length];
+          const empTodos = todos.filter(t => t.person===emp);
+          const active = empTodos.filter(t => !t.done);
+          const done   = empTodos.filter(t => t.done);
+          return (
+            <div key={emp}
+              onDragOver={e => e.preventDefault()}
+              onDrop={e => {
+                e.preventDefault();
+                const id = Number(e.dataTransfer.getData("todoId"));
+                if (!id) return;
+                const updated = todos.map(t => t.id===id ? {...t, person:emp} : t);
+                persist(updated, null);
+                flash(`→ ${emp} に移動しました`);
+              }}
+              style={{ background:"rgba(15,20,35,0.7)",
+              borderRight: ei<cols.length-1?"1px solid rgba(255,255,255,0.04)":"none",
+              display:"flex", flexDirection:"column" }}>
+              <div style={{ padding:"12px 12px 8px", borderBottom:`2px solid ${col}25`,
+                background:`linear-gradient(180deg,${col}10 0%,transparent 100%)` }}>
+                <div style={{ display:"flex", alignItems:"center", gap:7 }}>
+                  <div style={{ width:7, height:7, borderRadius:"50%", background:col, boxShadow:`0 0 6px ${col}` }} />
+                  <span style={{ fontSize:12, fontWeight:700, color:"#e2e8f0" }}>{emp}</span>
+                  {emp==="管理者"&&<span style={{ fontSize:8, color:col, border:`1px solid ${col}40`,
+                    borderRadius:4, padding:"1px 5px" }}>管理</span>}
+                </div>
+                <div style={{ display:"flex", gap:8, marginTop:3 }}>
+                  <span style={{ fontSize:10, color:"#475569" }}>未了 {active.length}</span>
+                  <span style={{ fontSize:10, color:"#475569" }}>完了 {done.length}</span>
+                </div>
+              </div>
+              <div style={{ flex:1, padding:"8px", display:"flex", flexDirection:"column", overflowY:"auto" }}>
+                {active.length===0&&done.length===0&&(
+                  <div style={{ color:"#1e2a3a", fontSize:11, textAlign:"center", paddingTop:20 }}>タスクなし</div>
+                )}
+                {active.map(todo => (
+                  <TodoCard key={todo.id} todo={todo} col={col}
+                    onToggle={toggleDone} onStart={startTimer} onStop={stopTimer}
+                    isRunning={!!timers[todo.id]} elapsedSec={getElapsed(todo)}
+                    onDragStart={()=>{}} />
+                ))}
+                {done.length>0&&(
+                  <div style={{ marginTop:6, borderTop:"1px solid rgba(255,255,255,0.04)", paddingTop:6 }}>
+                    {done.map(todo=>(
+                      <TodoCard key={todo.id} todo={todo} col={col}
+                        onToggle={toggleDone} isDone elapsedSec={getElapsed(todo)} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* フィードバック */}
+      {feedback&&(
+        <div style={{ position:"fixed", top:80, left:"50%", transform:"translateX(-50%)",
+          background:"#1e293b", border:"1px solid #334155", borderRadius:10,
+          padding:"10px 24px", fontSize:13, color:"#94a3b8", zIndex:200, whiteSpace:"nowrap" }}>
+          {feedback}
+        </div>
+      )}
+
+      {/* 管理ボタン */}
+      {GAS_URL && <button onClick={syncNow} disabled={syncing} style={{
+        position:"fixed", bottom:24, right:180,
+        background:"rgba(6,182,212,0.15)", border:"1px solid rgba(6,182,212,0.4)",
+        borderRadius:14, padding:"12px 20px", color:"#22d3ee",
+        fontSize:13, letterSpacing:1, cursor:"pointer",
+        opacity: syncing ? 0.5 : 1 }}>{syncing ? "同期中…" : "🔄 カレンダー同期"}</button>}
+
+      <button onClick={()=>setShowAdmin(true)} style={{
+        position:"fixed", bottom:24, right:24,
+        background:"rgba(79,110,247,0.15)", border:"1px solid rgba(79,110,247,0.4)",
+        borderRadius:14, padding:"12px 20px", color:"#818cf8",
+        fontSize:13, letterSpacing:2, cursor:"pointer" }}>⚙ Claude に指示</button>
+
+      {/* 管理パネル */}
+      {showAdmin&&(
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.75)",
+          display:"flex", alignItems:"flex-end", justifyContent:"center", zIndex:300 }}
+          onClick={()=>setShowAdmin(false)}>
+          <div style={{ width:"100%", maxWidth:640, background:"#0f1729",
+            borderRadius:"20px 20px 0 0", border:"1px solid rgba(79,110,247,0.2)",
+            padding:24, maxHeight:"65vh", display:"flex", flexDirection:"column" }}
+            onClick={e=>e.stopPropagation()}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+              <div>
+                <span style={{ fontSize:12, fontWeight:700, color:"#818cf8", letterSpacing:3 }}>CLAUDE AI — Todo 管理</span>
+                <div style={{ fontSize:10, color:"#475569", marginTop:2 }}>社員 {employees.length}名 | Todo {todos.length}件</div>
+              </div>
+              <button onClick={()=>setShowAdmin(false)}
+                style={{ background:"none", border:"none", color:"#475569", cursor:"pointer", fontSize:20 }}>✕</button>
+            </div>
+            <div style={{ flex:1, overflowY:"auto", marginBottom:14, display:"flex", flexDirection:"column", gap:8 }}>
+              {messages.length===0&&(
+                <div style={{ color:"#334155", fontSize:12, lineHeight:2.2, padding:"8px 0" }}>
+                  💼 「田中さんが入社（4/1）」→ 入社手続きTodo自動生成<br/>
+                  ✅ 「千葉さんの在庫チェックを完了にして」<br/>
+                  ➕ 「小川さんに発注書確認を追加して」<br/>
+                  🗑 「終わったやつ全部消して」<br/>
+                  👤 「山田さんを社員に追加して」
+                </div>
+              )}
+              {messages.map((m,i)=>(
+                <div key={i} style={{
+                  alignSelf: m.role==="user"?"flex-end":"flex-start",
+                  background: m.role==="user"?"rgba(79,110,247,0.3)":"rgba(30,41,59,0.8)",
+                  border:`1px solid ${m.role==="user"?"rgba(79,110,247,0.4)":"rgba(255,255,255,0.06)"}`,
+                  borderRadius:12, padding:"8px 14px", maxWidth:"82%", fontSize:13, color:"#e2e8f0"
+                }}>{m.content}</div>
+              ))}
+              {loading&&<div style={{ alignSelf:"flex-start", color:"#475569", fontSize:12 }}>処理中…</div>}
+              <div ref={msgEnd}/>
+            </div>
+            <div style={{ display:"flex", gap:8 }}>
+              <input ref={inputRef} value={input}
+                onChange={e=>setInput(e.target.value)}
+                onKeyDown={e=>e.key==="Enter"&&handleSend()}
+                placeholder="例：田中さんが入社（4/1）"
+                style={{ flex:1, background:"#080c14", border:"1px solid rgba(79,110,247,0.3)",
+                  borderRadius:12, padding:"12px 16px", color:"#e2e8f0", fontSize:14, outline:"none" }}/>
+              <button onClick={handleSend} disabled={loading} style={{
+                background: loading?"#1e293b":"rgba(79,110,247,0.8)", border:"none",
+                borderRadius:12, padding:"12px 22px", color:"#fff", cursor:"pointer",
+                fontSize:14, fontWeight:600, opacity: loading?0.5:1 }}>送信</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.render(<App/>, document.getElementById("root"));
+</script>
+</body>
+</html>

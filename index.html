@@ -37,6 +37,7 @@ const DEFAULT_EMPLOYEES = [
 
 const STORAGE_KEY_TODOS = "marukosuisan-todos-v3";
 const STORAGE_KEY_EMPLOYEES = "marukosuisan-employees-v3";
+const STORAGE_KEY_APIKEY = "marukosuisan-apikey";
 
 const ONBOARDING_ADMIN = (name, date) => [
   { text: "雇用契約書の作成",        priority: "high",   deadline: date || "" },
@@ -140,6 +141,8 @@ function App() {
   const [timers, setTimers] = useState({});
   const [elapsed, setElapsed] = useState({});
   const [showAdmin, setShowAdmin] = useState(false);
+  const [apiKey, setApiKey] = useState(() => load(STORAGE_KEY_APIKEY, "") || ANTHROPIC_API_KEY);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -262,7 +265,7 @@ function App() {
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
-    if (!ANTHROPIC_API_KEY) { flash("❌ APIキーが未設定です（HTMLファイルの設定欄に記入）"); return; }
+    if (!apiKey) { flash("❌ APIキーが未設定です（⚙ボタンから設定してください）"); setShowApiKeyInput(true); return; }
     const msg = input.trim();
     setInput("");
     setMessages(p => [...p, {role:"user", content:msg}]);
@@ -273,7 +276,7 @@ function App() {
         .replace("{TODOS}", JSON.stringify(todos));
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method:"POST",
-        headers:{"Content-Type":"application/json","x-api-key":ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01"},
+        headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
         body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, system:prompt,
           messages:[{role:"user", content:msg}] })
       });
@@ -441,9 +444,34 @@ function App() {
                 <span style={{ fontSize:12, fontWeight:700, color:"#4f46e5", letterSpacing:3 }}>CLAUDE AI — Todo 管理</span>
                 <div style={{ fontSize:10, color:"#64748b", marginTop:2 }}>社員 {employees.length}名 | Todo {todos.length}件</div>
               </div>
-              <button onClick={()=>setShowAdmin(false)}
-                style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:20 }}>✕</button>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <button onClick={()=>setShowApiKeyInput(p=>!p)}
+                  style={{ background:"none", border:"1px solid #e2e8f0", borderRadius:6, padding:"4px 8px",
+                    fontSize:10, color: apiKey?"#16a34a":"#dc2626", cursor:"pointer" }}>
+                  {apiKey ? "🔑 設定済み" : "🔑 未設定"}
+                </button>
+                <button onClick={()=>setShowAdmin(false)}
+                  style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:20 }}>✕</button>
+              </div>
             </div>
+            {showApiKeyInput&&(
+              <div style={{ marginBottom:12, padding:12, background:"#f8fafc", borderRadius:10, border:"1px solid #e2e8f0" }}>
+                <div style={{ fontSize:10, color:"#64748b", marginBottom:6 }}>Anthropic APIキー（sk-ant-...）</div>
+                <div style={{ display:"flex", gap:6 }}>
+                  <input
+                    type="password"
+                    value={apiKey}
+                    onChange={e=>setApiKey(e.target.value)}
+                    placeholder="sk-ant-api03-..."
+                    style={{ flex:1, background:"#ffffff", border:"1px solid #e2e8f0",
+                      borderRadius:8, padding:"8px 12px", color:"#1e293b", fontSize:12, outline:"none" }}/>
+                  <button onClick={()=>{ save(STORAGE_KEY_APIKEY, apiKey); setShowApiKeyInput(false); flash("🔑 APIキーを保存しました"); }}
+                    style={{ background:"#4f46e5", border:"none", borderRadius:8, padding:"8px 14px",
+                      color:"#fff", fontSize:12, cursor:"pointer" }}>保存</button>
+                </div>
+                <div style={{ fontSize:9, color:"#94a3b8", marginTop:4 }}>このブラウザのlocalStorageに保存されます（GitHubには公開されません）</div>
+              </div>
+            )}
             <div style={{ flex:1, overflowY:"auto", marginBottom:14, display:"flex", flexDirection:"column", gap:8 }}>
               {messages.length===0&&(
                 <div style={{ color:"#64748b", fontSize:12, lineHeight:2.2, padding:"8px 0" }}>

@@ -27,7 +27,7 @@ const { useState, useEffect, useRef } = React;
 // ★ 設定欄 — ここだけ編集すればOK
 // ============================================================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbw80XwvvHwnKKefadqkluQGOi3KSqhovK_HSYepqzOfY59M970QzunYw2OCYyTLy78h/exec";
-const ANTHROPIC_API_KEY = ""; // AnthropicのAPIキーをここに貼る（sk-ant-...）
+// APIキーはGAS側のScript Propertiesで安全に管理
 
 const DEFAULT_EMPLOYEES = [
   "小川翔", "生駒ひなた", "千葉義昭", "並木じゅき",
@@ -136,7 +136,11 @@ function TodoCard({ todo, col, onToggle, onStart, onStop, isRunning, elapsedSec,
 // ====== メイン ======
 function App() {
   const [employees, setEmployees] = useState(() => load(STORAGE_KEY_EMPLOYEES, DEFAULT_EMPLOYEES));
-  const [todos, setTodos] = useState(() => load(STORAGE_KEY_TODOS, []));
+  const [todos, setTodos] = useState(() => {
+    const raw = load(STORAGE_KEY_TODOS, []);
+    const DAY_MS = 24 * 60 * 60 * 1000;
+    return raw.filter(t => !(t.done && t.doneAt && Date.now() - t.doneAt > DAY_MS));
+  });
   const [timers, setTimers] = useState({});
   const [elapsed, setElapsed] = useState({});
   const [showAdmin, setShowAdmin] = useState(false);
@@ -179,8 +183,11 @@ function App() {
           save(STORAGE_KEY_EMPLOYEES, data.employees);
         }
         if (data.todos?.length) {
-          setTodos(data.todos);
-          save(STORAGE_KEY_TODOS, data.todos);
+          const DAY_MS = 24 * 60 * 60 * 1000;
+          const cleaned = data.todos.filter(t => !(t.done && t.doneAt && Date.now() - t.doneAt > DAY_MS));
+          setTodos(cleaned);
+          save(STORAGE_KEY_TODOS, cleaned);
+          if (cleaned.length < data.todos.length) persist(cleaned, null);
         }
         setMasterStatus(`カレンダー連携済み（社員${data.employees?.length||0}名）`);
       })
@@ -239,7 +246,7 @@ function App() {
     if (timers[id]) stopTimer(id);
     const todo = todos.find(t => t.id === id);
     const nowDone = !todo?.done;
-    const updated = todos.map(t => t.id===id ? {...t, done:nowDone} : t);
+    const updated = todos.map(t => t.id===id ? {...t, done:nowDone, doneAt: nowDone ? Date.now() : null} : t);
     persist(updated, null);
     if (nowDone && todo?.calEventId && GAS_URL) {
       fetch(GAS_URL, { method:"POST", body: JSON.stringify({action:"completeTodo", eventId:todo.calEventId, todoText:todo.text, person:todo.person}) }).catch(()=>{});
@@ -262,25 +269,26 @@ function App() {
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
-    if (!ANTHROPIC_API_KEY) { flash("❌ APIキーが未設定です（HTMLファイルの設定欄に記入）"); return; }
+    if (!GAS_URL) { flash("❌ GAS URLが未設定です"); return; }
     const msg = input.trim();
     setInput("");
     setMessages(p => [...p, {role:"user", content:msg}]);
     setLoading(true);
     try {
-      const prompt = SYSTEM_PROMPT
-        .replace("{EMPLOYEES}", employees.join("、"))
-        .replace("{TODOS}", JSON.stringify(todos));
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{"Content-Type":"application/json","x-api-key":ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01"},
-        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, system:prompt,
-          messages:[{role:"user", content:msg}] })
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "aiChat",
+          userMessage: msg,
+          employees: employees,
+          todos: todos
+        })
       });
       const data = await res.json();
-      const text = data.content?.[0]?.text || "";
-      try {
-        const parsed = JSON.parse(text.replace(/```json|```/g,"").trim());
+      if (data.error) {
+        setMessages(p => [...p, {role:"assistant", content:"エラー: " + data.error}]);
+      } else {
+        const parsed = data.result;
         if (parsed.onboarding?.name) {
           genOnboarding(parsed.onboarding.name, parsed.onboarding.date||"", parsed.todos||todos, parsed.employees||employees);
           setMessages(p => [...p, {role:"assistant", content:`${parsed.onboarding.name}さんの入社手続きを開始しました！管理者・本人側のTodoを自動生成しています。`}]);
@@ -288,8 +296,6 @@ function App() {
           persist(parsed.todos||todos, parsed.employees||employees);
           setMessages(p => [...p, {role:"assistant", content: parsed.message||"更新しました"}]);
         }
-      } catch {
-        setMessages(p => [...p, {role:"assistant", content:text}]);
       }
     } catch(e) {
       setMessages(p => [...p, {role:"assistant", content:"エラーが発生しました: "+e.message}]);

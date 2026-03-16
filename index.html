@@ -138,8 +138,8 @@ function App() {
   const [employees, setEmployees] = useState(() => load(STORAGE_KEY_EMPLOYEES, DEFAULT_EMPLOYEES));
   const [todos, setTodos] = useState(() => {
     const raw = load(STORAGE_KEY_TODOS, []);
-    const DAY_MS = 24 * 60 * 60 * 1000;
-    return raw.filter(t => !(t.done && t.doneAt && Date.now() - t.doneAt > DAY_MS));
+    const expiry = (doneAt) => { const d = new Date(doneAt); d.setDate(d.getDate()+1); d.setHours(3,0,0,0); return d.getTime(); };
+    return raw.filter(t => !(t.done && t.doneAt && Date.now() > expiry(t.doneAt)));
   });
   const [timers, setTimers] = useState({});
   const [elapsed, setElapsed] = useState({});
@@ -183,8 +183,8 @@ function App() {
           save(STORAGE_KEY_EMPLOYEES, data.employees);
         }
         if (data.todos?.length) {
-          const DAY_MS = 24 * 60 * 60 * 1000;
-          const cleaned = data.todos.filter(t => !(t.done && t.doneAt && Date.now() - t.doneAt > DAY_MS));
+          const expiry = (doneAt) => { const d = new Date(doneAt); d.setDate(d.getDate()+1); d.setHours(3,0,0,0); return d.getTime(); };
+          const cleaned = data.todos.filter(t => !(t.done && t.doneAt && Date.now() > expiry(t.doneAt)));
           setTodos(cleaned);
           save(STORAGE_KEY_TODOS, cleaned);
           if (cleaned.length < data.todos.length) persist(cleaned, null);

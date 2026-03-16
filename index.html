@@ -242,7 +242,7 @@ function App() {
     const updated = todos.map(t => t.id===id ? {...t, done:nowDone} : t);
     persist(updated, null);
     if (nowDone && todo?.calEventId && GAS_URL) {
-      fetch(GAS_URL, { method:"POST", body: JSON.stringify({action:"completeTodo", eventId:todo.calEventId, todoText:todo.text}) }).catch(()=>{});
+      fetch(GAS_URL, { method:"POST", body: JSON.stringify({action:"completeTodo", eventId:todo.calEventId, todoText:todo.text, person:todo.person}) }).catch(()=>{});
       flash("✅ 完了（カレンダーにも反映）");
     } else {
       flash(nowDone ? "✅ 完了にしました" : "↩ 未完了に戻しました");

@@ -88,27 +88,45 @@ function save(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
 }
 
+// ====== 期限チェック ======
+function isOverdue(deadline) {
+  if (!deadline) return false;
+  const m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
+  if (!m) return false;
+  const now = new Date();
+  const year = now.getFullYear();
+  const dl = new Date(year, parseInt(m[1])-1, parseInt(m[2]), 23, 59, 59);
+  // 1月に12月の期限があれば前年扱い（逆に6ヶ月以上先なら前年）
+  if (dl.getTime() - now.getTime() > 180*24*60*60*1000) dl.setFullYear(year - 1);
+  return now > dl;
+}
+
 // ====== TodoCard ======
-function TodoCard({ todo, col, onToggle, onStart, onStop, isRunning, elapsedSec, isDone, onDragStart }) {
+function TodoCard({ todo, col, onToggle, onStart, onStop, isRunning, elapsedSec, isDone, onDragStart, onMemoChange }) {
+  const [showMemo, setShowMemo] = useState(false);
   const p = PRIORITY[todo.priority] || PRIORITY.normal;
   const sec = elapsedSec || todo.elapsed || 0;
+  const isHigh = todo.priority === "high";
+  const overdue = !isDone && isOverdue(todo.deadline);
   return (
     <div
       draggable={!isDone}
       onDragStart={e => { e.dataTransfer.setData("todoId", todo.id); if(onDragStart) onDragStart(todo.id); }}
       style={{
-        background: isDone ? "#f1f5f9" : "#ffffff",
-        border: `1px solid ${isDone ? "#e2e8f0" : "#e2e8f0"}`,
-        borderLeft: isDone ? undefined : `3px solid ${col}`,
+        background: isDone ? "#f1f5f9" : overdue ? "#fef2f2" : isHigh ? "#fffbeb" : "#ffffff",
+        border: `1px solid ${isDone ? "#e2e8f0" : overdue ? "#fca5a5" : isHigh ? "#fde68a" : "#e2e8f0"}`,
+        borderLeft: isDone ? undefined : `${isHigh ? "4px" : "3px"} solid ${overdue ? "#ef4444" : col}`,
         borderRadius: 10, padding: "9px 10px", opacity: isDone ? 0.5 : 1, marginBottom: 5,
         cursor: isDone ? "default" : "grab",
-        boxShadow: isDone ? "none" : "0 1px 3px rgba(0,0,0,0.06)",
+        boxShadow: isDone ? "none" : overdue ? "0 1px 6px rgba(239,68,68,0.15)" : isHigh ? "0 1px 6px rgba(245,158,11,0.12)" : "0 1px 3px rgba(0,0,0,0.06)",
       }}>
       <div style={{ display:"flex", alignItems:"flex-start", gap:7 }}>
         <span style={{ fontSize:9, fontWeight:700, padding:"2px 5px", borderRadius:3,
-          color:p.color, background:p.bg, flexShrink:0, marginTop:1 }}>{p.label}</span>
-        <span style={{ flex:1, fontSize:11, color: isDone?"#94a3b8":"#334155",
-          textDecoration: isDone?"line-through":"none", lineHeight:1.45 }}>{todo.text}</span>
+          color: overdue ? "#fff" : p.color,
+          background: overdue ? "#ef4444" : isHigh ? "rgba(245,158,11,0.2)" : p.bg,
+          flexShrink:0, marginTop:1 }}>{overdue ? "遅延" : p.label}</span>
+        <span style={{ flex:1, fontSize:11, color: isDone?"#94a3b8": overdue?"#b91c1c":"#334155",
+          textDecoration: isDone?"line-through":"none", lineHeight:1.45, fontWeight: isHigh&&!isDone?600:"normal" }}>{todo.text}</span>
         <button onClick={() => onToggle(todo.id)} style={{
           width:17, height:17, borderRadius:4, flexShrink:0,
           border: isDone?"none":"1.5px solid #cbd5e1",
@@ -116,18 +134,49 @@ function TodoCard({ todo, col, onToggle, onStart, onStop, isRunning, elapsedSec,
           display:"flex", alignItems:"center", justifyContent:"center",
           cursor:"pointer", fontSize:10, color:"#fff" }}>{isDone?"✓":""}</button>
       </div>
+      {/* メモ表示 */}
+      {todo.memo && !showMemo && (
+        <div onClick={() => !isDone && setShowMemo(true)} style={{
+          fontSize:10, color:"#64748b", background:"#f8fafc", borderRadius:4,
+          padding:"3px 6px", marginTop:5, cursor: isDone?"default":"pointer",
+          borderLeft:"2px solid #cbd5e1", lineHeight:1.4 }}>
+          {todo.memo}
+        </div>
+      )}
+      {showMemo && !isDone && (
+        <textarea
+          autoFocus
+          defaultValue={todo.memo || ""}
+          onBlur={e => { onMemoChange(todo.id, e.target.value.trim()); setShowMemo(false); }}
+          onKeyDown={e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); e.target.blur(); }}}
+          placeholder="メモを入力…"
+          style={{ width:"100%", fontSize:10, color:"#334155", background:"#f8fafc",
+            border:"1px solid #c7d2fe", borderRadius:4, padding:"4px 6px", marginTop:5,
+            resize:"vertical", minHeight:36, outline:"none", fontFamily:"inherit", lineHeight:1.4 }}
+        />
+      )}
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:6 }}>
-        <div style={{ display:"flex", gap:8 }}>
-          {todo.deadline && <span style={{ fontSize:9, color:"#64748b" }}>📅 {todo.deadline}</span>}
+        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+          {todo.deadline && <span style={{ fontSize:9, color: overdue?"#dc2626":"#64748b", fontWeight: overdue?700:"normal" }}>
+            {overdue?"⚠":"📅"} {todo.deadline}{overdue?" 期限切れ":""}
+          </span>}
           {sec > 0 && <span style={{ fontSize:9, color: isRunning?col:"#64748b", fontVariantNumeric:"tabular-nums" }}>⏱ {fmt(sec)}</span>}
         </div>
-        {!isDone && (
-          <button onClick={() => isRunning ? onStop(todo.id) : onStart(todo.id)} style={{
-            fontSize:8, padding:"2px 7px", borderRadius:5, cursor:"pointer",
-            border:`1px solid ${isRunning?"#ef4444":col+"40"}`,
-            background: isRunning?"rgba(239,68,68,0.08)":"#f8fafc",
-            color: isRunning?"#ef4444":"#64748b" }}>{isRunning?"■ 停止":"▶ 開始"}</button>
-        )}
+        <div style={{ display:"flex", gap:4 }}>
+          {!isDone && !showMemo && (
+            <button onClick={() => setShowMemo(true)} style={{
+              fontSize:8, padding:"2px 7px", borderRadius:5, cursor:"pointer",
+              border:"1px solid #e2e8f0", background:"#f8fafc", color:"#64748b"
+            }}>{todo.memo ? "📝" : "+ メモ"}</button>
+          )}
+          {!isDone && (
+            <button onClick={() => isRunning ? onStop(todo.id) : onStart(todo.id)} style={{
+              fontSize:8, padding:"2px 7px", borderRadius:5, cursor:"pointer",
+              border:`1px solid ${isRunning?"#ef4444":col+"40"}`,
+              background: isRunning?"rgba(239,68,68,0.08)":"#f8fafc",
+              color: isRunning?"#ef4444":"#64748b" }}>{isRunning?"■ 停止":"▶ 開始"}</button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -267,6 +316,11 @@ function App() {
 
   const getElapsed = (todo) => (timers[todo.id] ? elapsed[todo.id] : null) ?? todo.elapsed ?? 0;
 
+  const updateMemo = (id, memo) => {
+    const updated = todos.map(t => t.id===id ? {...t, memo: memo || undefined} : t);
+    persist(updated, null);
+  };
+
   const handleSend = async () => {
     if (!input.trim() || loading) return;
     if (!GAS_URL) { flash("❌ GAS URLが未設定です"); return; }
@@ -390,13 +444,14 @@ function App() {
                   <TodoCard key={todo.id} todo={todo} col={col}
                     onToggle={toggleDone} onStart={startTimer} onStop={stopTimer}
                     isRunning={!!timers[todo.id]} elapsedSec={getElapsed(todo)}
-                    onDragStart={()=>{}} />
+                    onDragStart={()=>{}} onMemoChange={updateMemo} />
                 ))}
                 {done.length>0&&(
                   <div style={{ marginTop:6, borderTop:"1px solid #e2e8f0", paddingTop:6 }}>
                     {done.map(todo=>(
                       <TodoCard key={todo.id} todo={todo} col={col}
-                        onToggle={toggleDone} isDone elapsedSec={getElapsed(todo)} />
+                        onToggle={toggleDone} isDone elapsedSec={getElapsed(todo)}
+                        onMemoChange={updateMemo} />
                     ))}
                   </div>
                 )}

@@ -365,11 +365,17 @@ function App() {
         setMessages(p => [...p, {role:"assistant", content:"エラー: " + data.error}]);
       } else {
         let parsed = data.result;
+        // 文字列の場合: JSON抽出を試みる
         if (typeof parsed === "string") {
           try {
             const m = parsed.match(/\{[\s\S]*\}/);
             parsed = m ? JSON.parse(m[0]) : { message: parsed };
           } catch(_) { parsed = { message: parsed }; }
+        }
+        // オブジェクトだがactionがない場合: messageにJSON混在チェック
+        if (parsed && !parsed.action && typeof parsed.message === "string") {
+          const jm = parsed.message.match(/\{[\s\S]*"action"\s*:\s*"[\s\S]*\}/);
+          if (jm) { try { parsed = JSON.parse(jm[0]); } catch(_) {} }
         }
         if (parsed.action === "ask") {
           let opts = parsed.options || [];

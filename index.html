@@ -249,6 +249,7 @@ function App() {
   const flash = (msg) => { setFeedback(msg); setTimeout(() => setFeedback(""), 3000); };
 
   const [syncing, setSyncing] = useState(false);
+  const [showQR, setShowQR] = useState(false);
 
   const syncNow = async () => {
     if (!GAS_URL || syncing) return;
@@ -383,6 +384,10 @@ function App() {
             <div style={{ fontSize:9, letterSpacing:4, color:"#4f6ef7", fontWeight:700 }}>圓子水産</div>
             <div style={{ fontSize:15, fontWeight:700, color:"#1e293b", letterSpacing:2 }}>TODO BOARD</div>
           </div>
+          <button onClick={()=>setShowQR(true)} title="QRコードを表示" style={{
+            background:"#f8fafc", border:"1px solid #e2e8f0", borderRadius:6,
+            padding:"4px 8px", cursor:"pointer", fontSize:14, lineHeight:1, color:"#64748b"
+          }}>📱</button>
           <div style={{ fontSize:9, color: GAS_URL?"#16a34a":"#64748b",
             border:`1px solid ${GAS_URL?"#bbf7d0":"#e2e8f0"}`, borderRadius:6, padding:"2px 8px",
             background: GAS_URL?"#f0fdf4":"#f8fafc" }}>
@@ -492,6 +497,27 @@ function App() {
         borderRadius:14, padding:"12px 20px", color:"#4f46e5",
         fontSize:13, letterSpacing:2, cursor:"pointer",
         boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>⚙ Claude に指示</button>
+
+      {/* QRコード */}
+      {showQR&&(
+        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.4)",
+          display:"flex", alignItems:"center", justifyContent:"center", zIndex:400 }}
+          onClick={()=>setShowQR(false)}>
+          <div style={{ background:"#fff", borderRadius:16, padding:28, textAlign:"center",
+            boxShadow:"0 8px 30px rgba(0,0,0,0.15)" }}
+            onClick={e=>e.stopPropagation()}>
+            <div style={{ fontSize:13, fontWeight:700, color:"#1e293b", marginBottom:4 }}>圓子水産 Todo Board</div>
+            <div style={{ fontSize:10, color:"#64748b", marginBottom:14 }}>スマホでスキャンして開く</div>
+            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(location.href.split('?')[0])}`}
+              alt="QR Code" style={{ width:200, height:200, borderRadius:8 }} />
+            <div style={{ fontSize:9, color:"#94a3b8", marginTop:12, wordBreak:"break-all", maxWidth:220 }}>{location.href.split('?')[0]}</div>
+            <button onClick={()=>setShowQR(false)} style={{
+              marginTop:14, background:"#4f46e5", border:"none", borderRadius:8,
+              padding:"8px 24px", color:"#fff", fontSize:12, cursor:"pointer"
+            }}>閉じる</button>
+          </div>
+        </div>
+      )}
 
       {/* 管理パネル */}
       {showAdmin&&(

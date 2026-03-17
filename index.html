@@ -348,7 +348,7 @@ function App() {
     const newMessages = [...messages, {role:"user", content:msg}];
     setMessages(newMessages);
     setLoading(true);
-    const history = newMessages.filter(m => !m.options).map(m => ({role: m.role, content: m.content}));
+    const history = newMessages.map(m => ({role: m.role, content: m.content}));
     try {
       const res = await fetch(GAS_URL, {
         method: "POST",

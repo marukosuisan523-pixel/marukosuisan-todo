@@ -601,8 +601,13 @@ function App() {
                 <span style={{ fontSize:12, fontWeight:700, color:"#4f46e5", letterSpacing:3 }}>CLAUDE AI — Todo 管理</span>
                 <div style={{ fontSize:10, color:"#64748b", marginTop:2 }}>社員 {employees.length}名 | Todo {todos.length}件</div>
               </div>
-              <button onClick={()=>setShowAdmin(false)}
-                style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:20 }}>✕</button>
+              <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+                {messages.length>0&&<button onClick={()=>setMessages([])}
+                  style={{ background:"#f8fafc", border:"1px solid #e2e8f0", borderRadius:6,
+                    padding:"4px 10px", color:"#64748b", cursor:"pointer", fontSize:10 }}>リセット</button>}
+                <button onClick={()=>setShowAdmin(false)}
+                  style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:20 }}>✕</button>
+              </div>
             </div>
             <div style={{ flex:1, overflowY:"auto", marginBottom:14, display:"flex", flexDirection:"column", gap:8 }}>
               {messages.length===0&&(

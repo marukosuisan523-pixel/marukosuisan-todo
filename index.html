@@ -376,7 +376,6 @@ function App() {
         } else {
           persist(parsed.todos||todos, parsed.employees?.length ? parsed.employees : employees);
           setMessages(p => [...p, {role:"assistant", content: parsed.message||"更新しました ✔"}]);
-          setTimeout(()=>{ setMessages([]); setShowAdmin(false); }, 1200);
         }
       }
     } catch(e) {

@@ -378,7 +378,7 @@ function App() {
           if (jm) { try { parsed = JSON.parse(jm[0]); } catch(_) {} }
         }
         if (parsed.action === "ask") {
-          let opts = parsed.options || [];
+          let opts = [...new Set(parsed.options || [])];
           const hasEmployee = opts.some(o => employees.includes(o));
           if (hasEmployee && !opts.includes("管理者")) opts = ["管理者", ...opts];
           setMessages(p => [...p, {role:"assistant", content: parsed.message, options: opts}]);

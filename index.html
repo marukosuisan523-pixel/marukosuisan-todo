@@ -375,8 +375,8 @@ function App() {
           setMessages(p => [...p, {role:"assistant", content:`${parsed.onboarding.name}さんの入社手続きを開始しました！管理者・本人側のTodoを自動生成しています。`}]);
         } else {
           persist(parsed.todos||todos, parsed.employees?.length ? parsed.employees : employees);
-          setMessages([]);
-          setShowAdmin(false);
+          setMessages(p => [...p, {role:"assistant", content: parsed.message||"更新しました ✔"}]);
+          setTimeout(()=>{ setMessages([]); setShowAdmin(false); }, 1200);
         }
       }
     } catch(e) {
@@ -594,7 +594,7 @@ function App() {
       {showAdmin&&(
         <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.3)",
           display:"flex", alignItems:"flex-end", justifyContent:"center", zIndex:300 }}
-          onClick={()=>setShowAdmin(false)}>
+          onMouseDown={e=>{if(e.target===e.currentTarget)setShowAdmin(false)}}>
           <div style={{ width:"100%", maxWidth:640, background:"#ffffff",
             borderRadius:"20px 20px 0 0", border:"1px solid #e2e8f0",
             padding:24, maxHeight:"65vh", display:"flex", flexDirection:"column",

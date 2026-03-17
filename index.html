@@ -376,7 +376,7 @@ function App() {
         } else {
           persist(parsed.todos||todos, parsed.employees?.length ? parsed.employees : employees);
           setMessages([]);
-          setShowChat(false);
+          setShowAdmin(false);
         }
       }
     } catch(e) {

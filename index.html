@@ -366,7 +366,10 @@ function App() {
       } else {
         const parsed = data.result;
         if (parsed.action === "ask") {
-          setMessages(p => [...p, {role:"assistant", content: parsed.message, options: parsed.options}]);
+          let opts = parsed.options || [];
+          const hasEmployee = opts.some(o => employees.includes(o));
+          if (hasEmployee && !opts.includes("管理者")) opts = ["管理者", ...opts];
+          setMessages(p => [...p, {role:"assistant", content: parsed.message, options: opts}]);
         } else if (parsed.onboarding?.name) {
           genOnboarding(parsed.onboarding.name, parsed.onboarding.date||"", parsed.todos||todos, parsed.employees?.length ? parsed.employees : employees);
           setMessages(p => [...p, {role:"assistant", content:`${parsed.onboarding.name}さんの入社手続きを開始しました！管理者・本人側のTodoを自動生成しています。`}]);

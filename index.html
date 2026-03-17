@@ -15,6 +15,13 @@
   ::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 2px; }
   input::placeholder { color: #94a3b8; }
   button { font-family: inherit; }
+  @keyframes dotPulse {
+    0%,80%,100% { opacity:0.3; }
+    40% { opacity:1; }
+  }
+  .dot-loading span { display:inline-block; animation:dotPulse 1.2s infinite; }
+  .dot-loading span:nth-child(2) { animation-delay:0.2s; }
+  .dot-loading span:nth-child(3) { animation-delay:0.4s; }
 </style>
 </head>
 <body>
@@ -39,11 +46,6 @@ const DEFAULT_EMPLOYEES = [
 // ★ ルーティン定義 — 変更したい時はClaudeに伝えてください
 // ============================================================
 const ROUTINES = [
-  { day: "daily",   person: "全員",   text: "店内清掃",     priority: "normal" },
-  { day: "daily",   person: "管理者", text: "在庫チェック", priority: "normal" },
-  { day: "daily",   person: "管理者", text: "発送準備",     priority: "normal" },
-  { day: "monday",  person: "管理者", text: "発注確認",     priority: "normal" },
-  { day: "friday",  person: "管理者", text: "週次棚卸し",   priority: "normal" },
 ];
 const DAY_LABEL = { daily:"毎日", monday:"月曜", tuesday:"火曜", wednesday:"水曜", thursday:"木曜", friday:"金曜", saturday:"土曜", sunday:"日曜" };
 
@@ -632,7 +634,9 @@ function App() {
                   )}
                 </div>
               ))}
-              {loading&&<div style={{ alignSelf:"flex-start", color:"#94a3b8", fontSize:12 }}>処理中…</div>}
+              {loading&&<div style={{ alignSelf:"flex-start", background:"#f8fafc", border:"1px solid #e2e8f0",
+                borderRadius:12, padding:"8px 14px", fontSize:13, color:"#94a3b8" }}
+                className="dot-loading"><span>●</span> <span>●</span> <span>●</span></div>}
               <div ref={msgEnd}/>
             </div>
             <div style={{ display:"flex", gap:8 }}>

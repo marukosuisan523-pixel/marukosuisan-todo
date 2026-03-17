@@ -372,7 +372,8 @@ function App() {
           setMessages(p => [...p, {role:"assistant", content:`${parsed.onboarding.name}さんの入社手続きを開始しました！管理者・本人側のTodoを自動生成しています。`}]);
         } else {
           persist(parsed.todos||todos, parsed.employees?.length ? parsed.employees : employees);
-          setMessages(p => [...p, {role:"assistant", content: parsed.message||"更新しました"}]);
+          setMessages([]);
+          setShowChat(false);
         }
       }
     } catch(e) {

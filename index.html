@@ -364,7 +364,13 @@ function App() {
       if (data.error) {
         setMessages(p => [...p, {role:"assistant", content:"エラー: " + data.error}]);
       } else {
-        const parsed = data.result;
+        let parsed = data.result;
+        if (typeof parsed === "string") {
+          try {
+            const m = parsed.match(/\{[\s\S]*\}/);
+            parsed = m ? JSON.parse(m[0]) : { message: parsed };
+          } catch(_) { parsed = { message: parsed }; }
+        }
         if (parsed.action === "ask") {
           let opts = parsed.options || [];
           const hasEmployee = opts.some(o => employees.includes(o));

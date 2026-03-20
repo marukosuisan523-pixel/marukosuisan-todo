@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タスク管理システム仕様書 - 圓子水産</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Meiryo', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; line-height: 1.7; }
+  .header { background: #1e293b; padding: 24px 32px; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 10; }
+  .header-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 1.2rem; color: #f8fafc; }
+  .header h1 span { color: #38bdf8; }
+  .header a { color: #64748b; text-decoration: none; font-size: 0.85rem; }
+  .header a:hover { color: #38bdf8; }
+  .content { max-width: 900px; margin: 0 auto; padding: 32px; }
+  h2 { font-size: 1.3rem; color: #38bdf8; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #1e293b; }
+  h3 { font-size: 1rem; color: #f8fafc; margin: 24px 0 8px; }
+  p, li { font-size: 0.9rem; color: #cbd5e1; }
+  ul, ol { padding-left: 24px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+  th { background: #1e293b; color: #94a3b8; text-align: left; padding: 8px 12px; border: 1px solid #334155; font-weight: 600; }
+  td { padding: 8px 12px; border: 1px solid #334155; color: #cbd5e1; }
+  code { background: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: 0.82rem; color: #94a3b8; font-family: 'Consolas', monospace; }
+  pre { background: #1e293b; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; border: 1px solid #334155; }
+  pre code { background: none; padding: 0; font-size: 0.82rem; color: #e2e8f0; }
+  .flow-box { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; margin: 16px 0; }
+  .flow-box pre { background: #0f172a; margin: 8px 0 0; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+  .badge-biz { background: #14532d; color: #4ade80; }
+  .badge-personal { background: #1e1b4b; color: #818cf8; }
+  .badge-calendar { background: #083344; color: #22d3ee; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1><span>Discord × Claude Code</span> タスク管理システム仕様書</h1>
+    <a href="portal.html">&larr; ポータルに戻る</a>
+  </div>
+</div>
+
+<div class="content">
+
+<h2>システム概要</h2>
+<p>Discordをメインの入り口として、Claude Codeが頭脳となりタスク管理・業務指示・リマインドを一元管理するシステム。</p>
+
+<div class="flow-box">
+<h3>全体フロー</h3>
+<pre><code>Discord（瑞樹さん）
+  |
+  v
+Claude Code（頭脳）
+  |--- 即実行可能 --> 既存スキルで実行 --> Discord返信
+  |--- スタッフ指示+日時 --> Googleカレンダー登録 --> 10分後TODOボード自動同期
+  |--- 業務タスク --> GAS API --> TODOボード + LINE通知
+  |--- 個人タスク --> ローカル保存 --> Discordリマインドのみ
+  |--- 質問/相談 --> 通常回答
+
+スタッフ側：
+  TODOボード（Web）で確認 / LINE通知で受け取り / Googleカレンダーで確認</code></pre>
+</div>
+
+<h2>タスクの分類ルール</h2>
+
+<table>
+  <tr><th>条件</th><th>行き先</th><th>通知</th><th>例</th></tr>
+  <tr><td>スタッフ指示 + 日時あり</td><td><span class="badge badge-calendar">Googleカレンダー</span></td><td>カレンダー通知 + 10分後TODOボード同期</td><td>「小川に明日の配送準備やっといて」</td></tr>
+  <tr><td>業務タスク（スタッフ共有）</td><td><span class="badge badge-biz">TODOボード</span></td><td>TODOボード + LINE通知</td><td>「小川に発注リスト確認させて」</td></tr>
+  <tr><td>個人タスク</td><td><span class="badge badge-personal">ローカル保存</span></td><td>Discordリマインドのみ</td><td>「モバイル充電器買う」</td></tr>
+  <tr><td>即実行可能</td><td>既存スキル</td><td>Discord返信</td><td>「今月の給与処理して」</td></tr>
+</table>
+
+<h2>拡張機能</h2>
+
+<h3>1. サブタスク分解</h3>
+<p>大きなタスクを小さなステップに分解。それぞれに期限を設定し、サブタスクの期限でもリマインドが発火する。全サブタスク完了で親タスクも自動完了。</p>
+<pre><code>消費税の申告（期限: 3/31）
+  ├ 必要書類を集める（3/25）
+  ├ 税理士に確認（3/27）
+  └ e-Taxで申告提出（3/31）</code></pre>
+
+<h3>2. 着手日（start_date）</h3>
+<p>期限だけでなく「いつから始めるか」も管理。期限が1週間以上先のタスクには着手日を自動提案（期限の3日前 or 半分の時点）。着手日の朝に「今日から着手しましょう」とリマインド。</p>
+
+<h3>3. 朝のプランニング（毎朝5:00）</h3>
+<p>その日のアクションを提案する朝のダイジェスト。</p>
+<pre><code>🌅 おはようございます！今日のプラン
+
+📌 今日が期限
+・スマートモニター買う
+
+🚀 今日から着手
+・消費税の申告 → まず「書類を集める」から
+
+💡 そろそろ着手しませんか？
+・就業規則修正（3/31期限、残り11日）
+
+⚠ 期限切れ
+・（なし）</code></pre>
+
+<h3>4. 夕方の進捗チェック（18:00）</h3>
+<p>今日の期限・着手予定だったタスクについて進捗を確認。返事がなくても催促はしない（朝のリマインドに任せる）。</p>
+
+<h3>5. タスク依存関係（blocked_by）</h3>
+<p>タスク間の順番を管理。ブロッカーが完了するまでリマインドを抑制し、完了時に「次のタスクに着手できます」と通知。</p>
+<pre><code>北洋銀行：手続き
+  └ [完了後] → 給与振り込みの続き（ブロック解除）</code></pre>
+
+<h2>リマインドルール</h2>
+
+<table>
+  <tr><th>タイミング</th><th>内容</th></tr>
+  <tr><td>毎朝 5:00</td><td>朝のプランニング（今日の期限 + 着手提案 + 期限切れ）</td></tr>
+  <tr><td>着手日の朝</td><td>「今日から着手しましょう」通知</td></tr>
+  <tr><td>期限3日前</td><td>着手日未設定なら「そろそろ着手しませんか？」</td></tr>
+  <tr><td>期限の1時間前</td><td>該当タスクを個別通知</td></tr>
+  <tr><td>期限の5分前</td><td>該当タスクを個別通知</td></tr>
+  <tr><td>期限超過後</td><td>未完了なら1時間ごとに通知（完了するまで）</td></tr>
+  <tr><td>夕方 18:00</td><td>進捗チェック（今日の期限・着手予定の確認）</td></tr>
+  <tr><td>ブロッカー完了時</td><td>「○○が完了したので△△に着手できます」</td></tr>
+</table>
+
+<h2>GAS API仕様</h2>
+
+<table>
+  <tr><th>アクション</th><th>メソッド</th><th>用途</th></tr>
+  <tr><td><code>getAll</code></td><td>GET</td><td>全タスク・社員リスト取得</td></tr>
+  <tr><td><code>addTodo</code></td><td>POST</td><td>単一タスク追加（競合安全・LINE通知自動発火）</td></tr>
+  <tr><td><code>updateTodo</code></td><td>POST</td><td>単一タスク更新・完了（カレンダー✅・LINE通知自動）</td></tr>
+  <tr><td><code>setAll</code></td><td>POST</td><td>全件上書き（TODOボードUI用・Claude Codeは使用しない）</td></tr>
+  <tr><td><code>completeTodo</code></td><td>POST</td><td>カレンダーイベント完了マーク</td></tr>
+</table>
+
+<h2>データ保存先</h2>
+
+<table>
+  <tr><th>データ</th><th>保存先</th><th>備考</th></tr>
+  <tr><td>業務TODO</td><td>GAS → Googleスプレッドシート</td><td>TODOボードと共有</td></tr>
+  <tr><td>個人TODO</td><td><code>.secrets/personal_todos.json</code></td><td>ローカルのみ・Git管理外</td></tr>
+  <tr><td>GAS API URL</td><td><code>.secrets/gas_config.json</code></td><td>Git管理外</td></tr>
+  <tr><td>リマインド履歴</td><td><code>.secrets/reminders.json</code></td><td>日次リセット</td></tr>
+  <tr><td>スキル定義</td><td><code>.claude/skills/task-manager/SKILL.md</code></td><td>Claude Code用</td></tr>
+</table>
+
+<h2>連携システム</h2>
+
+<table>
+  <tr><th>システム</th><th>役割</th><th>連携方式</th></tr>
+  <tr><td>Discord</td><td>指示入り口・リマインド通知先</td><td>MCP Discord Plugin</td></tr>
+  <tr><td>TODOボード</td><td>スタッフ向けタスク表示</td><td>GAS API（同一バックエンド）</td></tr>
+  <tr><td>Googleカレンダー</td><td>スケジュール管理</td><td>GAS 10分同期 + staff-calendarスキル</td></tr>
+  <tr><td>LINE通知</td><td>スタッフへの新タスク通知</td><td>GAS → Render Express → LINE API</td></tr>
+  <tr><td>Claude Code</td><td>タスク分類・実行・リマインド</td><td>task-managerスキル + /loop 5分</td></tr>
+</table>
+
+</div>
+</body>
+</html>

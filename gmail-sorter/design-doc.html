@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gmail自動仕分けシステム 設計書 — 合同会社圓子水産</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Meiryo', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 28px 32px 24px; border-bottom: 1px solid #1e293b; }
+  .back-link { display: inline-block; color: #64748b; text-decoration: none; font-size: 0.8rem; font-weight: 600; margin-bottom: 16px; transition: color 0.2s; }
+  .back-link:hover { color: #38bdf8; }
+  .header-title { font-size: 1.6rem; font-weight: 800; color: #f8fafc; line-height: 1.3; }
+  .header-title span { color: #38bdf8; }
+  .header-sub { font-size: 0.8rem; color: #64748b; margin-top: 6px; }
+
+  /* Content */
+  .content { padding: 40px 32px; max-width: 960px; margin: 0 auto; }
+
+  /* Sections */
+  .doc-section { margin-bottom: 48px; }
+  .doc-section-title { font-size: 0.75rem; color: #475569; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 18px; border-left: 3px solid #334155; padding-left: 10px; }
+  .doc-text { font-size: 0.88rem; color: #cbd5e1; line-height: 1.8; margin-bottom: 10px; }
+  .doc-list { font-size: 0.88rem; color: #cbd5e1; line-height: 1.9; padding-left: 22px; }
+  .doc-list li { margin-bottom: 5px; }
+  .doc-list ol { padding-left: 20px; }
+
+  /* Architecture */
+  .arch-cols { display: flex; gap: 32px; justify-content: center; align-items: flex-start; flex-wrap: wrap; margin-bottom: 20px; }
+  .arch-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 200px; max-width: 320px; background: #151f2e; border: 1px solid #1e3348; border-radius: 12px; padding: 20px 16px; }
+  .arch-col-title { font-size: 0.72rem; color: #38bdf8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .arch-node { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 9px 14px; font-size: 0.8rem; font-weight: 600; color: #e2e8f0; text-align: center; width: 100%; }
+  .arch-node.node-blue { background: #1e3a5f; border-color: #38bdf8; color: #7dd3fc; }
+  .arch-node.node-green { background: #14532d; border-color: #22c55e; color: #4ade80; }
+  .arch-node.node-amber { background: #451a03; border-color: #f59e0b; color: #fbbf24; }
+  .arch-node.node-indigo { background: #1e1b4b; border-color: #818cf8; color: #a5b4fc; }
+  .arch-node.node-purple { background: #2e1065; border-color: #a78bfa; color: #c4b5fd; }
+  .arch-node.node-slate { background: #1e293b; border-color: #64748b; color: #94a3b8; }
+  .arch-arrow-down { text-align: center; color: #475569; font-size: 1.1rem; line-height: 1; }
+  .arch-branch-row { display: flex; align-items: center; gap: 6px; width: 100%; }
+  .arch-branch-label { font-size: 0.7rem; color: #64748b; min-width: 56px; text-align: right; flex-shrink: 0; }
+  .arch-shared { text-align: center; margin-top: 8px; }
+  .arch-shared .arch-node { display: inline-block; width: auto; font-size: 0.78rem; }
+
+  /* Tables */
+  .doc-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .doc-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .doc-table th { background: #0f172a; color: #64748b; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; padding: 10px 14px; border-bottom: 1px solid #334155; text-align: left; white-space: nowrap; }
+  .doc-table td { padding: 10px 14px; border-bottom: 1px solid #1a2332; color: #cbd5e1; vertical-align: top; line-height: 1.6; }
+  .doc-table tr:last-child td { border-bottom: none; }
+  .doc-table tr:hover td { background: rgba(30, 41, 59, 0.4); }
+  .doc-table td code { background: #1e293b; padding: 1px 5px; border-radius: 4px; font-size: 0.72rem; color: #94a3b8; font-family: 'Consolas', 'Menlo', monospace; white-space: nowrap; }
+
+  /* Code block */
+  .doc-code { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 18px 20px; font-family: 'Consolas', 'Menlo', monospace; font-size: 0.78rem; color: #e6edf3; overflow-x: auto; line-height: 1.7; }
+  .doc-code .key { color: #38bdf8; }
+  .doc-code .str { color: #4ade80; }
+  .doc-code .bool { color: #fbbf24; }
+  .doc-code .comment { color: #8b949e; }
+
+  /* Label chips */
+  .label-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .label-chip { background: #1e1b4b; border: 1px solid #4338ca; border-radius: 20px; padding: 5px 14px; font-size: 0.78rem; color: #a5b4fc; }
+
+  /* Inline code */
+  code { background: #1e293b; padding: 1px 5px; border-radius: 4px; font-size: 0.78rem; color: #94a3b8; font-family: 'Consolas', 'Menlo', monospace; }
+
+  /* Step list (ordered) */
+  .step-list { list-style: none; padding: 0; counter-reset: step-counter; }
+  .step-list li { counter-increment: step-counter; display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #1a2332; font-size: 0.88rem; color: #cbd5e1; line-height: 1.6; }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before { content: counter(step-counter); background: #1e3a5f; border: 1px solid #38bdf8; color: #38bdf8; border-radius: 50%; width: 26px; height: 26px; min-width: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; margin-top: 1px; }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .header { padding: 20px 16px; }
+    .header-title { font-size: 1.3rem; }
+    .content { padding: 24px 16px; }
+    .arch-cols { flex-direction: column; align-items: stretch; }
+    .arch-col { min-width: 0; max-width: 100%; }
+    .doc-table-wrap { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back-link" href="../system-overview.html">&#8592; ポータルに戻る</a>
+  <div class="header-title"><span>Gmail</span>自動仕分けシステム 設計書</div>
+  <div class="header-sub">合同会社圓子水産 &mdash; 最終更新: 2026-03-21</div>
+</div>
+
+<div class="content">
+
+  <!-- A. システム概要 -->
+  <div class="doc-section">
+    <div class="doc-section-title">A. システム概要</div>
+    <p class="doc-text">受信メールをルールに基づいて自動でラベル付け＋アーカイブするシステム。手動仕分けから新ルールを学習する仕組み付き。PCがログインしていれば常時稼働（Claude不要）。</p>
+    <ul class="doc-list">
+      <li>5分間隔で受信トレイをスキャンし、53ルールと照合してラベルを自動付与</li>
+      <li>confidence <code>high</code> のメールはラベル付与＋アーカイブ、<code>low</code> は受信トレイに残す</li>
+      <li>重要メール・未分類・エラーを Discord Bot で通知</li>
+      <li>learner が手動仕分けを1日1回スキャン → 候補を Discord に通知 → 承認で正式ルール化</li>
+    </ul>
+  </div>
+
+  <!-- B. アーキテクチャ図 -->
+  <div class="doc-section">
+    <div class="doc-section-title">B. アーキテクチャ図</div>
+    <div class="arch-cols">
+
+      <!-- 左カラム: sorter -->
+      <div class="arch-col">
+        <div class="arch-col-title">5分ごと（sorter）</div>
+        <div class="arch-node node-blue">Gmail受信トレイ</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-indigo">sorter.js でルール照合</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#4ade80;">マッチ →</div>
+          <div class="arch-node node-green" style="flex:1;">ラベル付与</div>
+        </div>
+        <div class="arch-branch-row" style="padding-left:14px;">
+          <div class="arch-branch-label" style="color:#fbbf24;font-size:0.7rem;">high →</div>
+          <div class="arch-node node-amber" style="flex:1;font-size:0.75rem;">アーカイブ</div>
+        </div>
+        <div class="arch-branch-row" style="padding-left:14px;">
+          <div class="arch-branch-label" style="color:#94a3b8;font-size:0.7rem;">low →</div>
+          <div class="arch-node node-slate" style="flex:1;font-size:0.75rem;">受信トレイに残す</div>
+        </div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#64748b;">未マッチ →</div>
+          <div class="arch-node node-slate" style="flex:1;">放置</div>
+        </div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-indigo">notifier.js → Discord Bot通知</div>
+      </div>
+
+      <!-- 右カラム: learner -->
+      <div class="arch-col">
+        <div class="arch-col-title">1日1回（learner）</div>
+        <div class="arch-node node-blue">手動仕分けしたメール</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-purple">learner.js でパターン検出</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-purple">候補をJSON保存</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-indigo">Discord通知</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-slate">Claude Codeで承認</div>
+      </div>
+
+    </div>
+    <div class="arch-shared">
+      <div class="arch-node node-slate">scheduler.js（常駐プロセス）— タスクスケジューラ常時起動</div>
+    </div>
+  </div>
+
+  <!-- C. ファイル構成 -->
+  <div class="doc-section">
+    <div class="doc-section-title">C. ファイル構成</div>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead><tr><th>ファイル</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>src/scheduler.js</code></td><td>常駐プロセス。sortを5分間隔、learnを24時間間隔で実行</td></tr>
+          <tr><td><code>src/sorter.js</code></td><td>受信トレイスキャン、ルール照合、ラベル付与+アーカイブ</td></tr>
+          <tr><td><code>src/learner.js</code></td><td>手動仕分け検出、新ルール候補生成。<code>--approve</code>で承認</td></tr>
+          <tr><td><code>src/notifier.js</code></td><td>Discord Bot通知（重要メール / 未分類 / エラー）</td></tr>
+          <tr><td><code>src/auth.js</code></td><td>Gmail API OAuth2認証（ポート8844、HTML redirect方式）</td></tr>
+          <tr><td><code>src/config.js</code></td><td>設定読み込み（<code>--config</code>でアカウント切替可）</td></tr>
+          <tr><td><code>config/marukosuisan.json</code></td><td>アカウント設定（メール / 認証パス / Discord Bot / 間隔）</td></tr>
+          <tr><td><code>rules/marukosuisan.json</code></td><td>ルール定義＋学習候補</td></tr>
+          <tr><td><code>start-server.bat</code></td><td>常駐バッチ（クラッシュ時10秒後自動再起動）</td></tr>
+          <tr><td><code>logs/</code></td><td>日次ログ＋scheduler.log</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- D. ルール仕様 -->
+  <div class="doc-section">
+    <div class="doc-section-title">D. ルール仕様</div>
+    <ul class="doc-list" style="margin-bottom: 18px;">
+      <li>ルールはJSONで定義</li>
+      <li>条件: <code>from</code>（ドメインの部分一致）、<code>subject</code>（キーワードの部分一致）</li>
+      <li>複数条件はAND、各条件内の配列はOR</li>
+      <li>マッチ優先度: 条件キー数が多いルール（より具体的）が先に評価</li>
+      <li><code>confidence: "high"</code> → ラベル付与＋アーカイブ、<code>"low"</code> → ラベルのみ</li>
+      <li><code>important: true</code> → Discord通知を送る</li>
+    </ul>
+    <div class="doc-code"><span class="comment">// ルール例</span>
+{
+  <span class="key">"name"</span>: <span class="str">"食べチョク注文"</span>,
+  <span class="key">"conditions"</span>: {
+    <span class="key">"from"</span>: [<span class="str">"tabechoku.com"</span>],
+    <span class="key">"subject"</span>: [<span class="str">"受注"</span>, <span class="str">"注文"</span>, <span class="str">"要確認"</span>]
+  },
+  <span class="key">"label"</span>: <span class="str">"通販/食べチョク"</span>,
+  <span class="key">"archive"</span>: <span class="bool">true</span>,
+  <span class="key">"important"</span>: <span class="bool">false</span>,
+  <span class="key">"confidence"</span>: <span class="str">"high"</span>
+}</div>
+  </div>
+
+  <!-- E. 学習（learner）の仕組み -->
+  <div class="doc-section">
+    <div class="doc-section-title">E. 学習（learner）の仕組み</div>
+    <ol class="step-list">
+      <li>ユーザーがGmailで手動でラベル付け＋アーカイブ</li>
+      <li>learnerが1日1回スキャン（直近48時間の手動仕分けを検出）</li>
+      <li>ドメイン＋ラベルのパターンを分析</li>
+      <li>既存ルールにないパターンを候補としてJSONに保存</li>
+      <li>Discordに候補通知</li>
+      <li>Claude Codeで承認作業（候補の内容を確認 → 修正 → 正式ルールに昇格）</li>
+    </ol>
+  </div>
+
+  <!-- F. 通知仕様 -->
+  <div class="doc-section">
+    <div class="doc-section-title">F. 通知仕様</div>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead><tr><th>通知先</th><th>トリガー</th><th>絵文字</th></tr></thead>
+        <tbody>
+          <tr><td>Discord</td><td>重要メール（important: true）</td><td>🟡</td></tr>
+          <tr><td>Discord</td><td>未分類の新着メール（直近6分以内）</td><td>📋</td></tr>
+          <tr><td>Discord</td><td>エラー発生</td><td>🔴</td></tr>
+          <tr><td>Discord</td><td>learner候補検出</td><td>📋</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- G. 安全設計 -->
+  <div class="doc-section">
+    <div class="doc-section-title">G. 安全設計</div>
+    <ul class="doc-list">
+      <li><code>gmail-sorter/processed</code> ラベルで二重処理防止</li>
+      <li>confidence low のメールは受信トレイに残す（見落とし防止）</li>
+      <li>learner候補は自動適用されない（明示的承認が必要）</li>
+      <li><code>--dry-run</code> で実行前に何が起きるか確認可能（複数マッチ警告付き）</li>
+      <li>uncaughtException / unhandledRejection をキャッチしてDiscord通知</li>
+      <li>ルールファイルの書き込みはアトミック（tmp → rename）</li>
+    </ul>
+  </div>
+
+  <!-- H. 運用・メンテナンス -->
+  <div class="doc-section">
+    <div class="doc-section-title">H. 運用・メンテナンス</div>
+    <div class="doc-table-wrap">
+      <table class="doc-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>普段の作業</td><td><strong style="color:#4ade80;">なし</strong>（自動で動く）</td></tr>
+          <tr><td>精度向上</td><td>月1〜2回Gmailで手動仕分けすると精度が上がる</td></tr>
+          <tr><td>ルール候補確認</td><td>Claude Codeに「ルール候補を見せて」で確認・承認</td></tr>
+          <tr><td>タスクスケジューラ名</td><td><code>Gmail Auto Sort</code></td></tr>
+          <tr><td>ログ確認</td><td><code>logs/marukosuisan_YYYY-MM-DD.log</code></td></tr>
+          <tr><td>認証切れ時</td><td><code>npm run auth</code> で再認証</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- I. 現在のラベル一覧 -->
+  <div class="doc-section">
+    <div class="doc-section-title">I. 現在のラベル一覧</div>
+    <div class="label-chips">
+      <span class="label-chip">広告</span>
+      <span class="label-chip">経理</span>
+      <span class="label-chip">総務</span>
+      <span class="label-chip">サービス通知</span>
+      <span class="label-chip">認証ログイン</span>
+      <span class="label-chip">通販</span>
+      <span class="label-chip">通販/食べチョク</span>
+      <span class="label-chip">通販/ポケマル</span>
+      <span class="label-chip">通販/佐川急便</span>
+      <span class="label-chip">総務/Ivry</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

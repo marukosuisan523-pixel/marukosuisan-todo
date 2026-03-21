@@ -203,25 +203,6 @@
         </div>
       </div>
 
-      <!-- Discord × Claude Code タスク管理 -->
-      <div class="portal-card-wrap" data-detail-keywords="Discord Claude Code タスク リマインド 個人TODO 業務TODO GAS API サブタスク 着手日 依存関係 朝プランニング 夕方チェック">
-        <a class="portal-link" data-keywords="Discord タスク管理 リマインド TODO Claude">
-          <div class="icon ic-indigo">&#129302;</div>
-          <div class="info"><div class="name">Discord × Claude Code</div><div class="desc">タスク管理・リマインド・業務自動化</div></div>
-          <span class="badge badge-live">稼働中</span>
-          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
-        </a>
-        <div class="detail-panel">
-          <div class="detail-inner">
-            <div class="detail-grid">
-              <div class="detail-row detail-full"><div class="detail-key">概要</div><div class="detail-val">Discordから業務指示・タスク管理・リマインドを一元管理。Claude Codeが頭脳として振り分け・実行</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">主な機能</div><div class="detail-val">業務/個人タスク振り分け / サブタスク / 着手日管理 / 依存関係 / 朝5:00プランニング / 夕方18:00進捗チェック / 期限リマインド</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">仕様書</div><div class="detail-val"><a href="task-manager-spec.html" target="_blank">タスク管理システム仕様書を開く</a></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- 在庫管理システム -->
       <div class="portal-card-wrap" data-detail-keywords="Next.js Prisma SQLite shadcn Tailwind ダッシュボード 製造管理 棚卸し 仕込み計算 BOM 61件 270品目 2段階BOM dev.db">
         <a class="portal-link" href="http://localhost:3000" target="_blank" data-keywords="在庫 zaico 棚卸し 製造 BOM 仕込み">
@@ -241,7 +222,7 @@
               <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応、確認周期で今日の対象品目を自動フィルタ</div></div>
               <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数 × 注文比率 × 1人前g数</div></div>
               <div class="detail-row"><div class="detail-key">DB</div><div class="detail-val"><code>在庫管理/app/prisma/dev.db</code> (SQLite)</div></div>
-              <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>maruko-suisan/在庫管理/app/</code></div></div>
+              <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/在庫管理/app/</code></div></div>
             </div>
           </div>
         </div>
@@ -292,6 +273,76 @@
               <div class="detail-row detail-full"><div class="detail-key">ロードマップ</div><div class="detail-val">Phase 1: 全チャネル売上表示 → Phase 2: 経費入力（PDF取込） → Phase 3: 利益計算</div></div>
             </div>
             <div class="detail-note">現在Phase 1。ECメールパーサーは未実装、Airレジデータのみ表示中</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 動画文字起こし -->
+      <div class="portal-card-wrap" data-detail-keywords="Whisper yt-dlp ffmpeg YouTube X Twitter TikTok Instagram 音声 transcribe 文字起こし">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="動画 文字起こし Whisper 音声">
+          <div class="icon ic-blue">&#127908;</div>
+          <div class="info"><div class="name">動画文字起こし</div><div class="desc">YouTube/X/TikTok → Whisper → テキスト</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>scripts/transcribe.py</code></div></div>
+              <div class="detail-row"><div class="detail-key">スキル定義</div><div class="detail-val"><code>.claude/skills/video-transcribe/SKILL.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">モデル</div><div class="detail-val">Whisper small（CPU only / GPU無し）</div></div>
+              <div class="detail-row"><div class="detail-key">対応</div><div class="detail-val">YouTube / X / TikTok / Instagram / ローカルファイル</div></div>
+              <div class="detail-row"><div class="detail-key">出力先</div><div class="detail-val"><code>文字起こし/</code></div></div>
+              <div class="detail-row detail-full"><div class="detail-key">依存</div><div class="detail-val">openai-whisper / yt-dlp / ffmpeg（winget）</div></div>
+            </div>
+            <div class="detail-note">CPU環境のためsmallモデル推奨。5分超の動画は--model baseで高速化可能</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gmail自動仕分け -->
+      <div class="portal-card-wrap" data-detail-keywords="Node.js Gmail API OAuth2 scheduler sorter learner notifier Discord Bot 5分間隔 53ルール marukosuisan523">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="Gmail 自動仕分け ルール learner 学習">
+          <div class="icon ic-indigo">&#9993;</div>
+          <div class="info"><div class="name">Gmail自動仕分け</div><div class="desc">受信トレイ自動整理</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/gmail-sorter/</code></div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Gmail API (OAuth2)</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">実行</div><div class="detail-val">タスクスケジューラ（ログオン時自動起動、5分間隔）</div></div>
+              <div class="detail-row"><div class="detail-key">ルール数</div><div class="detail-val">53ルール（広告・経理・総務・通販・サービス通知・認証ログイン等）</div></div>
+              <div class="detail-row"><div class="detail-key">通知</div><div class="detail-val">Discord Bot → 一般チャンネル</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">学習</div><div class="detail-val">learnerが手動仕分けを検出 → 候補提案 → 承認で正式ルール化</div></div>
+            </div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #1e3348;">
+              <a href="gmail-sorter/design-doc.html" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 0.8rem; font-weight: 600;">&#128196; 設計書・詳細仕様を見る →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude最新ニュース配信 -->
+      <div class="portal-card-wrap" data-detail-keywords="ニュース 配信 cron 毎朝 5時 3時 Discord Claude Anthropic 英語 海外">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="ニュース Claude 配信 毎朝">
+          <div class="icon ic-amber">&#128240;</div>
+          <div class="info"><div class="name">Claude最新ニュース配信</div><div class="desc">毎朝5時にDiscordへ自動配信</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">配信先</div><div class="detail-val">Discord（チャンネルID: 1484477664596332676）</div></div>
+              <div class="detail-row"><div class="detail-key">構成</div><div class="detail-val">テキスト3本 + 動画文字起こし2本 = 計5本</div></div>
+              <div class="detail-row"><div class="detail-key">3:00 cron</div><div class="detail-val">WebSearch（日本語+英語）→ 動画2本文字起こし</div></div>
+              <div class="detail-row"><div class="detail-key">5:00 cron</div><div class="detail-val">要約作成 → Discord投稿</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ソース</div><div class="detail-val">日本語ニュース + 英語ニュース(EN) + X動画（JP/EN）</div></div>
+            </div>
+            <div class="detail-note">セッション内cron（最大7日）。メインセッション起動時に自動設定</div>
           </div>
         </div>
       </div>
@@ -816,7 +867,6 @@
     </div>
   </div>
 
-</div>
 </div>
 
 <script>

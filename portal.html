@@ -309,13 +309,82 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 340" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <!-- Step 1: Airシフト -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. データ確認</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Airシフト画面</text>
+              <!-- Arrow 1→2 -->
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-att)"/>
+              <!-- Step 2: ルール適用 -->
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="225" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">2. ルール適用</text>
+              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">丸め・休憩補完・検出</text>
+              <!-- Arrow 2→3 -->
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-att)"/>
+              <!-- Step 3: PDF作成 -->
+              <rect x="310" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="375" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">3. PDF作成</text>
+              <text x="375" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">修正前・修正後・理由</text>
+              <!-- Arrow 3→4 -->
+              <path d="M440,38 L458,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-att)"/>
+              <!-- Step 4: Discord送信 -->
+              <rect x="460" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="525" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">4. Discord送信</text>
+              <text x="525" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">PDF添付で報告</text>
+              <!-- Arrow 4→5 (down) -->
+              <path d="M525,66 L525,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-att)"/>
+              <!-- Step 5: 承認待ち -->
+              <rect x="460" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="525" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. 承認待ち</text>
+              <text x="525" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">瑞樹さんが確認</text>
+              <!-- Branch: 承認 / 差し戻し -->
+              <!-- 承認 Arrow (left) -->
+              <path d="M460,114 L368,114" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-ok)"/>
+              <text x="414" y="108" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">OK</text>
+              <!-- 差し戻し Arrow (down) -->
+              <path d="M525,142 L525,160" stroke="#f87171" stroke-width="1.5" marker-end="url(#arrow-ng)"/>
+              <text x="545" y="156" fill="#f87171" font-size="9" font-weight="bold" font-family="Meiryo">NG</text>
+              <!-- Step 6: 画面修正 -->
+              <rect x="236" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="301" y="108" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">6. 画面修正</text>
+              <text x="301" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Chrome自動操作</text>
+              <!-- Arrow 6→7 -->
+              <path d="M236,114 L148,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-att)"/>
+              <!-- Step 7: 完了 -->
+              <rect x="10" y="86" width="136" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="78" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">7. 保存・完了</text>
+              <text x="78" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ルール更新があれば反映</text>
+              <!-- 差し戻しボックス -->
+              <rect x="460" y="162" width="130" height="56" rx="10" fill="#451a03" stroke="#f87171" stroke-width="1.5"/>
+              <text x="525" y="184" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Meiryo">差し戻し</text>
+              <text x="525" y="202" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">フィードバック反映</text>
+              <!-- 差し戻し→ルール適用に戻る -->
+              <path d="M460,190 L225,190 L225,66" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-ng)"/>
+              <!-- ルール凡例 -->
+              <rect x="10" y="170" width="200" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="190" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">修正ルール</text>
+              <text x="20" y="206" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 出勤: 10分切上げ / 退勤: 10分切捨て</text>
+              <text x="20" y="220" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 07:50出勤 → 08:00に統一</text>
+              <text x="20" y="234" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 休憩補完・打刻漏れ検出（スタッフ別）</text>
+              <!-- ツール凡例 -->
+              <rect x="230" y="170" width="200" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="240" y="190" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">使用ツール</text>
+              <text x="240" y="206" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; Airシフト（データ元）</text>
+              <text x="240" y="220" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; generate_pdf.py（PDF生成）</text>
+              <text x="240" y="234" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; Discord（承認）/ Chrome（修正入力）</text>
+              <!-- Arrow markers -->
+              <defs>
+                <marker id="arrow-att" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+                <marker id="arrow-ng" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f87171"/></marker>
+              </defs>
+            </svg>
             <div class="detail-grid">
-              <div class="detail-row detail-full"><div class="detail-key">フロー</div><div class="detail-val">Airシフトでデータ確認 → PDF作成（修正前・修正後・理由） → Discord送信 → 承認 → 画面修正・保存</div></div>
               <div class="detail-row"><div class="detail-key">PDF生成</div><div class="detail-val"><code>勤怠修正/generate_pdf.py</code></div></div>
               <div class="detail-row"><div class="detail-key">ルール定義</div><div class="detail-val"><code>memory/合同会社圓子水産/attendance_rules.md</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>payroll-attendance</code>（「勤怠」「シフト」で発動）</div></div>
-              <div class="detail-row"><div class="detail-key">外部連携</div><div class="detail-val">Airシフト / Discord（承認） / Chrome自動操作（修正入力）</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">修正ルール</div><div class="detail-val">出勤10分切上げ・退勤10分切捨て・07:50→08:00・休憩補完（スタッフ別）・打刻漏れ検出</div></div>
             </div>
             <div class="detail-note">毎月の勤怠修正作業を半自動化。ルールは3月データで確立中</div>
           </div>

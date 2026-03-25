@@ -187,6 +187,37 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-todo" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 上段: タスク追加 → GAS API → スプレッドシート -->
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">タスク追加</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ブラウザ / Discord</text>
+              <path d="M150,38 L178,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-todo)"/>
+              <rect x="180" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="250" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">GAS API</text>
+              <text x="250" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">リクエスト処理</text>
+              <path d="M320,38 L348,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-todo)"/>
+              <rect x="350" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="420" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">スプレッドシート</text>
+              <text x="420" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">データ保存</text>
+              <!-- 下段: 分岐 カレンダー同期 / LINE通知 / 完了削除 -->
+              <path d="M390,66 L390,84 L130,84 L130,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-todo)"/>
+              <path d="M420,66 L420,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-todo)"/>
+              <path d="M450,66 L450,84 L580,84 L580,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-todo)"/>
+              <rect x="60" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="130" y="132" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">カレンダー同期</text>
+              <text x="130" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">10分間隔</text>
+              <rect x="350" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="420" y="132" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">LINE通知</text>
+              <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">即時送信</text>
+              <rect x="510" y="110" width="140" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="580" y="132" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">完了時自動削除</text>
+              <text x="580" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">翌日AM3:00以降</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan523-pixel.github.io/marukosuisan-todo/" target="_blank">GitHub Pages</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">React CDN + Babel CDN（ビルド不要・index.html 1ファイル完結）</div></div>
@@ -213,6 +244,33 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-inv" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 上段: zaico同期 → 在庫一覧 -->
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">zaico API同期</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">277品目</text>
+              <path d="M150,38 L178,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-inv)"/>
+              <rect x="180" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="250" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">在庫一覧</text>
+              <text x="250" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">部門・状態フィルタ</text>
+              <!-- 下段: 3方向に分岐 -->
+              <path d="M220,66 L220,84 L130,84 L130,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-inv)"/>
+              <path d="M250,66 L250,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-inv)"/>
+              <path d="M280,66 L280,84 L420,84 L420,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-inv)"/>
+              <rect x="60" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="130" y="132" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">BOM / 製造管理</text>
+              <text x="130" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">2段階BOM・61件</text>
+              <rect x="210" y="110" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="270" y="132" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">棚卸し</text>
+              <text x="270" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">確認周期で自動抽出</text>
+              <rect x="350" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="420" y="132" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">仕込み計算</text>
+              <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">メニュー→原材料→必要量</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="http://localhost:3000" target="_blank">http://localhost:3000</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + Prisma v7 + SQLite + shadcn/ui + Tailwind CSS v4</div></div>
@@ -241,6 +299,40 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 220" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-line" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 左側: 3入口を縦に -->
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Todoボード</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">GAS → /send-task</text>
+              <rect x="10" y="80" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="102" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">在庫アラート</text>
+              <text x="80" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">将来実装予定</text>
+              <rect x="10" y="150" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="172" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">手動送信</text>
+              <text x="80" y="190" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Python / curl</text>
+              <!-- 3入口 → Render -->
+              <path d="M150,38 L190,38 L190,108 L218,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-line)"/>
+              <path d="M150,108 L218,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-line)"/>
+              <path d="M150,178 L190,178 L190,108 L218,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-line)"/>
+              <!-- 中央: Render -->
+              <rect x="220" y="80" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="290" y="102" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Render</text>
+              <text x="290" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Express サーバー</text>
+              <path d="M360,108 L388,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-line)"/>
+              <!-- LINE API -->
+              <rect x="390" y="80" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="460" y="102" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">LINE Messaging API</text>
+              <text x="460" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Push メッセージ</text>
+              <path d="M530,108 L558,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-line)"/>
+              <!-- スタッフグループ -->
+              <rect x="560" y="80" width="110" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="615" y="102" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">スタッフ</text>
+              <text x="615" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">LINEグループ</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan-line-notify.onrender.com" target="_blank">marukosuisan-line-notify.onrender.com</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Express</div></div>
@@ -266,6 +358,39 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 250" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 左側: 4データ源を縦に -->
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">Airレジ</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">sales.db</text>
+              <rect x="10" y="76" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="80" y="98" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">カラーミー</text>
+              <text x="80" y="116" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">dev.db</text>
+              <rect x="10" y="142" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="80" y="164" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">食べチョク</text>
+              <text x="80" y="182" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">dev.db</text>
+              <rect x="10" y="208" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="80" y="230" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">さとふる</text>
+              <text x="80" y="248" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">dev.db</text>
+              <!-- 4データ源 → Next.js -->
+              <path d="M150,38 L200,38 L200,137 L248,137" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+              <path d="M150,104 L200,104 L200,137 L248,137" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+              <path d="M150,170 L200,170 L200,137 L248,137" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+              <path d="M150,236 L200,236 L200,137 L248,137" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+              <!-- 中央: Next.js集約 -->
+              <rect x="250" y="109" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="320" y="131" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Next.js 集約</text>
+              <text x="320" y="149" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">SQLite + Recharts</text>
+              <path d="M390,137 L418,137" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+              <!-- 右: 6画面表示 -->
+              <rect x="420" y="109" width="140" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="490" y="131" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6画面表示</text>
+              <text x="490" y="149" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">サマリー/日別/月別/年間/経費</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="http://localhost:3001" target="_blank">localhost:3001</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + SQLite + Recharts + shadcn/ui</div></div>
@@ -288,6 +413,46 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+                        <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-acct" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-acct-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f87171"/></marker>
+              </defs>
+              <!-- Step 1: 経費データ入力 (青) -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">経費データ入力</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">レシート/CSV/自動取得</text>
+              <!-- Arrow 1→2 -->
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-acct)"/>
+              <!-- Step 2: 自動仕訳エンジン (黄) -->
+              <rect x="160" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="230" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">自動仕訳エンジン</text>
+              <text x="230" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ルール24件マッチ</text>
+              <!-- Arrow 2→マッチ (上段) -->
+              <path d="M300,28 L368,28" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-acct)"/>
+              <text x="334" y="22" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">マッチ</text>
+              <!-- Step 3a: CSV生成 (黄) -->
+              <rect x="370" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="435" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">仕訳CSV生成</text>
+              <text x="435" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">弥生互換フォーマット</text>
+              <!-- Arrow 3a→4 -->
+              <path d="M500,38 L518,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-acct)"/>
+              <!-- Step 4: 円簿会計 (紫) -->
+              <rect x="520" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="585" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">円簿会計</text>
+              <text x="585" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">CSV取込で記帳</text>
+              <!-- Arrow 2→未マッチ (下段) -->
+              <path d="M300,48 L368,100" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-acct)"/>
+              <text x="318" y="72" fill="#f87171" font-size="9" font-weight="bold" font-family="Meiryo">未マッチ</text>
+              <!-- Step 3b: 手動確認 (赤) -->
+              <rect x="370" y="80" width="130" height="56" rx="10" fill="#451a03" stroke="#f87171" stroke-width="1.5"/>
+              <text x="435" y="102" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Meiryo">手動確認</text>
+              <text x="435" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">科目・取引先を指定</text>
+              <!-- 点線: 手動確認→仕訳エンジンに戻る -->
+              <path d="M370,108 L230,108 L230,66" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-acct-red)"/>
+              <text x="290" y="155" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ルール追加して再実行</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">DB</div><div class="detail-val"><code>経理/accounting.db</code>（科目70 / 取引先42 / 仕訳ルール24）</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">SQLite + Python + Playwright</div></div>
@@ -401,6 +566,40 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+                        <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-trans" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- Step 1: URL入力 (青) -->
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">URL入力</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">YouTube/X/TikTok等</text>
+              <!-- Arrow 1→2 -->
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-trans)"/>
+              <!-- Step 2: yt-dlp (黄) -->
+              <rect x="150" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="210" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">yt-dlp</text>
+              <text x="210" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">動画ダウンロード</text>
+              <!-- Arrow 2→3 -->
+              <path d="M270,38 L288,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-trans)"/>
+              <!-- Step 3: ffmpeg (黄) -->
+              <rect x="290" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="350" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">ffmpeg</text>
+              <text x="350" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">音声抽出</text>
+              <!-- Arrow 3→4 -->
+              <path d="M410,38 L428,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-trans)"/>
+              <!-- Step 4: Whisper (黄) -->
+              <rect x="430" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="490" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">Whisper small</text>
+              <text x="490" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">文字起こし</text>
+              <!-- Arrow 4→5 -->
+              <path d="M550,38 L568,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-trans)"/>
+              <!-- Step 5: テキスト出力 (緑) -->
+              <rect x="570" y="10" width="100" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="620" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">テキスト出力</text>
+              <text x="620" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">文字起こし/へ保存</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>scripts/transcribe.py</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル定義</div><div class="detail-val"><code>.claude/skills/video-transcribe/SKILL.md</code></div></div>
@@ -424,6 +623,60 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+                        <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 260" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-gmail" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-gmail-ylw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fbbf24"/></marker>
+              </defs>
+              <!-- Step 1: タスクスケジューラ (青) -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">スケジューラ</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">5分間隔で実行</text>
+              <!-- Arrow 1→2 -->
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <!-- Step 2: Gmail API (紫) -->
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="225" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">Gmail API</text>
+              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">受信メール取得</text>
+              <!-- Arrow 2→3 -->
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <!-- Step 3: ルールマッチ (黄) -->
+              <rect x="310" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="375" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">83ルールマッチ</text>
+              <text x="375" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">送信元/件名/本文</text>
+              <!-- 分岐上: マッチ → ラベル付与 -->
+              <path d="M440,28 L468,28" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <text x="454" y="20" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">マッチ</text>
+              <!-- Step 4a: ラベル付与+アーカイブ (緑) -->
+              <rect x="470" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="535" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">ラベル付与</text>
+              <text x="535" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">自動アーカイブ</text>
+              <!-- Arrow 4a→Discord -->
+              <path d="M535,66 L535,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <!-- Step 5: Discord通知 (紫) -->
+              <rect x="470" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="535" y="108" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">Discord通知</text>
+              <text x="535" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">重要メールのみ</text>
+              <!-- 分岐下: 未マッチ → 保留ラベル -->
+              <path d="M440,48 L440,114 L468,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <text x="450" y="72" fill="#f87171" font-size="9" font-weight="bold" font-family="Meiryo">未マッチ</text>
+              <!-- Step 4b: 仕分け保留ラベル (赤) -->
+              <rect x="310" y="86" width="130" height="56" rx="10" fill="#451a03" stroke="#f87171" stroke-width="1.5"/>
+              <text x="375" y="108" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Meiryo">仕分け保留</text>
+              <text x="375" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">保留ラベル付与</text>
+              <!-- Arrow ルールマッチ→保留 (下) -->
+              <path d="M375,66 L375,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <!-- Arrow 保留→learner -->
+              <path d="M375,142 L375,160" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gmail)"/>
+              <!-- Step 6: learner (黄) -->
+              <rect x="310" y="162" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="375" y="184" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">learner</text>
+              <text x="375" y="202" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">手動仕分け検出</text>
+              <!-- 点線: learner→ルールマッチに戻る(ルール追加) -->
+              <path d="M310,190 L230,190 L230,38 L308,38" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-gmail-ylw)"/>
+              <text x="218" y="130" fill="#94a3b8" font-size="9" font-family="Meiryo">ルール追加</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/gmail-sorter/</code></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Gmail API (OAuth2)</div></div>
@@ -450,6 +703,38 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 160" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-news" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 上段: 3:00 cron → WebSearch → 動画文字起こし -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">3:00 cron</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">収集タスク起動</text>
+              <path d="M140,38 L168,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <rect x="170" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="240" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">WebSearch</text>
+              <text x="240" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">日本語+英語+X動画2本</text>
+              <path d="M310,38 L338,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <rect x="340" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="410" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">動画文字起こし</text>
+              <text x="410" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Whisperで書き起こし</text>
+              <!-- 上段→下段 接続 -->
+              <path d="M410,66 L410,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <!-- 下段: 5:00 cron → 要約作成 → Discord配信 -->
+              <rect x="10" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="108" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">5:00 cron</text>
+              <text x="75" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">配信タスク起動</text>
+              <path d="M140,114 L168,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <rect x="170" y="86" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="240" y="108" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">要約作成</text>
+              <text x="240" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">5本にまとめる</text>
+              <path d="M310,114 L338,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <rect x="340" y="86" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="410" y="108" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">Discord配信</text>
+              <text x="410" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">チャンネルに投稿</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">配信先</div><div class="detail-val">Discord（チャンネルID: 1484477664596332676）</div></div>
               <div class="detail-row"><div class="detail-key">構成</div><div class="detail-val">テキスト3本 + 動画文字起こし2本 = 計5本</div></div>
@@ -606,6 +891,32 @@
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 80" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-airshift" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- Playwright → Cookie認証 → ログイン → CSV DL → データ整形 -->
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Playwright</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ブラウザ起動</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airshift)"/>
+              <rect x="150" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="210" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">Cookie認証</text>
+              <text x="210" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">airshift_state.json</text>
+              <path d="M270,38 L288,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airshift)"/>
+              <rect x="290" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="350" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">ログイン</text>
+              <text x="350" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Airシフト画面</text>
+              <path d="M410,38 L428,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airshift)"/>
+              <rect x="430" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="490" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">CSV DL</text>
+              <text x="490" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">自動ダウンロード</text>
+              <path d="M550,38 L568,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airshift)"/>
+              <rect x="570" y="10" width="100" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="620" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">データ整形</text>
+              <text x="620" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">勤怠CSV出力</text>
+            </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">用途</div><div class="detail-val">シフト・勤怠管理</div></div>
               <div class="detail-row"><div class="detail-key">自動DL</div><div class="detail-val">Playwright経由 (<code>scripts/airshift_download.py</code>)</div></div>
@@ -923,6 +1234,34 @@
         <div class="progress-label">完了・自動実行中</div>
         <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
       </div>
+      <!-- ワークフロー図解 -->
+      <svg viewBox="0 0 680 95" style="width:100%;max-width:680px;margin:8px auto 8px;display:block;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-airregi" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+        </defs>
+        <!-- スケジューラ → Playwright → 内部API → CSV → SQLite -->
+        <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">スケジューラ</text>
+        <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">毎日 22:00</text>
+        <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airregi)"/>
+        <rect x="150" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="210" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Playwright</text>
+        <text x="210" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ヘッドレス起動</text>
+        <path d="M270,38 L288,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airregi)"/>
+        <rect x="290" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+        <text x="350" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">内部API</text>
+        <text x="350" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">売上データ取得</text>
+        <path d="M410,38 L428,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airregi)"/>
+        <rect x="430" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="490" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">CSV取得</text>
+        <text x="490" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">売上CSVファイル</text>
+        <path d="M550,38 L568,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-airregi)"/>
+        <rect x="570" y="10" width="100" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="620" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">SQLite</text>
+        <text x="620" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">sales.db取込</text>
+        <!-- 2店舗対応注釈 -->
+        <text x="350" y="82" text-anchor="middle" fill="#64748b" font-size="9" font-family="Meiryo">※ 2店舗対応（圓子水産 + WOOTBURGER）</text>
+      </svg>
       <ul class="done-items">
         <li>ヘッドレス + タスクスケジューラ</li>
         <li>CSV → SQLite直接取込</li>

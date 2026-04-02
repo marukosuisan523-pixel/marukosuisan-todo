@@ -37,6 +37,7 @@
   .arch-node.node-amber { background: #451a03; border-color: #f59e0b; color: #fbbf24; }
   .arch-node.node-indigo { background: #1e1b4b; border-color: #818cf8; color: #a5b4fc; }
   .arch-node.node-purple { background: #2e1065; border-color: #a78bfa; color: #c4b5fd; }
+  .arch-node.node-red { background: #450a0a; border-color: #f87171; color: #fca5a5; }
   .arch-node.node-slate { background: #1e293b; border-color: #64748b; color: #94a3b8; }
   .arch-arrow-down { text-align: center; color: #475569; font-size: 1.1rem; line-height: 1; }
   .arch-branch-row { display: flex; align-items: center; gap: 6px; width: 100%; }
@@ -54,7 +55,7 @@
   .doc-table td code { background: #1e293b; padding: 1px 5px; border-radius: 4px; font-size: 0.72rem; color: #94a3b8; font-family: 'Consolas', 'Menlo', monospace; white-space: nowrap; }
 
   /* Code block */
-  .doc-code { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 18px 20px; font-family: 'Consolas', 'Menlo', monospace; font-size: 0.78rem; color: #e6edf3; overflow-x: auto; line-height: 1.7; }
+  .doc-code { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 18px 20px; font-family: 'Consolas', 'Menlo', monospace; font-size: 0.78rem; color: #e6edf3; overflow-x: auto; line-height: 1.7; margin-bottom: 16px; }
   .doc-code .key { color: #38bdf8; }
   .doc-code .str { color: #4ade80; }
   .doc-code .bool { color: #fbbf24; }
@@ -73,6 +74,9 @@
   .step-list li:last-child { border-bottom: none; }
   .step-list li::before { content: counter(step-counter); background: #1e3a5f; border: 1px solid #38bdf8; color: #38bdf8; border-radius: 50%; width: 26px; height: 26px; min-width: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; margin-top: 1px; }
 
+  /* Highlight box */
+  .highlight-box { background: #1a1800; border-left: 3px solid #fbbf24; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; font-size: 0.84rem; color: #fbbf24; line-height: 1.6; }
+
   /* Mobile */
   @media (max-width: 640px) {
     .header { padding: 20px 16px; }
@@ -89,7 +93,7 @@
 <div class="header">
   <a class="back-link" href="../system-overview.html">&#8592; ポータルに戻る</a>
   <div class="header-title"><span>Gmail</span>自動仕分けシステム 設計書</div>
-  <div class="header-sub">合同会社圓子水産 &mdash; 最終更新: 2026-03-21</div>
+  <div class="header-sub">合同会社圓子水産 &mdash; 最終更新: 2026-04-02</div>
 </div>
 
 <div class="content">
@@ -97,12 +101,14 @@
   <!-- A. システム概要 -->
   <div class="doc-section">
     <div class="doc-section-title">A. システム概要</div>
-    <p class="doc-text">受信メールをルールに基づいて自動でラベル付け＋アーカイブするシステム。手動仕分けから新ルールを学習する仕組み付き。PCがログインしていれば常時稼働（Claude不要）。</p>
+    <p class="doc-text">受信メールをルールベース＋AI分類のハイブリッドで自動仕分けするシステム。Discordで双方向操作（確認・修正・返信）が可能。ユーザーのフィードバックから新ルールを自動学習する。</p>
     <ul class="doc-list">
-      <li>5分間隔で受信トレイをスキャンし、53ルールと照合してラベルを自動付与</li>
-      <li>confidence <code>high</code> のメールはラベル付与＋アーカイブ、<code>low</code> は受信トレイに残す</li>
-      <li>重要メール・未分類・エラーを Discord Bot で通知</li>
-      <li>learner が手動仕分けを1日1回スキャン → 候補を Discord に通知 → 承認で正式ルール化</li>
+      <li>5分間隔で受信トレイをスキャンし、117ルールと照合してラベルを自動付与</li>
+      <li>マッチ条件: <code>from</code>（送信元）+ <code>subject</code>（件名）+ <code>body</code>（本文snippet ~200文字）</li>
+      <li>confidence <code>high</code> → ラベル付与＋アーカイブ、<code>low</code> → 受信トレイに残す</li>
+      <li>安全ガード: 件名＋本文に重要キーワード（至急・クレーム等）を検知 → 受信トレイに残してDiscord即通知</li>
+      <li>未マッチメール → AI分類（Claude Code）→ Discord #gmail-ai で確認（✅❌✏️💬）</li>
+      <li>自動学習: フィードバックのsnippetを分析 → 同ドメイン複数ラベル時はbody条件を自動抽出 → 2回確認でルール昇格</li>
     </ul>
   </div>
 
@@ -111,50 +117,77 @@
     <div class="doc-section-title">B. アーキテクチャ図</div>
     <div class="arch-cols">
 
-      <!-- 左カラム: sorter -->
+      <!-- 左カラム: ルールベース仕分け -->
       <div class="arch-col">
         <div class="arch-col-title">5分ごと（sorter）</div>
         <div class="arch-node node-blue">Gmail受信トレイ</div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-indigo">sorter.js でルール照合</div>
+        <div class="arch-node node-indigo">sorter.js でルール照合<br><small style="color:#94a3b8;">from + subject + body(snippet)</small></div>
         <div class="arch-arrow-down">&#8595;</div>
         <div class="arch-branch-row">
           <div class="arch-branch-label" style="color:#4ade80;">マッチ →</div>
-          <div class="arch-node node-green" style="flex:1;">ラベル付与</div>
-        </div>
-        <div class="arch-branch-row" style="padding-left:14px;">
-          <div class="arch-branch-label" style="color:#fbbf24;font-size:0.7rem;">high →</div>
-          <div class="arch-node node-amber" style="flex:1;font-size:0.75rem;">アーカイブ</div>
-        </div>
-        <div class="arch-branch-row" style="padding-left:14px;">
-          <div class="arch-branch-label" style="color:#94a3b8;font-size:0.7rem;">low →</div>
-          <div class="arch-node node-slate" style="flex:1;font-size:0.75rem;">受信トレイに残す</div>
+          <div class="arch-node node-green" style="flex:1;">ラベル付与 + アーカイブ</div>
         </div>
         <div class="arch-branch-row">
-          <div class="arch-branch-label" style="color:#64748b;">未マッチ →</div>
-          <div class="arch-node node-slate" style="flex:1;">放置</div>
+          <div class="arch-branch-label" style="color:#f87171;">未マッチ →</div>
+          <div class="arch-node node-red" style="flex:1;">安全ガード<br><small style="color:#94a3b8;">件名+本文キーワード検知</small></div>
         </div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-indigo">notifier.js → Discord Bot通知</div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#f87171;">検知 →</div>
+          <div class="arch-node node-red" style="flex:1;font-size:0.75rem;">受信トレイに残す + Discord即通知</div>
+        </div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#94a3b8;">安全 →</div>
+          <div class="arch-node node-slate" style="flex:1;font-size:0.75rem;">pending.json（snippet付き）</div>
+        </div>
       </div>
 
-      <!-- 右カラム: learner -->
+      <!-- 中央カラム: AI分類 + Discord -->
       <div class="arch-col">
-        <div class="arch-col-title">1日1回（learner）</div>
-        <div class="arch-node node-blue">手動仕分けしたメール</div>
+        <div class="arch-col-title">AI分類 + Discord双方向</div>
+        <div class="arch-node node-slate">pending.json</div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-purple">learner.js でパターン検出</div>
+        <div class="arch-node node-purple">Claude Code /loop<br><small style="color:#94a3b8;">AI分類（snippet付き）</small></div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-purple">候補をJSON保存</div>
+        <div class="arch-node node-indigo">Discord #gmail-ai<br><small style="color:#94a3b8;">Embed + リアクション</small></div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-indigo">Discord通知</div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#4ade80;">✅</div>
+          <div class="arch-node node-green" style="flex:1;font-size:0.75rem;">確認 → corrections.json</div>
+        </div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#f87171;">❌✏️</div>
+          <div class="arch-node node-amber" style="flex:1;font-size:0.75rem;">修正 → ラベル選択 → 記録</div>
+        </div>
+        <div class="arch-branch-row">
+          <div class="arch-branch-label" style="color:#818cf8;">💬</div>
+          <div class="arch-node node-indigo" style="flex:1;font-size:0.75rem;">返信案生成 → 承認 → 送信</div>
+        </div>
+      </div>
+
+      <!-- 右カラム: 学習 -->
+      <div class="arch-col">
+        <div class="arch-col-title">自動学習（2経路）</div>
+        <div class="arch-node node-amber">corrections.json<br><small style="color:#94a3b8;">snippet付きフィードバック</small></div>
         <div class="arch-arrow-down">&#8595;</div>
-        <div class="arch-node node-slate">Claude Codeで承認</div>
+        <div class="arch-node node-purple">snippet分析<br><small style="color:#94a3b8;">同ドメイン複数ラベル検出</small></div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-amber">body条件を自動抽出</div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-green">2回確認でルール自動昇格<br><small style="color:#94a3b8;">from + subject + body条件</small></div>
+        <div style="height:16px;"></div>
+        <div class="arch-node node-blue">learner.js（1日1回）<br><small style="color:#94a3b8;">手動仕分け検出 + snippet分析</small></div>
+        <div class="arch-arrow-down">&#8595;</div>
+        <div class="arch-node node-slate">候補ルール → Discord通知</div>
       </div>
 
     </div>
     <div class="arch-shared">
-      <div class="arch-node node-slate">scheduler.js（常駐プロセス）— タスクスケジューラ常時起動</div>
+      <div class="arch-node node-slate">scheduler.js（常駐プロセス）— タスクスケジューラ <code>GmailSorterAutoStart</code> でログオン時自動起動</div>
+    </div>
+    <div class="arch-shared" style="margin-top:6px;">
+      <div class="arch-node node-purple">Claude Code メインセッション — <code>/loop 5m</code> でAI分類+返信処理（手動起動）</div>
     </div>
   </div>
 
@@ -165,16 +198,27 @@
       <table class="doc-table">
         <thead><tr><th>ファイル</th><th>役割</th></tr></thead>
         <tbody>
-          <tr><td><code>src/scheduler.js</code></td><td>常駐プロセス。sortを5分間隔、learnを24時間間隔で実行</td></tr>
-          <tr><td><code>src/sorter.js</code></td><td>受信トレイスキャン、ルール照合、ラベル付与+アーカイブ</td></tr>
-          <tr><td><code>src/learner.js</code></td><td>手動仕分け検出、新ルール候補生成。<code>--approve</code>で承認</td></tr>
-          <tr><td><code>src/notifier.js</code></td><td>Discord Bot通知（重要メール / 未分類 / エラー）</td></tr>
+          <tr><td><code>src/scheduler.js</code></td><td>常駐プロセス。sort(5分)、learn(24h)、レポート(朝8時/夜21時/月曜週次)、Discord Gateway Bot</td></tr>
+          <tr><td><code>src/sorter.js</code></td><td>受信トレイスキャン、ルール照合（from+subject+body）、ラベル付与、安全ガード、pending.json書き出し</td></tr>
+          <tr><td><code>src/safety.js</code></td><td>キーワードガード（件名+本文）+ 初回ドメインガード。安全キーワード: 至急・クレーム・返金・督促等</td></tr>
+          <tr><td><code>src/gmail-ai-bot.js</code></td><td>Discord Embed通知（AI分類結果・安全ガードアラート）、リアクション追加、通知追跡</td></tr>
+          <tr><td><code>src/gateway.js</code></td><td>Discord Gateway WebSocket常時接続（リアクション検知・コマンド受信）</td></tr>
+          <tr><td><code>src/reaction-handler.js</code></td><td>✅❌✏️💬リアクション処理、corrections.json記録（snippet付き）、ルール自動昇格（body条件抽出）</td></tr>
+          <tr><td><code>src/command-handler.js</code></td><td><code>!restore</code>（メール復元）、<code>!status</code>（ステータス表示）コマンド処理</td></tr>
+          <tr><td><code>src/reply-handler.js</code></td><td>💬リアクション → pending-replies.json書き込み（返信リクエスト受付）</td></tr>
+          <tr><td><code>src/learner.js</code></td><td>手動仕分け検出、snippet分析、body条件付き候補ルール生成。<code>--approve</code>で承認</td></tr>
+          <tr><td><code>src/reporter.js</code></td><td>定期レポート（朝8時/夜21時振り返り/月曜週次）→ #gmail-log</td></tr>
+          <tr><td><code>src/restore.js</code></td><td><code>!restore</code>コマンドの実装（ラベル除去+INBOXに戻す）</td></tr>
+          <tr><td><code>src/notifier.js</code></td><td>旧Discord通知（重要メール用、段階的にオフ予定）</td></tr>
           <tr><td><code>src/auth.js</code></td><td>Gmail API OAuth2認証（ポート8844、HTML redirect方式）</td></tr>
-          <tr><td><code>src/config.js</code></td><td>設定読み込み（<code>--config</code>でアカウント切替可）</td></tr>
-          <tr><td><code>config/marukosuisan.json</code></td><td>アカウント設定（メール / 認証パス / Discord Bot / 間隔）</td></tr>
-          <tr><td><code>rules/marukosuisan.json</code></td><td>ルール定義＋学習候補</td></tr>
-          <tr><td><code>start-server.bat</code></td><td>常駐バッチ（クラッシュ時10秒後自動再起動）</td></tr>
-          <tr><td><code>logs/</code></td><td>日次ログ＋scheduler.log</td></tr>
+          <tr><td><code>src/config.js</code></td><td>設定読み込み（<code>--account</code>でアカウント切替可）</td></tr>
+          <tr><td><code>config/marukosuisan.json</code></td><td>アカウント設定（メール / 認証パス / Discord Bot / チャンネルID / 間隔）</td></tr>
+          <tr><td><code>rules/marukosuisan.json</code></td><td>ルール定義（117件）＋学習候補</td></tr>
+          <tr><td><code>corrections.json</code></td><td>AI分類修正履歴（snippet付き、学習データ兼用）</td></tr>
+          <tr><td><code>tmp/pending.json</code></td><td>未分類メール受け渡し（snippet付き、Claude Code /loopが消費）</td></tr>
+          <tr><td><code>tmp/pending-replies.json</code></td><td>返信リクエスト受け渡し（💬で生成、Claude Codeが処理）</td></tr>
+          <tr><td><code>tmp/ai-notifications.json</code></td><td>送信済みDiscord通知の追跡（リアクション紐付け用）</td></tr>
+          <tr><td><code>logs/</code></td><td>日次ログ（<code>marukosuisan_YYYY-MM-DD.log</code>）</td></tr>
         </tbody>
       </table>
     </div>
@@ -184,14 +228,14 @@
   <div class="doc-section">
     <div class="doc-section-title">D. ルール仕様</div>
     <ul class="doc-list" style="margin-bottom: 18px;">
-      <li>ルールはJSONで定義</li>
-      <li>条件: <code>from</code>（ドメインの部分一致）、<code>subject</code>（キーワードの部分一致）</li>
+      <li>ルールはJSONで定義（現在117ルール）</li>
+      <li>条件: <code>from</code>（送信元の部分一致）、<code>subject</code>（件名キーワードの部分一致）、<code>body</code>（本文snippet ~200文字の部分一致）</li>
       <li>複数条件はAND、各条件内の配列はOR</li>
       <li>マッチ優先度: 条件キー数が多いルール（より具体的）が先に評価</li>
-      <li><code>confidence: "high"</code> → ラベル付与＋アーカイブ、<code>"low"</code> → ラベルのみ</li>
-      <li><code>important: true</code> → Discord通知を送る</li>
+      <li><code>confidence: "high"</code> → ラベル付与＋アーカイブ、<code>"low"</code> → ラベルのみ（受信トレイに残す）</li>
+      <li><code>important: true</code> → Discord #一般に通知</li>
     </ul>
-    <div class="doc-code"><span class="comment">// ルール例</span>
+    <div class="doc-code"><span class="comment">// ルール例1: from + subject</span>
 {
   <span class="key">"name"</span>: <span class="str">"食べチョク注文"</span>,
   <span class="key">"conditions"</span>: {
@@ -203,82 +247,143 @@
   <span class="key">"important"</span>: <span class="bool">false</span>,
   <span class="key">"confidence"</span>: <span class="str">"high"</span>
 }</div>
+    <div class="doc-code"><span class="comment">// ルール例2: from + body（本文で区別）</span>
+{
+  <span class="key">"name"</span>: <span class="str">"IVRy請求関連"</span>,
+  <span class="key">"conditions"</span>: {
+    <span class="key">"from"</span>: [<span class="str">"ivry.jp"</span>],
+    <span class="key">"body"</span>: [<span class="str">"請求"</span>, <span class="str">"料金"</span>, <span class="str">"お支払い"</span>]
+  },
+  <span class="key">"label"</span>: <span class="str">"経理"</span>,
+  <span class="key">"archive"</span>: <span class="bool">true</span>,
+  <span class="key">"important"</span>: <span class="bool">false</span>,
+  <span class="key">"confidence"</span>: <span class="str">"high"</span>
+}
+<span class="comment">// 同じivry.jpからbody条件なしの別ルール → 経理以外は総務/Ivryへ</span></div>
+    <div class="highlight-box">body条件はGmail APIのsnippet（本文冒頭~200文字）と照合。追加APIコールなし。</div>
   </div>
 
-  <!-- E. 学習（learner）の仕組み -->
+  <!-- E. 安全ガード -->
   <div class="doc-section">
-    <div class="doc-section-title">E. 学習（learner）の仕組み</div>
-    <ol class="step-list">
-      <li>ユーザーがGmailで手動でラベル付け＋アーカイブ</li>
-      <li>learnerが1日1回スキャン（直近48時間の手動仕分けを検出）</li>
-      <li>ドメイン＋ラベルのパターンを分析</li>
-      <li>既存ルールにないパターンを候補としてJSONに保存</li>
-      <li>Discordに候補通知</li>
-      <li>Claude Codeで承認作業（候補の内容を確認 → 修正 → 正式ルールに昇格）</li>
-    </ol>
+    <div class="doc-section-title">E. 安全ガード</div>
+    <p class="doc-text">ルール未マッチのメールに対して、件名＋本文snippet＋送信元を安全キーワードでスキャン。検知したメールは受信トレイに残し、Discordで即時通知する。</p>
+    <ul class="doc-list" style="margin-bottom: 18px;">
+      <li><strong>キーワードガード</strong>: 至急、緊急、クレーム、返金、返品、督促、法的、訴訟、解約、事故、苦情、催促、未払い、滞納、期限切れ、違反、警告</li>
+      <li><strong>初回ドメインガード</strong>: 過去30日のログに未出現ドメイン → 強制 <code>confidence: "low"</code></li>
+      <li><strong>信頼済みドメイン除外</strong>: rules/marukosuisan.json の from パターンに含まれるドメインはガード対象外</li>
+    </ul>
+    <div class="highlight-box">安全ガードは件名だけでなく本文snippetもスキャン。件名が普通でも本文に「至急」があれば検知される。</div>
   </div>
 
-  <!-- F. 通知仕様 -->
+  <!-- F. AI分類 + Discord双方向操作 -->
   <div class="doc-section">
-    <div class="doc-section-title">F. 通知仕様</div>
+    <div class="doc-section-title">F. AI分類 + Discord双方向操作</div>
+    <p class="doc-text">ルール未マッチかつ安全ガード通過のメールは、Claude Code（/loop 5分間隔）がAI分類し、Discord #gmail-aiに投稿する。ユーザーはリアクションで操作。</p>
     <div class="doc-table-wrap">
       <table class="doc-table">
-        <thead><tr><th>通知先</th><th>トリガー</th><th>絵文字</th></tr></thead>
+        <thead><tr><th>リアクション</th><th>動作</th><th>後続処理</th></tr></thead>
         <tbody>
-          <tr><td>Discord</td><td>重要メール（important: true）</td><td>🟡</td></tr>
-          <tr><td>Discord</td><td>未分類の新着メール（直近6分以内）</td><td>📋</td></tr>
-          <tr><td>Discord</td><td>エラー発生</td><td>🔴</td></tr>
-          <tr><td>Discord</td><td>learner候補検出</td><td>📋</td></tr>
+          <tr><td>✅</td><td>分類を確認</td><td>corrections.jsonに記録（snippet付き）→ ルール昇格判定</td></tr>
+          <tr><td>❌</td><td>分類を否定</td><td>corrections.jsonに記録 → ✏️で正しいラベルを選択</td></tr>
+          <tr><td>✏️</td><td>ラベル修正</td><td>ラベル一覧を表示 → 番号で選択 → corrections.jsonに記録 → ルール昇格判定</td></tr>
+          <tr><td>💬</td><td>返信リクエスト</td><td>pending-replies.json → Claude Codeが返信案生成 → Discordに投稿 → 承認で送信</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="doc-table-wrap" style="margin-top:18px;">
+      <table class="doc-table">
+        <thead><tr><th>Discordチャンネル</th><th>ID</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>#一般</td><td><code>1484467976089632882</code></td><td>重要メール通知・エラー</td></tr>
+          <tr><td>#gmail-ai</td><td><code>1489134174009954404</code></td><td>AI分類確認・修正・返信（インタラクティブ）</td></tr>
+          <tr><td>#gmail-log</td><td><code>1489134179231862784</code></td><td>ログ・定期レポート</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- G. 安全設計 -->
+  <!-- G. 学習の仕組み -->
   <div class="doc-section">
-    <div class="doc-section-title">G. 安全設計</div>
+    <div class="doc-section-title">G. 学習の仕組み</div>
+    <p class="doc-text">2つの経路で学習し、body条件を含むルールを自動生成する。</p>
+
+    <p class="doc-text" style="color:#38bdf8;font-weight:600;margin-top:16px;">経路1: Discordフィードバック → リアルタイム学習</p>
+    <ol class="step-list">
+      <li>ユーザーがDiscordで✅✏️でフィードバック</li>
+      <li>corrections.jsonにsnippet付きで記録</li>
+      <li>同ドメイン+同ラベルが2回確認 → ルール自動昇格</li>
+      <li>同ドメインで複数ラベルがある場合 → snippetからbody条件を自動抽出して区別</li>
+    </ol>
+
+    <p class="doc-text" style="color:#38bdf8;font-weight:600;margin-top:24px;">経路2: learner.js → 1日1回バッチ学習</p>
+    <ol class="step-list">
+      <li>ユーザーがGmailで手動でラベル付け＋アーカイブ</li>
+      <li>learnerが直近48時間の手動仕分けをスキャン（snippet付き）</li>
+      <li>ドメイン＋ラベルのパターン＋snippetキーワードを分析</li>
+      <li>同ドメインが複数ラベルに分かれている → body条件付き候補ルールを生成</li>
+      <li>Discordに候補通知 → Claude Codeで承認・修正</li>
+    </ol>
+
+    <div class="highlight-box">body条件の自動抽出: 同じドメインが複数ラベルに振り分けられた時、各ラベルのsnippetを比較して「このラベルにしかない特徴的なキーワード」を抽出する。</div>
+  </div>
+
+  <!-- H. 安全設計 -->
+  <div class="doc-section">
+    <div class="doc-section-title">H. 安全設計</div>
     <ul class="doc-list">
       <li><code>gmail-sorter/processed</code> ラベルで二重処理防止</li>
       <li>confidence low のメールは受信トレイに残す（見落とし防止）</li>
+      <li>安全キーワード検知メールはアーカイブされない（至急・返金等）</li>
+      <li>初回ドメインは強制 low confidence（初見メールを見逃さない）</li>
       <li>learner候補は自動適用されない（明示的承認が必要）</li>
       <li><code>--dry-run</code> で実行前に何が起きるか確認可能（複数マッチ警告付き）</li>
       <li>uncaughtException / unhandledRejection をキャッチしてDiscord通知</li>
       <li>ルールファイルの書き込みはアトミック（tmp → rename）</li>
+      <li>ai-notifications.jsonは200件上限で自動クリーンアップ</li>
     </ul>
   </div>
 
-  <!-- H. 運用・メンテナンス -->
+  <!-- I. 運用・メンテナンス -->
   <div class="doc-section">
-    <div class="doc-section-title">H. 運用・メンテナンス</div>
+    <div class="doc-section-title">I. 運用・メンテナンス</div>
     <div class="doc-table-wrap">
       <table class="doc-table">
         <thead><tr><th>項目</th><th>内容</th></tr></thead>
         <tbody>
-          <tr><td>普段の作業</td><td><strong style="color:#4ade80;">なし</strong>（自動で動く）</td></tr>
-          <tr><td>精度向上</td><td>月1〜2回Gmailで手動仕分けすると精度が上がる</td></tr>
+          <tr><td>普段の作業</td><td><strong style="color:#4ade80;">ほぼなし</strong>（Discord通知に✅❌✏️で反応するだけ）</td></tr>
+          <tr><td>精度向上</td><td>Discordでフィードバックを続けるとルールが自動追加される</td></tr>
           <tr><td>ルール候補確認</td><td>Claude Codeに「ルール候補を見せて」で確認・承認</td></tr>
-          <tr><td>タスクスケジューラ名</td><td><code>Gmail Auto Sort</code></td></tr>
+          <tr><td>自動起動</td><td>タスクスケジューラ <code>GmailSorterAutoStart</code>（ログオン時自動）</td></tr>
+          <tr><td>AI分類起動</td><td>Claude Code メインセッションで <code>/loop 5m</code>（手動）</td></tr>
           <tr><td>ログ確認</td><td><code>logs/marukosuisan_YYYY-MM-DD.log</code></td></tr>
+          <tr><td>定期レポート</td><td>朝8時（#gmail-log）/ 夜21時（#gmail-ai）/ 月曜週次</td></tr>
           <tr><td>認証切れ時</td><td><code>npm run auth</code> で再認証</td></tr>
+          <tr><td>Discord Bot</td><td>Gateway Bot（scheduler.js内）+ REST API（gmail-ai-bot.js）</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- I. 現在のラベル一覧 -->
+  <!-- J. 現在のラベル一覧 -->
   <div class="doc-section">
-    <div class="doc-section-title">I. 現在のラベル一覧</div>
+    <div class="doc-section-title">J. 現在のラベル一覧</div>
     <div class="label-chips">
       <span class="label-chip">広告</span>
+      <span class="label-chip">広告/Meta</span>
       <span class="label-chip">経理</span>
       <span class="label-chip">総務</span>
+      <span class="label-chip">総務/Ivry</span>
       <span class="label-chip">サービス通知</span>
       <span class="label-chip">認証ログイン</span>
+      <span class="label-chip">スパム</span>
       <span class="label-chip">通販</span>
       <span class="label-chip">通販/食べチョク</span>
       <span class="label-chip">通販/ポケマル</span>
+      <span class="label-chip">通販/産直アウル</span>
+      <span class="label-chip">通販/さとふる</span>
       <span class="label-chip">通販/佐川急便</span>
-      <span class="label-chip">総務/Ivry</span>
+      <span class="label-chip">通販/ダンボールワン</span>
+      <span class="label-chip">通販/卸</span>
     </div>
   </div>
 

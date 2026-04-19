@@ -159,16 +159,35 @@
   }
 
   /* ===== AUTOMATION PAGE ===== */
-  .auto-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 32px; }
-  .auto-stat { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 18px; }
+  .auto-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .auto-updated-badge { font-size: 0.75rem; color: #94a3b8; background: #1e293b; padding: 6px 12px; border-radius: 8px; border: 1px solid #334155; }
+  .auto-updated-badge b { color: #38bdf8; font-weight: 600; }
+
+  .auto-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .auto-stat { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px 16px; }
   .auto-stat .num { font-size: 1.6rem; font-weight: 800; color: #38bdf8; line-height: 1.1; }
-  .auto-stat .lbl { font-size: 0.72rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  .auto-stat .lbl { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
   .auto-stat.warn .num { color: #fbbf24; }
   .auto-stat.ok .num { color: #4ade80; }
+  .auto-stat.alert .num { color: #fb7185; }
 
-  .auto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
-  .auto-card { background: #1e293b; border-radius: 10px; padding: 14px 16px; border: 1px solid #334155; border-left-width: 4px; transition: all 0.15s; }
+  /* Controls: search + category pills */
+  .auto-controls { margin-bottom: 20px; }
+  .auto-search { position: relative; margin-bottom: 12px; }
+  .auto-search input { width: 100%; padding: 10px 14px 10px 40px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #e2e8f0; font-size: 0.85rem; outline: none; min-height: 44px; }
+  .auto-search input:focus { border-color: #38bdf8; }
+  .auto-search::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; font-size: 0.9rem; }
+  .auto-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .auto-pill { padding: 6px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 999px; font-size: 0.72rem; color: #94a3b8; cursor: pointer; transition: all 0.15s; user-select: none; min-height: 32px; display: flex; align-items: center; }
+  .auto-pill:hover { border-color: #475569; color: #e2e8f0; }
+  .auto-pill.active { background: #1e3a5f; border-color: #38bdf8; color: #38bdf8; }
+  .auto-pill .cnt { margin-left: 6px; opacity: 0.6; font-size: 0.68rem; }
+
+  .auto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .auto-card { background: #1e293b; border-radius: 10px; padding: 14px 16px; border: 1px solid #334155; border-left-width: 4px; transition: all 0.15s; position: relative; }
   .auto-card:hover { background: #273548; border-color: #475569; }
+  .auto-card.overdue { background: #2d1818; border-color: #7f1d1d; }
+  .auto-card.overdue:hover { background: #3a1f1f; }
   .auto-card.cat-経理 { border-left-color: #6ee7b7; }
   .auto-card.cat-タスク管理 { border-left-color: #fbbf24; }
   .auto-card.cat-監視 { border-left-color: #fb7185; }
@@ -178,18 +197,32 @@
   .auto-card.cat-記憶 { border-left-color: #818cf8; }
   .auto-card.cat-品質管理 { border-left-color: #fb923c; }
   .auto-card.cat-初期化 { border-left-color: #38bdf8; }
-  .auto-card.disabled { opacity: 0.4; }
+  .auto-card.hidden { display: none; }
+  .auto-card.is-disabled { opacity: 0.5; }
   .auto-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .auto-card-icon { font-size: 1.4rem; line-height: 1; }
-  .auto-card-name { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; flex: 1; word-break: break-all; }
-  .auto-card-cat { font-size: 0.65rem; color: #64748b; padding: 2px 8px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; white-space: nowrap; }
-  .auto-card-purpose { font-size: 0.8rem; color: #cbd5e1; line-height: 1.45; margin-bottom: 10px; }
-  .auto-card-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.7rem; color: #64748b; }
-  .auto-card-meta b { color: #94a3b8; font-weight: 600; }
-  .auto-card-next.soon { color: #fbbf24; }
+  .auto-card-icon { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+  .auto-card-title { flex: 1; min-width: 0; }
+  .auto-card-name { font-size: 0.88rem; font-weight: 700; color: #e2e8f0; word-break: break-all; line-height: 1.3; }
+  .auto-card-cat { font-size: 0.62rem; color: #94a3b8; margin-top: 2px; }
+  .auto-card-status { padding: 3px 8px; border-radius: 999px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .st-ready { background: #14532d; color: #4ade80; }
+  .st-disabled { background: #1e293b; color: #64748b; border: 1px solid #334155; }
+  .st-running { background: #1e3a5f; color: #38bdf8; }
+  .auto-card-purpose { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px; }
+  .auto-card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 0.7rem; color: #64748b; }
+  .auto-card-meta > div { overflow: hidden; text-overflow: ellipsis; }
+  .auto-card-meta b { color: #94a3b8; font-weight: 600; margin-right: 4px; }
+  .auto-card-next.soon { color: #fbbf24; font-weight: 600; }
   .auto-card-next.today { color: #4ade80; }
   .auto-card-next.idle { color: #475569; }
-  .auto-updated { font-size: 0.7rem; color: #475569; text-align: right; margin-top: 20px; }
+  .auto-card-next.overdue { color: #fb7185; font-weight: 700; }
+  .auto-empty { color: #475569; padding: 24px; text-align: center; font-size: 0.85rem; grid-column: 1/-1; }
+
+  @media (max-width: 640px) {
+    .auto-grid { grid-template-columns: 1fr; }
+    .auto-summary { grid-template-columns: repeat(2, 1fr); }
+    .auto-card-meta { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -1825,24 +1858,34 @@ graph LR
 
 <!-- ===== AUTOMATION PAGE ===== -->
 <div class="page" id="automation">
+  <div class="auto-header">
+    <div class="auto-updated-badge">最終更新: <b id="auto-updated">—</b></div>
+  </div>
+
   <div class="auto-summary" id="auto-summary">
-    <div class="auto-stat"><div class="num" id="stat-tasks">—</div><div class="lbl">定期タスク</div></div>
+    <div class="auto-stat"><div class="num" id="stat-tasks">—</div><div class="lbl">稼働タスク</div></div>
     <div class="auto-stat ok"><div class="num" id="stat-hooks">—</div><div class="lbl">フック</div></div>
-    <div class="auto-stat warn"><div class="num" id="stat-soon">—</div><div class="lbl">1時間以内に実行</div></div>
-    <div class="auto-stat"><div class="num" id="stat-today">—</div><div class="lbl">今日中に実行</div></div>
+    <div class="auto-stat warn"><div class="num" id="stat-soon">—</div><div class="lbl">1h以内</div></div>
+    <div class="auto-stat"><div class="num" id="stat-today">—</div><div class="lbl">今日中</div></div>
+    <div class="auto-stat alert"><div class="num" id="stat-overdue">—</div><div class="lbl">期限超過</div></div>
+  </div>
+
+  <div class="auto-controls">
+    <div class="auto-search">
+      <input type="text" id="auto-search-input" placeholder="タスク名・目的で検索..." autocomplete="off" />
+    </div>
+    <div class="auto-pills" id="auto-pills"></div>
   </div>
 
   <div class="portal-section">
     <div class="portal-section-title">定期タスク（Windowsタスクスケジューラ）</div>
-    <div class="auto-grid" id="auto-tasks"><div style="color:#475569;padding:20px">読み込み中...</div></div>
+    <div class="auto-grid" id="auto-tasks"><div class="auto-empty">読み込み中...</div></div>
   </div>
 
   <div class="portal-section">
     <div class="portal-section-title">Claude Codeフック（自動発火）</div>
-    <div class="auto-grid" id="auto-hooks"><div style="color:#475569;padding:20px">読み込み中...</div></div>
+    <div class="auto-grid" id="auto-hooks"><div class="auto-empty">読み込み中...</div></div>
   </div>
-
-  <div class="auto-updated" id="auto-updated"></div>
 </div>
 
 </div>
@@ -1942,9 +1985,13 @@ graph LR
   });
 
   // ===== AUTOMATION PAGE =====
+  const HOOK_ICONS = {
+    '初期化': '🎬', '記憶': '🧠', '品質管理': '🛡️', 'タスク管理': '📋',
+    '監視': '🩺', 'バックアップ': '💾', '経理': '💰', '情報収集': '📰',
+    'インフラ': '🚀', '情報整理': '📨',
+  };
   function fmtNext(nextStr) {
-    if (!nextStr || nextStr === 'N/A') return { text: '—', cls: 'idle' };
-    // format: "2026/04/20 5:00:00" or similar
+    if (!nextStr || nextStr === 'N/A' || nextStr === '無効') return { text: '起動時のみ', cls: 'idle' };
     const m = nextStr.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
     if (!m) return { text: nextStr, cls: '' };
     const next = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
@@ -1952,7 +1999,8 @@ graph LR
     const diffMin = Math.round((next - now) / 60000);
     const sameDay = next.toDateString() === now.toDateString();
     let cls = '', text = '';
-    if (diffMin < 0) { text = '過ぎ ' + Math.abs(diffMin) + '分前'; cls = 'idle'; }
+    if (diffMin < -60) { text = '未実行 (' + Math.round(Math.abs(diffMin)/60) + 'h前)'; cls = 'overdue'; }
+    else if (diffMin < 0) { text = '未実行 (' + Math.abs(diffMin) + '分前)'; cls = 'overdue'; }
     else if (diffMin < 60) { text = 'あと ' + diffMin + '分'; cls = 'soon'; }
     else if (sameDay) { text = '今日 ' + m[4].padStart(2,'0') + ':' + m[5]; cls = 'today'; }
     else {
@@ -1962,36 +2010,90 @@ graph LR
     return { text, cls };
   }
 
+  function fmtLast(lastStr) {
+    if (!lastStr || lastStr === 'N/A' || lastStr === 'なし') return null;
+    const m = lastStr.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
+    if (!m) return lastStr;
+    const last = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+    const now = new Date();
+    const diffMin = Math.round((now - last) / 60000);
+    if (diffMin < 60) return diffMin + '分前';
+    if (diffMin < 1440) return Math.round(diffMin/60) + '時間前';
+    const days = Math.round(diffMin / 1440);
+    return days + '日前';
+  }
+
   function renderTaskCard(t) {
     const nxt = fmtNext(t.next_run);
-    const disabled = t.disabled ? ' disabled' : '';
-    return `<div class="auto-card cat-${t.category}${disabled}">
+    const last = fmtLast(t.last_run);
+    const statusCls = t.disabled ? 'st-disabled' : (t.status === 'Running' ? 'st-running' : 'st-ready');
+    const statusLbl = t.disabled ? 'OFF' : (t.status === 'Running' ? '実行中' : '稼働中');
+    const overdueCls = nxt.cls === 'overdue' ? ' overdue' : '';
+    const disabledCls = t.disabled ? ' is-disabled' : '';
+    const searchBlob = (t.name + ' ' + t.purpose + ' ' + t.category).toLowerCase();
+    return `<div class="auto-card cat-${t.category}${overdueCls}${disabledCls}" data-cat="${t.category}" data-search="${searchBlob}" data-disabled="${t.disabled ? '1' : '0'}">
       <div class="auto-card-head">
         <div class="auto-card-icon">${t.icon}</div>
-        <div class="auto-card-name">${t.name}</div>
-        <div class="auto-card-cat">${t.category}</div>
+        <div class="auto-card-title">
+          <div class="auto-card-name">${t.name}</div>
+          <div class="auto-card-cat">${t.category}</div>
+        </div>
+        <span class="auto-card-status ${statusCls}">${statusLbl}</span>
       </div>
       <div class="auto-card-purpose">${t.purpose}</div>
       <div class="auto-card-meta">
-        <span class="auto-card-next ${nxt.cls}"><b>次回</b> ${nxt.text}</span>
-        ${t.schedule ? `<span><b>頻度</b> ${t.schedule}</span>` : ''}
-        ${t.business && t.business !== 'common' ? `<span><b>事業</b> ${t.business}</span>` : ''}
+        <div class="auto-card-next ${nxt.cls}"><b>次回</b>${nxt.text}</div>
+        ${last ? `<div><b>前回</b>${last}</div>` : '<div></div>'}
+        ${t.schedule ? `<div><b>頻度</b>${t.schedule}</div>` : '<div></div>'}
+        ${t.business && t.business !== 'common' ? `<div><b>事業</b>${t.business}</div>` : '<div></div>'}
       </div>
     </div>`;
   }
 
   function renderHookCard(h) {
-    return `<div class="auto-card cat-${h.category}">
+    const icon = HOOK_ICONS[h.category] || '🪝';
+    const searchBlob = (h.name + ' ' + h.purpose + ' ' + h.category + ' ' + h.trigger).toLowerCase();
+    return `<div class="auto-card cat-${h.category}" data-cat="${h.category}" data-search="${searchBlob}">
       <div class="auto-card-head">
-        <div class="auto-card-icon">🪝</div>
-        <div class="auto-card-name">${h.name}</div>
-        <div class="auto-card-cat">${h.category}</div>
+        <div class="auto-card-icon">${icon}</div>
+        <div class="auto-card-title">
+          <div class="auto-card-name">${h.name}</div>
+          <div class="auto-card-cat">${h.category}</div>
+        </div>
       </div>
       <div class="auto-card-purpose">${h.purpose}</div>
       <div class="auto-card-meta">
-        <span><b>発火</b> ${h.trigger}</span>
+        <div style="grid-column:1/-1"><b>発火</b>${h.trigger}</div>
       </div>
     </div>`;
+  }
+
+  function applyAutoFilter() {
+    const q = (document.getElementById('auto-search-input').value || '').trim().toLowerCase();
+    const activePill = document.querySelector('.auto-pill.active');
+    const cat = activePill ? activePill.dataset.cat : '';
+    document.querySelectorAll('#automation .auto-card').forEach(card => {
+      const blob = card.dataset.search || '';
+      const cCat = card.dataset.cat || '';
+      const matchQ = !q || blob.includes(q);
+      const matchCat = !cat || cat === 'all' || cCat === cat;
+      card.classList.toggle('hidden', !(matchQ && matchCat));
+    });
+    // Empty state
+    ['auto-tasks', 'auto-hooks'].forEach(id => {
+      const grid = document.getElementById(id);
+      if (!grid) return;
+      const anyVisible = Array.from(grid.children).some(c => !c.classList.contains('hidden') && !c.classList.contains('auto-empty'));
+      let empty = grid.querySelector('.auto-empty-filter');
+      if (!anyVisible && !empty) {
+        const div = document.createElement('div');
+        div.className = 'auto-empty auto-empty-filter';
+        div.textContent = '該当なし';
+        grid.appendChild(div);
+      } else if (anyVisible && empty) {
+        empty.remove();
+      }
+    });
   }
 
   fetch('automation_index.json?_=' + Date.now())
@@ -1999,33 +2101,62 @@ graph LR
     .then(data => {
       const tasks = data.scheduled_tasks || [];
       const hooks = data.claude_hooks || [];
-      document.getElementById('stat-tasks').textContent = data.stats.active_tasks || tasks.length;
-      document.getElementById('stat-hooks').textContent = hooks.length;
-      // Count soon/today
-      let soon = 0, today = 0;
+      const activeTasks = tasks.filter(t => !t.disabled);
+
+      let soon = 0, today = 0, overdue = 0;
       tasks.forEach(t => {
+        if (t.disabled) return;
         const nxt = fmtNext(t.next_run);
         if (nxt.cls === 'soon') soon++;
         if (nxt.cls === 'soon' || nxt.cls === 'today') today++;
+        if (nxt.cls === 'overdue') overdue++;
       });
+      document.getElementById('stat-tasks').textContent = activeTasks.length;
+      document.getElementById('stat-hooks').textContent = hooks.length;
       document.getElementById('stat-soon').textContent = soon;
       document.getElementById('stat-today').textContent = today;
-      // Sort tasks by next_run soonest first
-      tasks.sort((a,b) => {
-        const ax = a.next_run || 'z';
-        const bx = b.next_run || 'z';
-        if (ax === 'N/A' && bx !== 'N/A') return 1;
-        if (bx === 'N/A' && ax !== 'N/A') return -1;
-        return ax.localeCompare(bx);
+      document.getElementById('stat-overdue').textContent = overdue;
+
+      // Sort: overdue→soon→today→future→disabled→N/A
+      const rank = (t) => {
+        if (t.disabled) return 5;
+        const c = fmtNext(t.next_run).cls;
+        return c === 'overdue' ? 0 : c === 'soon' ? 1 : c === 'today' ? 2 : c === 'idle' ? 4 : 3;
+      };
+      tasks.sort((a, b) => {
+        const rd = rank(a) - rank(b);
+        if (rd !== 0) return rd;
+        return (a.next_run || 'z').localeCompare(b.next_run || 'z');
       });
+
       document.getElementById('auto-tasks').innerHTML = tasks.map(renderTaskCard).join('');
       document.getElementById('auto-hooks').innerHTML = hooks.map(renderHookCard).join('');
       document.getElementById('auto-updated').textContent =
-        '最終更新: ' + (data.generated_at || '').replace('T',' ').slice(0,19);
+        (data.generated_at || '').replace('T',' ').slice(0,16);
+
+      // Category pills
+      const byCat = {};
+      tasks.forEach(t => { byCat[t.category] = (byCat[t.category] || 0) + 1; });
+      hooks.forEach(h => { byCat[h.category] = (byCat[h.category] || 0) + 1; });
+      const pillsEl = document.getElementById('auto-pills');
+      const allCount = tasks.length + hooks.length;
+      pillsEl.innerHTML = `<div class="auto-pill active" data-cat="all">すべて<span class="cnt">${allCount}</span></div>` +
+        Object.entries(byCat).sort((a,b) => b[1]-a[1]).map(([cat, n]) =>
+          `<div class="auto-pill" data-cat="${cat}">${cat}<span class="cnt">${n}</span></div>`
+        ).join('');
+
+      pillsEl.querySelectorAll('.auto-pill').forEach(p => {
+        p.addEventListener('click', () => {
+          pillsEl.querySelectorAll('.auto-pill').forEach(x => x.classList.remove('active'));
+          p.classList.add('active');
+          applyAutoFilter();
+        });
+      });
+      document.getElementById('auto-search-input').addEventListener('input', applyAutoFilter);
     })
     .catch(err => {
       document.getElementById('auto-tasks').innerHTML =
-        '<div style="color:#fb7185;padding:20px">自動化インデックスの読み込みに失敗しました: ' + err.message + '</div>';
+        '<div class="auto-empty" style="color:#fb7185">読み込み失敗: ' + err.message + '</div>';
     });
 </script>
 

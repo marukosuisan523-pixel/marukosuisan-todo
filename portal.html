@@ -1919,14 +1919,29 @@ graph LR
   updateClock();
   setInterval(updateClock, 30000);
 
-  // Tabs
+  // Tabs (with URL hash persistence)
+  function activateTab(pageId) {
+    const tab = document.querySelector('.tab[data-page="' + pageId + '"]');
+    const page = document.getElementById(pageId);
+    if (!tab || !page) return false;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    page.classList.add('active');
+    return true;
+  }
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.page).classList.add('active');
+      activateTab(tab.dataset.page);
+      history.replaceState(null, '', '#' + tab.dataset.page);
     });
+  });
+  // Restore tab from URL hash on load
+  const initialHash = (location.hash || '').replace('#', '');
+  if (initialHash) activateTab(initialHash);
+  window.addEventListener('hashchange', () => {
+    const h = (location.hash || '').replace('#', '');
+    if (h) activateTab(h);
   });
 
   // Expand/Collapse detail panels

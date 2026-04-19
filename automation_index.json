@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-19T12:26:29.670768",
+  "generated_at": "2026-04-19T12:42:08.068694",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL",
@@ -13,6 +13,20 @@
       "last_run": "2026/04/18 22:00:01",
       "status": "Ready",
       "action": "C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\邨檎炊\\sales-data\\airregi_scheduled.bat ",
+      "schedule": "Daily "
+    },
+    {
+      "name": "AutomationPortalRefresh",
+      "purpose": "ポータルの「自動化」タブを毎朝5:30に最新化（schtasks差分→git push）",
+      "category": "インフラ",
+      "business": "common",
+      "icon": "🔄",
+      "color": "cyan",
+      "disabled": false,
+      "next_run": "2026/04/20 5:30:00",
+      "last_run": "1999/11/30 0:00:00",
+      "status": "Ready",
+      "action": "C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\refresh_automation_portal.bat ",
       "schedule": "Daily "
     },
     {
@@ -107,8 +121,8 @@
       "icon": "📮",
       "color": "purple",
       "disabled": false,
-      "next_run": "2026/04/19 12:35:40",
-      "last_run": "2026/04/19 12:25:41",
+      "next_run": "2026/04/19 12:45:40",
+      "last_run": "2026/04/19 12:35:41",
       "status": "Ready",
       "action": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\gmail-sorter\\watchdog.ps1\"\"",
       "schedule": "One Time Only, Minute "
@@ -163,8 +177,8 @@
       "icon": "📆",
       "color": "blue",
       "disabled": false,
-      "next_run": "2026/04/19 12:30:00",
-      "last_run": "2026/04/19 12:15:01",
+      "next_run": "2026/04/19 12:45:00",
+      "last_run": "2026/04/19 12:30:01",
       "status": "Ready",
       "action": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\todo\\runners\\run-gcal-sync.ps1\"\"",
       "schedule": "One Time Only, Minute "
@@ -177,8 +191,8 @@
       "icon": "❤️‍🩹",
       "color": "rose",
       "disabled": false,
-      "next_run": "2026/04/19 12:30:00",
-      "last_run": "2026/04/19 12:00:01",
+      "next_run": "2026/04/19 13:00:00",
+      "last_run": "2026/04/19 12:30:01",
       "status": "Ready",
       "action": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\todo\\runners\\run-health-check.ps1\"\"",
       "schedule": "One Time Only, Minute "
@@ -247,8 +261,8 @@
       "icon": "🔔",
       "color": "amber",
       "disabled": false,
-      "next_run": "2026/04/19 12:30:00",
-      "last_run": "2026/04/19 12:00:01",
+      "next_run": "2026/04/19 13:00:00",
+      "last_run": "2026/04/19 12:30:01",
       "status": "Ready",
       "action": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\todo\\runners\\run-notifier.ps1\" -Kind reminder\"",
       "schedule": "Daily "
@@ -334,21 +348,21 @@
     }
   ],
   "stats": {
-    "total_tasks": 19,
-    "active_tasks": 18,
+    "total_tasks": 20,
+    "active_tasks": 19,
     "total_hooks": 9,
     "by_category": {
       "経理": 2,
+      "インフラ": 3,
       "監視": 2,
       "情報収集": 2,
-      "インフラ": 2,
       "情報整理": 1,
       "タスク管理": 9,
       "バックアップ": 1
     },
     "by_business": {
       "maruko-suisan": 3,
-      "common": 16
+      "common": 17
     }
   }
 }

@@ -157,6 +157,39 @@
     .expand-btn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
     .dep-diagram { padding: 16px 8px; }
   }
+
+  /* ===== AUTOMATION PAGE ===== */
+  .auto-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .auto-stat { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 18px; }
+  .auto-stat .num { font-size: 1.6rem; font-weight: 800; color: #38bdf8; line-height: 1.1; }
+  .auto-stat .lbl { font-size: 0.72rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  .auto-stat.warn .num { color: #fbbf24; }
+  .auto-stat.ok .num { color: #4ade80; }
+
+  .auto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  .auto-card { background: #1e293b; border-radius: 10px; padding: 14px 16px; border: 1px solid #334155; border-left-width: 4px; transition: all 0.15s; }
+  .auto-card:hover { background: #273548; border-color: #475569; }
+  .auto-card.cat-経理 { border-left-color: #6ee7b7; }
+  .auto-card.cat-タスク管理 { border-left-color: #fbbf24; }
+  .auto-card.cat-監視 { border-left-color: #fb7185; }
+  .auto-card.cat-情報収集, .auto-card.cat-情報整理 { border-left-color: #a78bfa; }
+  .auto-card.cat-インフラ { border-left-color: #22d3ee; }
+  .auto-card.cat-バックアップ { border-left-color: #94a3b8; }
+  .auto-card.cat-記憶 { border-left-color: #818cf8; }
+  .auto-card.cat-品質管理 { border-left-color: #fb923c; }
+  .auto-card.cat-初期化 { border-left-color: #38bdf8; }
+  .auto-card.disabled { opacity: 0.4; }
+  .auto-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .auto-card-icon { font-size: 1.4rem; line-height: 1; }
+  .auto-card-name { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; flex: 1; word-break: break-all; }
+  .auto-card-cat { font-size: 0.65rem; color: #64748b; padding: 2px 8px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; white-space: nowrap; }
+  .auto-card-purpose { font-size: 0.8rem; color: #cbd5e1; line-height: 1.45; margin-bottom: 10px; }
+  .auto-card-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.7rem; color: #64748b; }
+  .auto-card-meta b { color: #94a3b8; font-weight: 600; }
+  .auto-card-next.soon { color: #fbbf24; }
+  .auto-card-next.today { color: #4ade80; }
+  .auto-card-next.idle { color: #475569; }
+  .auto-updated { font-size: 0.7rem; color: #475569; text-align: right; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -170,6 +203,7 @@
   <div class="tabs">
     <button class="tab active" data-page="portal">ポータル</button>
     <button class="tab" data-page="org">組織図</button>
+    <button class="tab" data-page="automation">自動化</button>
     <button class="tab" data-page="map">システムマップ</button>
   </div>
 </div>
@@ -232,6 +266,8 @@
               <text x="580" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">翌日AM3:00以降</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">スタッフへの業務指示・やることリストを一覧管理。Googleカレンダーと自動同期し、完了時にLINEで通知が届く</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「〇〇やっといて」とDiscordやカレンダーに入れれば自動で追加。タスク確認・完了もDiscordから操作できる</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan523-pixel.github.io/marukosuisan-todo/" target="_blank">GitHub Pages</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">React CDN + Babel CDN（ビルド不要・index.html 1ファイル完結）</div></div>
               <div class="detail-row"><div class="detail-key">データ保存</div><div class="detail-val">GAS → Googleスプレッドシート + localStorage</div></div>
@@ -285,6 +321,8 @@
               <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">メニュー→原材料→必要量</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">全商品277品目の在庫数・賞味期限を管理。仕込みに必要な材料を自動計算し、棚卸しもアプリ上で完結する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">仕込み前の材料確認、棚卸し、メニューの原価計算、在庫が少ない商品の確認に使う</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://zaiko.marukosuisan.app" target="_blank">https://zaiko.marukosuisan.app</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + Prisma v7 + SQLite + shadcn/ui + Tailwind CSS v4</div></div>
               <div class="detail-row detail-full"><div class="detail-key">ページ</div><div class="detail-val">ダッシュボード(<code>/</code>) / 在庫一覧(<code>/inventory</code>) / 製造管理(<code>/production</code>) / 棚卸し(<code>/stocktake</code>) / 仕込み計算(<code>/preparation</code>)</div></div>
@@ -347,6 +385,8 @@
               <text x="615" y="120" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">LINEグループ</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">タスク追加・完了・カレンダー同期など業務イベントをLINEグループに自動通知する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">自動で動く。タスクを追加したり完了すると、スタッフのLINEグループに通知が届く</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan-line-notify.onrender.com" target="_blank">marukosuisan-line-notify.onrender.com</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Express</div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント</div><div class="detail-val"><code>POST /send</code>（テキスト送信）/ <code>POST /send-task</code>（業務タスク通知）/ <code>POST /webhook</code>（LINE Webhook受信）</div></div>
@@ -405,6 +445,8 @@
               <text x="490" y="149" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">サマリー/日別/月別/年間/経費</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">海鮮丼店・EC全チャネルの売上・経費・利益をグラフで一覧表示。日別・月別・商品別の分析ができる</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎日の売上確認、月次の振り返り、確定申告の準備に使う</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://keiri.marukosuisan.app" target="_blank">https://keiri.marukosuisan.app</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + SQLite + Recharts + shadcn/ui</div></div>
               <div class="detail-row"><div class="detail-key">データ源</div><div class="detail-val">sales.db（Airレジ）+ dev.db（EC注文）+ accounting.db（経費）</div></div>
@@ -467,6 +509,8 @@
               <text x="290" y="155" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ルール追加して再実行</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">経費を入力すると勘定科目を自動判定して仕訳データを作成。円簿会計に取り込めるCSVを出力する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">レシートや領収書の経費登録、月次の仕訳データ作成時に使う。「仕訳」「経理」で起動</div></div>
               <div class="detail-row"><div class="detail-key">DB</div><div class="detail-val"><code>経理/accounting.db</code>（科目70 / 取引先42 / 仕訳ルール24）</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">SQLite + Python + Playwright</div></div>
               <div class="detail-row"><div class="detail-key">出力</div><div class="detail-val">弥生互換CSV → 円簿会計に取込</div></div>
@@ -478,11 +522,11 @@
       </div>
 
       <!-- 勤怠修正ワークフロー -->
-      <div class="portal-card-wrap" data-detail-keywords="勤怠 修正 Airシフト 打刻 休憩 出退勤 丸め PDF Discord 承認 payroll-attendance generate_pdf.py attendance_rules Chrome自動操作 概算人件費シミュレーション">
+      <div class="portal-card-wrap" data-detail-keywords="勤怠 修正 Airシフト 打刻 休憩 出退勤 丸め PDF Discord 承認 payroll-attendance pdf-generator roumu-progress generate_pdf.py attendance_rules Chrome自動操作 概算人件費シミュレーション">
         <a class="portal-link" href="https://airregi.jp/shift/" target="_blank" data-keywords="勤怠 修正 ワークフロー 打刻 休憩 承認">
           <div class="icon ic-amber">&#128221;</div>
           <div class="info"><div class="name">勤怠修正ワークフロー</div><div class="desc">月次勤怠修正・承認フロー</div></div>
-          <span class="badge badge-dev">構築中</span>
+          <span class="badge badge-dev">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
         <div class="detail-panel">
@@ -560,11 +604,14 @@
               </defs>
             </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">PDF生成</div><div class="detail-val"><code>勤怠修正/generate_pdf.py</code></div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">Airシフトの勤怠データから修正が必要な箇所を検出し、修正申請PDFを自動生成する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">月末の勤怠締め処理で打刻漏れ・修正が必要なときに使う</div></div>
+              <div class="detail-row"><div class="detail-key">PDF生成</div><div class="detail-val"><code>pdf-generator</code> スキル（レシピ: <code>給与処理/PDF設定/勤怠修正確認.md</code>）</div></div>
+              <div class="detail-row"><div class="detail-key">進捗報告</div><div class="detail-val"><code>roumu-progress</code> スキル（Discord実況）</div></div>
               <div class="detail-row"><div class="detail-key">ルール定義</div><div class="detail-val"><code>memory/合同会社圓子水産/attendance_rules.md</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>payroll-attendance</code>（「勤怠」「シフト」で発動）</div></div>
             </div>
-            <div class="detail-note">毎月の勤怠修正作業を半自動化。ルールは3月データで確立中</div>
+            <div class="detail-note">月次勤怠修正を自動化。PDF生成→Discord送信→承認→反映。進捗はDiscordでリアルタイム確認可能</div>
           </div>
         </div>
       </div>
@@ -614,6 +661,8 @@
               <text x="620" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">文字起こし/へ保存</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">YouTube・X・TikTokなどの動画を自動でダウンロードし、音声をテキストに変換する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">動画の内容を確認したいとき。「この動画を文字起こしして」とURLを渡すだけ</div></div>
               <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>scripts/transcribe.py</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル定義</div><div class="detail-val"><code>.claude/skills/video-transcribe/SKILL.md</code></div></div>
               <div class="detail-row"><div class="detail-key">モデル</div><div class="detail-val">Whisper small（CPU only / GPU無し）</div></div>
@@ -704,6 +753,8 @@
               <text x="218" y="172" fill="#64748b" font-size="8" font-family="Meiryo">（body条件付き）</text>
             </svg>
             <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">受信メールを自動でラベル分類・アーカイブ。重要なメールはDiscordに通知が届く</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">自動で動く（5分間隔）。メールを見なくても重要なものだけDiscordで確認できる</div></div>
               <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/gmail-sorter/</code></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Gmail API (OAuth2) + Discord Gateway Bot</div></div>
               <div class="detail-row detail-full"><div class="detail-key">実行</div><div class="detail-val">タスクスケジューラ（ログオン時自動起動、5分間隔）+ Claude Code /loop（AI分類）</div></div>
@@ -721,7 +772,7 @@
       </div>
 
       <!-- Claude最新ニュース配信 -->
-      <div class="portal-card-wrap" data-detail-keywords="ニュース 配信 cron 毎朝 5時 3時 Discord Claude Anthropic 英語 海外">
+      <div class="portal-card-wrap" data-detail-keywords="ニュース 配信 タスクスケジューラ 毎朝 5時 Discord Claude Anthropic 英語 海外">
         <a class="portal-link" href="#" onclick="return false" data-keywords="ニュース Claude 配信 毎朝">
           <div class="icon ic-amber">&#128240;</div>
           <div class="info"><div class="name">Claude最新ニュース配信</div><div class="desc">毎朝5時にDiscordへ自動配信</div></div>
@@ -735,41 +786,95 @@
               <defs>
                 <marker id="arrow-news" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
               </defs>
-              <!-- 上段: 3:00 cron → WebSearch → 動画文字起こし -->
+              <!-- Step1: タスクスケジューラ → claude -p → WebSearch → ファイル保存 -->
               <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
-              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">3:00 cron</text>
-              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">収集タスク起動</text>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">5:00 スケジューラ</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">claude -p 起動</text>
               <path d="M140,38 L168,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
               <rect x="170" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
-              <text x="240" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">WebSearch</text>
-              <text x="240" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">日本語+英語+X動画2本</text>
+              <text x="240" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">Step1: 収集・要約</text>
+              <text x="240" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">WebSearch+文字起こし</text>
               <path d="M310,38 L338,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
               <rect x="340" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
-              <text x="410" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">動画文字起こし</text>
-              <text x="410" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Whisperで書き起こし</text>
-              <!-- 上段→下段 接続 -->
+              <text x="410" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">ファイル保存</text>
+              <text x="410" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">claude-news-latest.md</text>
+              <!-- Step1→Step2 接続 -->
               <path d="M410,66 L410,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
-              <!-- 下段: 5:00 cron → 要約作成 → Discord配信 -->
-              <rect x="10" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
-              <text x="75" y="108" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">5:00 cron</text>
-              <text x="75" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">配信タスク起動</text>
-              <path d="M140,114 L168,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
+              <!-- Step2: claude -p → ファイル読み → Discord配信 -->
               <rect x="170" y="86" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
-              <text x="240" y="108" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">要約作成</text>
-              <text x="240" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">5本にまとめる</text>
+              <text x="240" y="108" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">Step2: 読み込み</text>
+              <text x="240" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ファイルから取得</text>
               <path d="M310,114 L338,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-news)"/>
               <rect x="340" y="86" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
               <text x="410" y="108" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">Discord配信</text>
-              <text x="410" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">チャンネルに投稿</text>
+              <text x="410" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">#クロードニュース</text>
             </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">配信先</div><div class="detail-val">Discord（チャンネルID: 1484477664596332676）</div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">Claude・AI関連の最新ニュースを毎朝5時にDiscordへ自動配信。テキスト記事3本＋動画文字起こし2本の計5本</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">自動で毎朝届く。Discordを見るだけでAI業界の最新動向がわかる</div></div>
+              <div class="detail-row"><div class="detail-key">配信先</div><div class="detail-val">Discord #クロードニュース（ID: 1491017807813546025）</div></div>
               <div class="detail-row"><div class="detail-key">構成</div><div class="detail-val">テキスト3本 + 動画文字起こし2本 = 計5本</div></div>
-              <div class="detail-row"><div class="detail-key">3:00 cron</div><div class="detail-val">WebSearch（日本語+英語）→ 動画2本文字起こし</div></div>
-              <div class="detail-row"><div class="detail-key">5:00 cron</div><div class="detail-val">要約作成 → Discord投稿</div></div>
+              <div class="detail-row"><div class="detail-key">実行方式</div><div class="detail-val">タスクスケジューラ → claude -p（2段階実行）</div></div>
+              <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val">scripts/claude-news.ps1</div></div>
               <div class="detail-row detail-full"><div class="detail-key">ソース</div><div class="detail-val">日本語ニュース + 英語ニュース(EN) + X動画（JP/EN）</div></div>
             </div>
-            <div class="detail-note">セッション内cron（最大7日）。メインセッション起動時に自動設定</div>
+            <div class="detail-note">タスクスケジューラで毎朝5:00に自動実行。副社長セッション不要</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 記憶システム（mempalace + engram + md） -->
+      <div class="portal-card-wrap" data-detail-keywords="記憶 メモリ 永続化 MCP SQLite セッション 保存 検索 履歴 mempalace engram palace ナレッジグラフ ベクトル検索">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="記憶 メモリ mempalace engram 永続化">
+          <div class="icon ic-purple">&#129504;</div>
+          <div class="info"><div class="name">記憶システム（2層構造）</div><div class="desc">mempalace + engram + md の3システム統合</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <div class="detail-grid">
+              <div class="detail-row detail-full"><div class="detail-key">何ができる？</div><div class="detail-val">会話の内容・決定事項・作業記録をセッションを超えて記憶。ベクトル類似度検索+キーワード検索+ナレッジグラフで過去の情報を引き出せる</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">2層構造</div><div class="detail-val">
+                <strong>上の階</strong>（要約・構造化）: wing/room に手動保存（add_drawer）。高品質な決定・設定・方針を格納<br>
+                <strong>下の階</strong>（毎ターン自動ログ）: wing/room/log に全応答を自動保存（Stopフック）。漏れゼロの生データ
+              </div></div>
+              <div class="detail-row"><div class="detail-key">mempalace</div><div class="detail-val">メイン記憶。ChromaDBベクトル検索 + SQLiteナレッジグラフ（時間軸クエリ対応）。19,600件超、751MB</div></div>
+              <div class="detail-row"><div class="detail-key">engram</div><div class="detail-val">FTS5キーワード検索インデックス。add_drawer時にフックで自動コピー。8MB</div></div>
+              <div class="detail-row"><div class="detail-key">md (shared-memory)</div><div class="detail-val">セッション起動時に自動読込される永続メモリ。119ファイル、2.1MB</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">自動フロー</div><div class="detail-val">
+                <strong>保存</strong>: add_drawer → mempalace上の階 → [hook] → engram FTS5<br>
+                <strong>自動ログ</strong>: 毎ターン → mempalace下の階（room/log）<br>
+                <strong>検索</strong>: 毎プロンプトでengram FTS5 + mempalaceベクトル検索 → コンテキスト自動注入<br>
+                <strong>起動時</strong>: L0 identity.txt自動表示 + diary_readで前回要約確認
+              </div></div>
+              <div class="detail-row"><div class="detail-key">ナレッジグラフ</div><div class="detail-val">2,864エンティティ / 5,569トリプル。kg_query（as_of=日付で時間軸フィルター）、kg_timeline（変遷表示）</div></div>
+              <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（秘書室）</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">mempalace v3.1.0 MCP + engram v1.11.0 MCP + Claude Code auto-memory</div></div>
+            </div>
+            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 書類整理システム -->
+      <div class="portal-card-wrap" data-detail-keywords="書類 PDF スキャン inbox 分類 リネーム 保存 総務 document-archive">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="書類 PDF スキャン 整理 保存">
+          <div class="icon ic-green">&#128196;</div>
+          <div class="info"><div class="name">書類整理システム</div><div class="desc">書類の自動読み取り・分類・保存</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">届いた書類（PDF・画像）を自動で読み取り、事業別に分類・リネーム・保存。内容もengramに記録されるので後から検索できる</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">請求書・納品書・通知書などが届いたとき。スマホで撮影 or スキャン → inboxに入れるか、Discordに写真を送るだけ</div></div>
+              <div class="detail-row"><div class="detail-key">使い方</div><div class="detail-val">①<code>~/書類/inbox/</code>にファイルを入れる or Discordに添付送信 → ②「書類」と言えば自動処理開始 → ③確認後に分類保存</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">document-archiveスキル + Read（PDF/画像読み取り）</div></div>
+              <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
+              <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（書類メタデータ登録）、Discord（添付受信）</div></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1385,8 +1490,8 @@
             <td><span style="color:#38bdf8;font-size:0.85em">&#9679;</span> <span style="color:#fb923c;font-size:0.85em">&#9679;</span> 圓子水産・熊の家</td>
             <td><span class="agent-tag" style="background:#1a0a3e;color:#a78bfa">roumu</span></td>
             <td>Sonnet 4.6</td>
-            <td><span class="skill-tag">payroll-slip</span><span class="skill-tag">payroll-attendance</span><span class="skill-tag">payroll-calc</span><span class="skill-tag">payroll-ledger</span><span class="skill-tag">payroll-docs</span><span class="skill-tag">staff-calendar</span></td>
-            <td>給与、給料、勤怠、シフト、打刻、賃金台帳、入社、退社</td>
+            <td><span class="skill-tag">payroll-slip</span><span class="skill-tag">payroll-attendance</span><span class="skill-tag">payroll-calc</span><span class="skill-tag">payroll-ledger</span><span class="skill-tag">payroll-docs</span><span class="skill-tag">payroll-yukyu</span><span class="skill-tag">payroll-overtime</span><span class="skill-tag">payroll-rules-learn</span><span class="skill-tag">payroll-precheck</span><span class="skill-tag">pdf-generator</span><span class="skill-tag">roumu-progress</span><span class="skill-tag">staff-calendar</span></td>
+            <td>給与、給料、勤怠、シフト、打刻、賃金台帳、入社、退社、有休、振休、残業、36協定、PDF作成、労務進捗</td>
           </tr>
           <tr>
             <td style="color:#22d3ee">IT・システム部</td>
@@ -1557,11 +1662,126 @@
       </ul>
     </div>
 
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">システムマップ自動同期</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">Python + PostToolUse Hook + Mermaid.js（CDN）</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>mdパース→HTMLカード生成→マーカー間置換</li>
+        <li>Mermaid依存関係図</li>
+        <li>Hook自動実行</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>組織図タブも同様の自動同期化を検討</li>
+      </ul>
+    </div>
+
+    <div class="card active">
+      <div class="card-header">
+        <div class="card-title">Cloudflare Tunnel + Access</div>
+        <span class="status-badge status-active">ゾーン追加待ち</span>
+      </div>
+      <div class="card-tech">Cloudflare Tunnel (Named) + Zero Trust Access</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>Tunnel作成・config.yml・タスクスケジューラ自動起動・DNS設定(zaiko/keiri/portal)・Zero Trust初期設定</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>NS反映確認 → Zero Trust AccessでkeiriにEmail認証ポリシー設定（Marukosuisan523@gmail.com）</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">engram（記憶永続化）</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">engram MCP + SQLite</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>MCP接続</li>
+        <li>既存mdインポート</li>
+        <li>応答ごとの自動保存運用</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">書類整理システム</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">document-archiveスキル + Read（PDF/画像読み取り）</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>inbox受付</li>
+        <li>自動読み取り・分類・リネーム・移動・engram登録</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">claude -p 自動化基盤</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">`claude -p --mcp-config mcp-config.json` + タスクスケジューラ</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>MCP接続確認</li>
+        <li>Discord配信+監視ループ動作確認</li>
+        <li>engram記録確認</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">Claude最新ニュース配信</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>ニュース収集・要約・Discord配信・監視ループ（質問応答）・engram記録</li>
+      </ul>
+    </div>
+
+    <div class="card active">
+      <div class="card-header">
+        <div class="card-title">freee会計MCP経理自動化</div>
+        <span class="status-badge status-active">設計完了・構築中</span>
+      </div>
+      <div class="card-tech">freee会計MCP（Remote MCP） + claude -p + タスクスケジューラ + Playwright</div>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>freeeアカウント作成 → MCP接続 → 科目・取引先移行 → 口座連携 → 段階運用開始</li>
+      </ul>
+    </div>
+
     <div class="card paused">
       <div class="card-header">
         <div class="card-title">LINE WORKS API</div>
         <span class="status-badge status-paused">保留</span>
       </div>
+    </div>
+
+    <div class="card active">
+      <div class="card-header">
+        <div class="card-title">労務エージェント（roumu-agent）</div>
+        <span class="status-badge status-active">本番実行可能</span>
+      </div>
+      <div class="card-tech">Claude Code エージェント + 既存6スキル + 新規6スキル + Discord進捗UI + PDF生成</div>
+      <p class="section-label" style="margin-top:8px">完了済み</p>
+      <ul class="next-items">
+        <li>Step 1〜5 ✅ 基盤・ルール・スキル・データ・3月検証</li>
+        <li>Step 7〜8 ✅ Discord進捗報告（roumu-progress）+ PDF生成（pdf-generator）</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">残り</p>
+      <ul class="next-items">
+        <li>Step 6: シフト修正自動化（Playwright）— 当面は半自動運用</li>
+      </ul>
     </div>
 
   </div>
@@ -1586,10 +1806,45 @@ graph LR
     GmailSorter --> Label[ラベル付与+アーカイブ]
     GmailSorter --> Discord[Discord Bot]
     Discord --> Notify[重要メール通知]
+    TaskSch[タスクスケジューラ] --> ClaudeP[claude -p 自動化基盤]
+    ClaudeP --> Discord
+    ClaudeP --> Engram[engram]
+    ClaudeP --> Firecrawl[firecrawl]
+    ClaudeP -.将来.-> Freee[freee会計MCP]
+    AirShift[Airシフト] --> RoumuAgent[労務エージェント]
+    RoumuAgent --> PaySlip[給与明細]
+    RoumuAgent --> WageLedger[賃金台帳]
+    RoumuAgent --> YukyuLedger[有休管理台帳]
+    RoumuAgent --> OvertimeTracker[残業累計トラッカー]
+    RoumuAgent --> DiscordProgress[Discord進捗報告]
+    RoumuAgent --> PDFGen[PDF生成]
     </div>
   </div>
 
 <!-- SYSTEM-MAP-END -->
+
+<!-- ===== AUTOMATION PAGE ===== -->
+<div class="page" id="automation">
+  <div class="auto-summary" id="auto-summary">
+    <div class="auto-stat"><div class="num" id="stat-tasks">—</div><div class="lbl">定期タスク</div></div>
+    <div class="auto-stat ok"><div class="num" id="stat-hooks">—</div><div class="lbl">フック</div></div>
+    <div class="auto-stat warn"><div class="num" id="stat-soon">—</div><div class="lbl">1時間以内に実行</div></div>
+    <div class="auto-stat"><div class="num" id="stat-today">—</div><div class="lbl">今日中に実行</div></div>
+  </div>
+
+  <div class="portal-section">
+    <div class="portal-section-title">定期タスク（Windowsタスクスケジューラ）</div>
+    <div class="auto-grid" id="auto-tasks"><div style="color:#475569;padding:20px">読み込み中...</div></div>
+  </div>
+
+  <div class="portal-section">
+    <div class="portal-section-title">Claude Codeフック（自動発火）</div>
+    <div class="auto-grid" id="auto-hooks"><div style="color:#475569;padding:20px">読み込み中...</div></div>
+  </div>
+
+  <div class="auto-updated" id="auto-updated"></div>
+</div>
+
 </div>
 
 <script type="module">
@@ -1685,6 +1940,93 @@ graph LR
       sec.style.display = (visibleWraps.length === 0 && visibleLinks.length === 0 && q) ? 'none' : '';
     });
   });
+
+  // ===== AUTOMATION PAGE =====
+  function fmtNext(nextStr) {
+    if (!nextStr || nextStr === 'N/A') return { text: '—', cls: 'idle' };
+    // format: "2026/04/20 5:00:00" or similar
+    const m = nextStr.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
+    if (!m) return { text: nextStr, cls: '' };
+    const next = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+    const now = new Date();
+    const diffMin = Math.round((next - now) / 60000);
+    const sameDay = next.toDateString() === now.toDateString();
+    let cls = '', text = '';
+    if (diffMin < 0) { text = '過ぎ ' + Math.abs(diffMin) + '分前'; cls = 'idle'; }
+    else if (diffMin < 60) { text = 'あと ' + diffMin + '分'; cls = 'soon'; }
+    else if (sameDay) { text = '今日 ' + m[4].padStart(2,'0') + ':' + m[5]; cls = 'today'; }
+    else {
+      const days = Math.round((next - now) / 86400000);
+      text = (days > 1 ? days + '日後 ' : '明日 ') + m[4].padStart(2,'0') + ':' + m[5];
+    }
+    return { text, cls };
+  }
+
+  function renderTaskCard(t) {
+    const nxt = fmtNext(t.next_run);
+    const disabled = t.disabled ? ' disabled' : '';
+    return `<div class="auto-card cat-${t.category}${disabled}">
+      <div class="auto-card-head">
+        <div class="auto-card-icon">${t.icon}</div>
+        <div class="auto-card-name">${t.name}</div>
+        <div class="auto-card-cat">${t.category}</div>
+      </div>
+      <div class="auto-card-purpose">${t.purpose}</div>
+      <div class="auto-card-meta">
+        <span class="auto-card-next ${nxt.cls}"><b>次回</b> ${nxt.text}</span>
+        ${t.schedule ? `<span><b>頻度</b> ${t.schedule}</span>` : ''}
+        ${t.business && t.business !== 'common' ? `<span><b>事業</b> ${t.business}</span>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function renderHookCard(h) {
+    return `<div class="auto-card cat-${h.category}">
+      <div class="auto-card-head">
+        <div class="auto-card-icon">🪝</div>
+        <div class="auto-card-name">${h.name}</div>
+        <div class="auto-card-cat">${h.category}</div>
+      </div>
+      <div class="auto-card-purpose">${h.purpose}</div>
+      <div class="auto-card-meta">
+        <span><b>発火</b> ${h.trigger}</span>
+      </div>
+    </div>`;
+  }
+
+  fetch('automation_index.json?_=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      const tasks = data.scheduled_tasks || [];
+      const hooks = data.claude_hooks || [];
+      document.getElementById('stat-tasks').textContent = data.stats.active_tasks || tasks.length;
+      document.getElementById('stat-hooks').textContent = hooks.length;
+      // Count soon/today
+      let soon = 0, today = 0;
+      tasks.forEach(t => {
+        const nxt = fmtNext(t.next_run);
+        if (nxt.cls === 'soon') soon++;
+        if (nxt.cls === 'soon' || nxt.cls === 'today') today++;
+      });
+      document.getElementById('stat-soon').textContent = soon;
+      document.getElementById('stat-today').textContent = today;
+      // Sort tasks by next_run soonest first
+      tasks.sort((a,b) => {
+        const ax = a.next_run || 'z';
+        const bx = b.next_run || 'z';
+        if (ax === 'N/A' && bx !== 'N/A') return 1;
+        if (bx === 'N/A' && ax !== 'N/A') return -1;
+        return ax.localeCompare(bx);
+      });
+      document.getElementById('auto-tasks').innerHTML = tasks.map(renderTaskCard).join('');
+      document.getElementById('auto-hooks').innerHTML = hooks.map(renderHookCard).join('');
+      document.getElementById('auto-updated').textContent =
+        '最終更新: ' + (data.generated_at || '').replace('T',' ').slice(0,19);
+    })
+    .catch(err => {
+      document.getElementById('auto-tasks').innerHTML =
+        '<div style="color:#fb7185;padding:20px">自動化インデックスの読み込みに失敗しました: ' + err.message + '</div>';
+    });
 </script>
 
 </body>

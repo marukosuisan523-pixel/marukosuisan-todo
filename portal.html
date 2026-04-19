@@ -162,35 +162,73 @@
   }
 
   /* ===== AUTOMATION PAGE ===== */
-  .auto-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-  .auto-updated-badge { font-size: 0.75rem; color: #94a3b8; background: #1e293b; padding: 6px 12px; border-radius: 8px; border: 1px solid #334155; }
-  .auto-updated-badge b { color: #38bdf8; font-weight: 600; }
+  /* Health banner */
+  .auto-health { padding: 20px 24px; border-radius: 14px; margin-bottom: 24px; border: 1px solid #334155; background: #1e293b; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .auto-health.ok { background: linear-gradient(135deg, #0a2e1c 0%, #14532d 100%); border-color: #14532d; }
+  .auto-health.warn { background: linear-gradient(135deg, #1a1800 0%, #451a03 100%); border-color: #78350f; }
+  .auto-health.alert { background: linear-gradient(135deg, #1a0a0a 0%, #4c0519 100%); border-color: #7f1d1d; }
+  .auto-health-icon { font-size: 2.5rem; line-height: 1; }
+  .auto-health-main { flex: 1; min-width: 200px; }
+  .auto-health-title { font-size: 1.1rem; font-weight: 800; color: #f8fafc; margin-bottom: 4px; }
+  .auto-health-sub { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; }
+  .auto-health-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-  .auto-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
-  .auto-stat { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px 16px; }
-  .auto-stat .num { font-size: 1.6rem; font-weight: 800; color: #38bdf8; line-height: 1.1; }
-  .auto-stat .lbl { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  /* Summary grid - compact */
+  .auto-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+  .auto-stat { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 14px; }
+  .auto-stat .num { font-size: 1.5rem; font-weight: 800; color: #38bdf8; line-height: 1.1; }
+  .auto-stat .lbl { font-size: 0.68rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
   .auto-stat.warn .num { color: #fbbf24; }
   .auto-stat.ok .num { color: #4ade80; }
   .auto-stat.alert .num { color: #fb7185; }
+  .auto-stat.info .num { color: #a78bfa; }
 
-  /* Controls: search + category pills */
+  /* Timeline 24h */
+  .auto-timeline-wrap { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px 20px 14px; margin-bottom: 24px; }
+  .auto-timeline-title { font-size: 0.78rem; color: #94a3b8; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .auto-timeline-title .now-label { color: #38bdf8; font-weight: 600; font-size: 0.7rem; }
+  .auto-timeline { position: relative; height: 56px; background: #0f172a; border-radius: 8px; overflow: hidden; }
+  .auto-tl-hours { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(24, 1fr); font-size: 0.58rem; color: #475569; pointer-events: none; }
+  .auto-tl-hour { border-right: 1px solid #1e293b; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px; }
+  .auto-tl-hour.major { color: #64748b; }
+  .auto-tl-event { position: absolute; top: 4px; bottom: 18px; width: 4px; background: #38bdf8; border-radius: 2px; cursor: pointer; transition: all 0.15s; }
+  .auto-tl-event:hover { width: 6px; top: 2px; bottom: 16px; }
+  .auto-tl-event.cat-経理 { background: #6ee7b7; }
+  .auto-tl-event.cat-タスク管理 { background: #fbbf24; }
+  .auto-tl-event.cat-監視 { background: #fb7185; }
+  .auto-tl-event.cat-情報収集, .auto-tl-event.cat-情報整理 { background: #a78bfa; }
+  .auto-tl-event.cat-インフラ { background: #22d3ee; }
+  .auto-tl-event.cat-バックアップ { background: #94a3b8; }
+  .auto-tl-now { position: absolute; top: 0; bottom: 0; width: 2px; background: #fb7185; box-shadow: 0 0 8px rgba(251,113,133,0.6); z-index: 5; }
+
+  /* Controls */
   .auto-controls { margin-bottom: 20px; }
-  .auto-search { position: relative; margin-bottom: 12px; }
+  .auto-toolbar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .auto-search { position: relative; flex: 1; min-width: 200px; }
   .auto-search input { width: 100%; padding: 10px 14px 10px 40px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #e2e8f0; font-size: 0.85rem; outline: none; min-height: 44px; }
   .auto-search input:focus { border-color: #38bdf8; }
   .auto-search::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; font-size: 0.9rem; }
+  .auto-select { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 0 14px; color: #e2e8f0; font-size: 0.82rem; cursor: pointer; min-height: 44px; outline: none; }
+  .auto-select:focus { border-color: #38bdf8; }
   .auto-pills { display: flex; flex-wrap: wrap; gap: 6px; }
   .auto-pill { padding: 6px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 999px; font-size: 0.72rem; color: #94a3b8; cursor: pointer; transition: all 0.15s; user-select: none; min-height: 32px; display: flex; align-items: center; }
   .auto-pill:hover { border-color: #475569; color: #e2e8f0; }
   .auto-pill.active { background: #1e3a5f; border-color: #38bdf8; color: #38bdf8; }
   .auto-pill .cnt { margin-left: 6px; opacity: 0.6; font-size: 0.68rem; }
 
+  /* Group header */
+  .auto-group { margin-bottom: 24px; }
+  .auto-group-title { font-size: 0.72rem; color: #475569; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .auto-group-title::after { content: ''; flex: 1; height: 1px; background: #1e293b; }
+
+  /* Grid */
   .auto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-  .auto-card { background: #1e293b; border-radius: 10px; padding: 14px 16px; border: 1px solid #334155; border-left-width: 4px; transition: all 0.15s; position: relative; }
-  .auto-card:hover { background: #273548; border-color: #475569; }
+  .auto-card { background: #1e293b; border-radius: 10px; padding: 14px 16px; border: 1px solid #334155; border-left-width: 4px; transition: all 0.15s; position: relative; cursor: pointer; }
+  .auto-card:hover { background: #273548; border-color: #475569; transform: translateY(-1px); }
   .auto-card.overdue { background: #2d1818; border-color: #7f1d1d; }
   .auto-card.overdue:hover { background: #3a1f1f; }
+  .auto-card.failed { border: 2px solid #fb7185; background: #2d1818; }
+  .auto-card.failed::before { content: '⚠️'; position: absolute; top: 8px; right: 8px; font-size: 0.9rem; }
   .auto-card.cat-経理 { border-left-color: #6ee7b7; }
   .auto-card.cat-タスク管理 { border-left-color: #fbbf24; }
   .auto-card.cat-監視 { border-left-color: #fb7185; }
@@ -211,6 +249,7 @@
   .st-ready { background: #14532d; color: #4ade80; }
   .st-disabled { background: #1e293b; color: #64748b; border: 1px solid #334155; }
   .st-running { background: #1e3a5f; color: #38bdf8; }
+  .st-failed { background: #4c0519; color: #fb7185; }
   .auto-card-purpose { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px; }
   .auto-card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 0.7rem; color: #64748b; }
   .auto-card-meta > div { overflow: hidden; text-overflow: ellipsis; }
@@ -221,10 +260,33 @@
   .auto-card-next.overdue { color: #fb7185; font-weight: 700; }
   .auto-empty { color: #475569; padding: 24px; text-align: center; font-size: 0.85rem; grid-column: 1/-1; }
 
+  /* Modal */
+  .auto-modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+  .auto-modal-bg.open { display: flex; }
+  .auto-modal { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 24px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+  .auto-modal-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #334155; }
+  .auto-modal-icon { font-size: 2.2rem; }
+  .auto-modal-title { flex: 1; }
+  .auto-modal-name { font-size: 1.15rem; font-weight: 800; color: #f8fafc; word-break: break-all; }
+  .auto-modal-cat { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+  .auto-modal-close { background: transparent; border: 1px solid #334155; color: #94a3b8; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; font-size: 1rem; flex-shrink: 0; }
+  .auto-modal-close:hover { background: #334155; color: #e2e8f0; }
+  .auto-modal-section { margin-bottom: 14px; }
+  .auto-modal-label { font-size: 0.65rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 4px; }
+  .auto-modal-value { font-size: 0.85rem; color: #cbd5e1; line-height: 1.55; word-break: break-all; }
+  .auto-modal-value code { background: #0f172a; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.78rem; color: #94a3b8; }
+  .auto-modal-countdown { font-size: 1rem; color: #fbbf24; font-weight: 700; font-variant-numeric: tabular-nums; }
+
   @media (max-width: 640px) {
     .auto-grid { grid-template-columns: 1fr; }
     .auto-summary { grid-template-columns: repeat(2, 1fr); }
     .auto-card-meta { grid-template-columns: 1fr; }
+    .auto-health { flex-direction: column; text-align: center; padding: 16px; }
+    .auto-health-icon { font-size: 2rem; }
+    .auto-timeline { height: 44px; }
+    .auto-search { min-width: 100%; }
+    .auto-toolbar { flex-direction: column; }
+    .auto-select { width: 100%; }
   }
 </style>
 </head>
@@ -1862,33 +1924,82 @@ graph LR
 
 <!-- ===== AUTOMATION PAGE ===== -->
 <div class="page" id="automation">
-  <div class="auto-header">
-    <div class="auto-updated-badge">最終更新: <b id="auto-updated">—</b></div>
+  <!-- Health banner -->
+  <div class="auto-health" id="auto-health">
+    <div class="auto-health-icon" id="auto-health-icon">⏳</div>
+    <div class="auto-health-main">
+      <div class="auto-health-title" id="auto-health-title">読み込み中...</div>
+      <div class="auto-health-sub" id="auto-health-sub">自動化インデックスを取得しています</div>
+    </div>
   </div>
 
   <div class="auto-summary" id="auto-summary">
     <div class="auto-stat"><div class="num" id="stat-tasks">—</div><div class="lbl">稼働タスク</div></div>
-    <div class="auto-stat ok"><div class="num" id="stat-hooks">—</div><div class="lbl">フック</div></div>
+    <div class="auto-stat info"><div class="num" id="stat-hooks">—</div><div class="lbl">フック</div></div>
     <div class="auto-stat warn"><div class="num" id="stat-soon">—</div><div class="lbl">1h以内</div></div>
     <div class="auto-stat"><div class="num" id="stat-today">—</div><div class="lbl">今日中</div></div>
     <div class="auto-stat alert"><div class="num" id="stat-overdue">—</div><div class="lbl">期限超過</div></div>
   </div>
 
+  <!-- 24h timeline -->
+  <div class="auto-timeline-wrap">
+    <div class="auto-timeline-title">
+      <span>次24時間タイムライン</span>
+      <span class="now-label" id="auto-now-label">—</span>
+    </div>
+    <div class="auto-timeline" id="auto-timeline">
+      <div class="auto-tl-hours" id="auto-tl-hours"></div>
+    </div>
+  </div>
+
   <div class="auto-controls">
-    <div class="auto-search">
-      <input type="text" id="auto-search-input" placeholder="タスク名・目的で検索..." autocomplete="off" />
+    <div class="auto-toolbar">
+      <div class="auto-search">
+        <input type="text" id="auto-search-input" placeholder="タスク名・目的で検索..." autocomplete="off" />
+      </div>
+      <select class="auto-select" id="auto-group-select">
+        <option value="flat">フラット表示</option>
+        <option value="business">事業別グループ</option>
+        <option value="category">カテゴリ別グループ</option>
+        <option value="schedule">実行時間帯別</option>
+      </select>
+      <select class="auto-select" id="auto-sort-select">
+        <option value="next">次回実行順</option>
+        <option value="name">名前順</option>
+        <option value="last">前回実行順</option>
+        <option value="category">カテゴリ順</option>
+      </select>
     </div>
     <div class="auto-pills" id="auto-pills"></div>
   </div>
 
   <div class="portal-section">
     <div class="portal-section-title">定期タスク（Windowsタスクスケジューラ）</div>
-    <div class="auto-grid" id="auto-tasks"><div class="auto-empty">読み込み中...</div></div>
+    <div id="auto-tasks-container"><div class="auto-empty">読み込み中...</div></div>
   </div>
 
   <div class="portal-section">
     <div class="portal-section-title">Claude Codeフック（自動発火）</div>
     <div class="auto-grid" id="auto-hooks"><div class="auto-empty">読み込み中...</div></div>
+  </div>
+
+  <div style="text-align:right;font-size:0.7rem;color:#475569;margin-top:12px">
+    最終更新: <span id="auto-updated">—</span>
+  </div>
+</div>
+
+<!-- Detail modal -->
+<div class="auto-modal-bg" id="auto-modal-bg">
+  <div class="auto-modal" id="auto-modal">
+    <div class="auto-modal-head">
+      <div class="auto-modal-icon" id="m-icon">⚙</div>
+      <div class="auto-modal-title">
+        <div class="auto-modal-name" id="m-name">—</div>
+        <div class="auto-modal-cat" id="m-cat">—</div>
+      </div>
+      <button class="auto-modal-close" onclick="closeAutoModal()" aria-label="閉じる">✕</button>
+    </div>
+    <div id="m-body"></div>
   </div>
 </div>
 
@@ -2009,11 +2120,33 @@ graph LR
     '監視': '🩺', 'バックアップ': '💾', '経理': '💰', '情報収集': '📰',
     'インフラ': '🚀', '情報整理': '📨',
   };
+  const BUSINESS_LABELS = {
+    'common': '共通',
+    'maruko-suisan': '合同会社圓子水産',
+    'kumanoya': '株式会社熊の家',
+    'kojin': '個人事業',
+  };
+  const SCHEDULE_GROUPS = [
+    { id: 'midnight', label: '深夜 (0-6時)', min: 0, max: 6 },
+    { id: 'morning', label: '朝 (6-12時)', min: 6, max: 12 },
+    { id: 'afternoon', label: '午後 (12-18時)', min: 12, max: 18 },
+    { id: 'night', label: '夜 (18-24時)', min: 18, max: 24 },
+    { id: 'frequent', label: '頻繁 (分単位)' },
+    { id: 'startup', label: '起動時・手動' },
+  ];
+
+  let AUTO_STATE = { tasks: [], hooks: [], selectedCat: 'all', search: '', group: 'flat', sort: 'next' };
+
+  function parseDate(s) {
+    if (!s || s === 'N/A' || s === '無効' || s === 'なし') return null;
+    const m = s.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
+    if (!m) return null;
+    return new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+  }
+
   function fmtNext(nextStr) {
-    if (!nextStr || nextStr === 'N/A' || nextStr === '無効') return { text: '起動時のみ', cls: 'idle' };
-    const m = nextStr.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
-    if (!m) return { text: nextStr, cls: '' };
-    const next = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+    const next = parseDate(nextStr);
+    if (!next) return { text: '起動時・手動', cls: 'idle', date: null };
     const now = new Date();
     const diffMin = Math.round((next - now) / 60000);
     const sameDay = next.toDateString() === now.toDateString();
@@ -2021,41 +2154,50 @@ graph LR
     if (diffMin < -60) { text = '未実行 (' + Math.round(Math.abs(diffMin)/60) + 'h前)'; cls = 'overdue'; }
     else if (diffMin < 0) { text = '未実行 (' + Math.abs(diffMin) + '分前)'; cls = 'overdue'; }
     else if (diffMin < 60) { text = 'あと ' + diffMin + '分'; cls = 'soon'; }
-    else if (sameDay) { text = '今日 ' + m[4].padStart(2,'0') + ':' + m[5]; cls = 'today'; }
+    else if (sameDay) { text = '今日 ' + String(next.getHours()).padStart(2,'0') + ':' + String(next.getMinutes()).padStart(2,'0'); cls = 'today'; }
     else {
       const days = Math.round((next - now) / 86400000);
-      text = (days > 1 ? days + '日後 ' : '明日 ') + m[4].padStart(2,'0') + ':' + m[5];
+      text = (days > 1 ? days + '日後 ' : '明日 ') + String(next.getHours()).padStart(2,'0') + ':' + String(next.getMinutes()).padStart(2,'0');
     }
-    return { text, cls };
+    return { text, cls, date: next };
   }
 
   function fmtLast(lastStr) {
-    if (!lastStr || lastStr === 'N/A' || lastStr === 'なし') return null;
-    const m = lastStr.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})[ T](\d{1,2}):(\d{2})/);
-    if (!m) return lastStr;
-    const last = new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
+    const last = parseDate(lastStr);
+    if (!last) return null;
     const now = new Date();
     const diffMin = Math.round((now - last) / 60000);
+    if (diffMin < 0) return null;
     if (diffMin < 60) return diffMin + '分前';
     if (diffMin < 1440) return Math.round(diffMin/60) + '時間前';
     const days = Math.round(diffMin / 1440);
     return days + '日前';
   }
 
+  function isFailed(t) {
+    // Last Result: 0 or 0x0 = success. 267011 = task has not run yet. Others = error.
+    const r = t.last_result;
+    if (!r || r === '0' || r === '0x0' || r === '267011' || r === '267009' || r === 'なし') return false;
+    return true;
+  }
+
   function renderTaskCard(t) {
     const nxt = fmtNext(t.next_run);
     const last = fmtLast(t.last_run);
-    const statusCls = t.disabled ? 'st-disabled' : (t.status === 'Running' ? 'st-running' : 'st-ready');
-    const statusLbl = t.disabled ? 'OFF' : (t.status === 'Running' ? '実行中' : '稼働中');
+    const failed = isFailed(t) && !t.disabled;
+    const statusCls = failed ? 'st-failed' : (t.disabled ? 'st-disabled' : (t.status === 'Running' ? 'st-running' : 'st-ready'));
+    const statusLbl = failed ? '失敗' : (t.disabled ? 'OFF' : (t.status === 'Running' ? '実行中' : '稼働中'));
     const overdueCls = nxt.cls === 'overdue' ? ' overdue' : '';
     const disabledCls = t.disabled ? ' is-disabled' : '';
-    const searchBlob = (t.name + ' ' + t.purpose + ' ' + t.category).toLowerCase();
-    return `<div class="auto-card cat-${t.category}${overdueCls}${disabledCls}" data-cat="${t.category}" data-search="${searchBlob}" data-disabled="${t.disabled ? '1' : '0'}">
+    const failedCls = failed ? ' failed' : '';
+    const searchBlob = (t.name + ' ' + t.purpose + ' ' + (t.description||'') + ' ' + t.category).toLowerCase();
+    const scheduleTxt = t.schedule_human || t.schedule || '';
+    return `<div class="auto-card cat-${t.category}${overdueCls}${disabledCls}${failedCls}" data-cat="${t.category}" data-search="${searchBlob}" data-disabled="${t.disabled ? '1' : '0'}" data-business="${t.business||'common'}" data-kind="task" data-name="${t.name}">
       <div class="auto-card-head">
         <div class="auto-card-icon">${t.icon}</div>
         <div class="auto-card-title">
           <div class="auto-card-name">${t.name}</div>
-          <div class="auto-card-cat">${t.category}</div>
+          <div class="auto-card-cat">${t.category}${t.business && t.business !== 'common' ? ' · ' + (BUSINESS_LABELS[t.business] || t.business) : ''}</div>
         </div>
         <span class="auto-card-status ${statusCls}">${statusLbl}</span>
       </div>
@@ -2063,16 +2205,16 @@ graph LR
       <div class="auto-card-meta">
         <div class="auto-card-next ${nxt.cls}"><b>次回</b>${nxt.text}</div>
         ${last ? `<div><b>前回</b>${last}</div>` : '<div></div>'}
-        ${t.schedule ? `<div><b>頻度</b>${t.schedule}</div>` : '<div></div>'}
-        ${t.business && t.business !== 'common' ? `<div><b>事業</b>${t.business}</div>` : '<div></div>'}
+        ${scheduleTxt ? `<div><b>頻度</b>${scheduleTxt}</div>` : '<div></div>'}
+        <div></div>
       </div>
     </div>`;
   }
 
   function renderHookCard(h) {
     const icon = HOOK_ICONS[h.category] || '🪝';
-    const searchBlob = (h.name + ' ' + h.purpose + ' ' + h.category + ' ' + h.trigger).toLowerCase();
-    return `<div class="auto-card cat-${h.category}" data-cat="${h.category}" data-search="${searchBlob}">
+    const searchBlob = (h.name + ' ' + h.purpose + ' ' + (h.description||'') + ' ' + h.category + ' ' + h.trigger).toLowerCase();
+    return `<div class="auto-card cat-${h.category}" data-cat="${h.category}" data-search="${searchBlob}" data-kind="hook" data-name="${h.name}">
       <div class="auto-card-head">
         <div class="auto-card-icon">${icon}</div>
         <div class="auto-card-title">
@@ -2087,10 +2229,75 @@ graph LR
     </div>`;
   }
 
+  function groupBucket(t, mode) {
+    if (mode === 'business') return BUSINESS_LABELS[t.business] || t.business || '共通';
+    if (mode === 'category') return t.category || 'その他';
+    if (mode === 'schedule') {
+      const n = parseDate(t.next_run);
+      if (!n) {
+        const s = (t.schedule || '').toLowerCase();
+        if (s === 'minute' || (t.schedule_human || '').includes('分')) return '頻繁 (分単位)';
+        return '起動時・手動';
+      }
+      const h = n.getHours();
+      if (h < 6) return '深夜 (0-6時)';
+      if (h < 12) return '朝 (6-12時)';
+      if (h < 18) return '午後 (12-18時)';
+      return '夜 (18-24時)';
+    }
+    return '';
+  }
+
+  function renderTasks() {
+    const { tasks, group, sort } = AUTO_STATE;
+
+    // Sort
+    const rank = (t) => {
+      if (t.disabled) return 9;
+      if (isFailed(t)) return -1;
+      const c = fmtNext(t.next_run).cls;
+      return c === 'overdue' ? 0 : c === 'soon' ? 1 : c === 'today' ? 2 : c === 'idle' ? 5 : 3;
+    };
+    const sorted = [...tasks];
+    if (sort === 'next') {
+      sorted.sort((a, b) => {
+        const rd = rank(a) - rank(b);
+        if (rd !== 0) return rd;
+        const an = parseDate(a.next_run), bn = parseDate(b.next_run);
+        if (an && bn) return an - bn;
+        if (an) return -1;
+        if (bn) return 1;
+        return a.name.localeCompare(b.name);
+      });
+    } else if (sort === 'name') {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sort === 'last') {
+      sorted.sort((a, b) => (parseDate(b.last_run) || 0) - (parseDate(a.last_run) || 0));
+    } else if (sort === 'category') {
+      sorted.sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+    }
+
+    const container = document.getElementById('auto-tasks-container');
+    if (group === 'flat') {
+      container.innerHTML = `<div class="auto-grid">${sorted.map(renderTaskCard).join('')}</div>`;
+    } else {
+      const groups = {};
+      sorted.forEach(t => {
+        const b = groupBucket(t, group);
+        (groups[b] = groups[b] || []).push(t);
+      });
+      container.innerHTML = Object.entries(groups).map(([name, items]) =>
+        `<div class="auto-group">
+          <div class="auto-group-title">${name} <span style="color:#475569;font-weight:400">${items.length}</span></div>
+          <div class="auto-grid">${items.map(renderTaskCard).join('')}</div>
+        </div>`
+      ).join('');
+    }
+  }
+
   function applyAutoFilter() {
-    const q = (document.getElementById('auto-search-input').value || '').trim().toLowerCase();
-    const activePill = document.querySelector('.auto-pill.active');
-    const cat = activePill ? activePill.dataset.cat : '';
+    const q = (AUTO_STATE.search || '').trim().toLowerCase();
+    const cat = AUTO_STATE.selectedCat;
     document.querySelectorAll('#automation .auto-card').forEach(card => {
       const blob = card.dataset.search || '';
       const cCat = card.dataset.cat || '';
@@ -2098,28 +2305,176 @@ graph LR
       const matchCat = !cat || cat === 'all' || cCat === cat;
       card.classList.toggle('hidden', !(matchQ && matchCat));
     });
-    // Empty state
-    ['auto-tasks', 'auto-hooks'].forEach(id => {
-      const grid = document.getElementById(id);
-      if (!grid) return;
-      const anyVisible = Array.from(grid.children).some(c => !c.classList.contains('hidden') && !c.classList.contains('auto-empty'));
-      let empty = grid.querySelector('.auto-empty-filter');
-      if (!anyVisible && !empty) {
-        const div = document.createElement('div');
-        div.className = 'auto-empty auto-empty-filter';
-        div.textContent = '該当なし';
-        grid.appendChild(div);
-      } else if (anyVisible && empty) {
-        empty.remove();
-      }
+    // Hide empty groups
+    document.querySelectorAll('.auto-group').forEach(g => {
+      const anyVisible = g.querySelectorAll('.auto-card:not(.hidden)').length > 0;
+      g.style.display = anyVisible ? '' : 'none';
     });
   }
+
+  function renderTimeline(tasks) {
+    const tl = document.getElementById('auto-timeline');
+    const hoursEl = document.getElementById('auto-tl-hours');
+    const now = new Date();
+    const horizon = new Date(now.getTime() + 24 * 3600 * 1000);
+
+    // Hour labels
+    hoursEl.innerHTML = '';
+    for (let i = 0; i < 24; i++) {
+      const hr = (now.getHours() + i + 1) % 24;
+      const div = document.createElement('div');
+      div.className = 'auto-tl-hour' + (hr % 6 === 0 ? ' major' : '');
+      div.textContent = (hr % 3 === 0) ? hr + '時' : '';
+      hoursEl.appendChild(div);
+    }
+
+    // Clear old events
+    tl.querySelectorAll('.auto-tl-event, .auto-tl-now').forEach(e => e.remove());
+
+    // Now indicator
+    const nowMark = document.createElement('div');
+    nowMark.className = 'auto-tl-now';
+    nowMark.style.left = '0%';
+    tl.appendChild(nowMark);
+
+    // Events
+    tasks.forEach(t => {
+      if (t.disabled) return;
+      const n = parseDate(t.next_run);
+      if (!n || n < now || n > horizon) return;
+      const pct = ((n - now) / (24 * 3600 * 1000)) * 100;
+      const dot = document.createElement('div');
+      dot.className = 'auto-tl-event cat-' + t.category;
+      dot.style.left = 'calc(' + pct + '% - 2px)';
+      dot.title = t.name + ' — ' + String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+      dot.addEventListener('click', (e) => { e.stopPropagation(); openAutoModal({kind:'task', name: t.name}); });
+      tl.appendChild(dot);
+    });
+
+    document.getElementById('auto-now-label').textContent =
+      '現在: ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  }
+
+  function setHealthBanner(tasks, hooks) {
+    const failed = tasks.filter(t => !t.disabled && isFailed(t));
+    const overdue = tasks.filter(t => !t.disabled && fmtNext(t.next_run).cls === 'overdue');
+    const active = tasks.filter(t => !t.disabled);
+    const el = document.getElementById('auto-health');
+    el.classList.remove('ok', 'warn', 'alert');
+    const icon = document.getElementById('auto-health-icon');
+    const title = document.getElementById('auto-health-title');
+    const sub = document.getElementById('auto-health-sub');
+
+    if (failed.length > 0) {
+      el.classList.add('alert');
+      icon.textContent = '🔴';
+      title.textContent = failed.length + '件が失敗しています';
+      sub.innerHTML = '要確認: <b>' + failed.map(t => t.name).join(', ') + '</b>';
+    } else if (overdue.length > 2) {
+      el.classList.add('warn');
+      icon.textContent = '⚠️';
+      title.textContent = overdue.length + '件が期限を過ぎています';
+      sub.innerHTML = 'PC再起動後などで取りこぼし。' + overdue.length + '件が予定時刻に実行されていません。';
+    } else if (overdue.length > 0) {
+      el.classList.add('warn');
+      icon.textContent = '⏰';
+      title.textContent = overdue.length + '件が期限を過ぎています';
+      sub.textContent = 'まもなく自動的に次の実行サイクルに入ります。';
+    } else {
+      el.classList.add('ok');
+      icon.textContent = '✅';
+      title.textContent = 'すべて正常';
+      sub.textContent = active.length + '件の定期タスクと ' + hooks.length + '件のフックが稼働中。次の実行を待機しています。';
+    }
+  }
+
+  // Modal
+  function openAutoModal(ref) {
+    const { tasks, hooks } = AUTO_STATE;
+    let item = null;
+    if (ref.kind === 'task') item = tasks.find(t => t.name === ref.name);
+    else item = hooks.find(h => h.name === ref.name);
+    if (!item) return;
+
+    const icon = ref.kind === 'task' ? item.icon : (HOOK_ICONS[item.category] || '🪝');
+    document.getElementById('m-icon').textContent = icon;
+    document.getElementById('m-name').textContent = item.name;
+    document.getElementById('m-cat').textContent =
+      (ref.kind === 'task' ? 'Windowsタスク · ' : 'Claudeフック · ') + item.category +
+      (item.business && item.business !== 'common' ? ' · ' + (BUSINESS_LABELS[item.business] || item.business) : '');
+
+    let html = '';
+    html += `<div class="auto-modal-section"><div class="auto-modal-label">目的</div><div class="auto-modal-value">${item.purpose}</div></div>`;
+    if (item.description) {
+      html += `<div class="auto-modal-section"><div class="auto-modal-label">詳細</div><div class="auto-modal-value">${item.description}</div></div>`;
+    }
+    if (ref.kind === 'task') {
+      const nxt = fmtNext(item.next_run);
+      const last = fmtLast(item.last_run);
+      const cd = countdownText(item.next_run);
+      html += `<div class="auto-modal-section"><div class="auto-modal-label">次回実行</div><div class="auto-modal-value"><span class="auto-modal-countdown" data-next="${item.next_run||''}">${cd}</span>${nxt.date ? ` <span style="color:#64748b;font-size:0.78rem">(${nxt.date.toLocaleString('ja-JP')})</span>` : ''}</div></div>`;
+      if (last) html += `<div class="auto-modal-section"><div class="auto-modal-label">前回実行</div><div class="auto-modal-value">${last}${item.last_result && item.last_result !== 'なし' ? ' (結果コード: ' + item.last_result + ')' : ''}</div></div>`;
+      if (item.schedule_human) html += `<div class="auto-modal-section"><div class="auto-modal-label">スケジュール</div><div class="auto-modal-value">${item.schedule_human}</div></div>`;
+      if (item.script) html += `<div class="auto-modal-section"><div class="auto-modal-label">スクリプト</div><div class="auto-modal-value"><code>${item.script}</code></div></div>`;
+      if (item.action) html += `<div class="auto-modal-section"><div class="auto-modal-label">実行コマンド</div><div class="auto-modal-value"><code>${item.action.slice(0, 200)}</code></div></div>`;
+      if (item.status) html += `<div class="auto-modal-section"><div class="auto-modal-label">ステータス</div><div class="auto-modal-value">${item.status}${item.disabled ? ' (無効)' : ''}</div></div>`;
+    } else {
+      html += `<div class="auto-modal-section"><div class="auto-modal-label">発火タイミング</div><div class="auto-modal-value">${item.trigger}</div></div>`;
+      if (item.script) html += `<div class="auto-modal-section"><div class="auto-modal-label">スクリプト</div><div class="auto-modal-value"><code>${item.script}</code></div></div>`;
+    }
+
+    document.getElementById('m-body').innerHTML = html;
+    document.getElementById('auto-modal-bg').classList.add('open');
+  }
+  function closeAutoModal() {
+    document.getElementById('auto-modal-bg').classList.remove('open');
+  }
+  document.getElementById('auto-modal-bg').addEventListener('click', (e) => {
+    if (e.target.id === 'auto-modal-bg') closeAutoModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAutoModal();
+  });
+
+  function countdownText(nextStr) {
+    const next = parseDate(nextStr);
+    if (!next) return '起動時・手動';
+    const now = new Date();
+    let diffSec = Math.round((next - now) / 1000);
+    if (diffSec < 0) return '期限超過 ' + Math.abs(Math.round(diffSec/60)) + '分前';
+    const h = Math.floor(diffSec / 3600);
+    const m = Math.floor((diffSec % 3600) / 60);
+    const s = diffSec % 60;
+    if (h > 24) return Math.floor(h/24) + '日 ' + (h%24) + '時間後';
+    if (h > 0) return h + '時間 ' + m + '分後';
+    if (m > 0) return m + '分 ' + s + '秒後';
+    return s + '秒後';
+  }
+
+  // Tick countdowns every second when modal is open
+  setInterval(() => {
+    const modal = document.getElementById('auto-modal-bg');
+    if (!modal || !modal.classList.contains('open')) return;
+    modal.querySelectorAll('.auto-modal-countdown').forEach(el => {
+      el.textContent = countdownText(el.dataset.next);
+    });
+  }, 1000);
+
+  // Refresh cards every minute
+  setInterval(() => {
+    if (!document.getElementById('automation')?.classList.contains('active')) return;
+    renderTasks();
+    applyAutoFilter();
+    renderTimeline(AUTO_STATE.tasks);
+  }, 60000);
 
   fetch('automation_index.json?_=' + Date.now())
     .then(r => r.json())
     .then(data => {
       const tasks = data.scheduled_tasks || [];
       const hooks = data.claude_hooks || [];
+      AUTO_STATE.tasks = tasks;
+      AUTO_STATE.hooks = hooks;
       const activeTasks = tasks.filter(t => !t.disabled);
 
       let soon = 0, today = 0, overdue = 0;
@@ -2136,46 +2491,65 @@ graph LR
       document.getElementById('stat-today').textContent = today;
       document.getElementById('stat-overdue').textContent = overdue;
 
-      // Sort: overdue→soon→today→future→disabled→N/A
-      const rank = (t) => {
-        if (t.disabled) return 5;
-        const c = fmtNext(t.next_run).cls;
-        return c === 'overdue' ? 0 : c === 'soon' ? 1 : c === 'today' ? 2 : c === 'idle' ? 4 : 3;
-      };
-      tasks.sort((a, b) => {
-        const rd = rank(a) - rank(b);
-        if (rd !== 0) return rd;
-        return (a.next_run || 'z').localeCompare(b.next_run || 'z');
-      });
-
-      document.getElementById('auto-tasks').innerHTML = tasks.map(renderTaskCard).join('');
+      setHealthBanner(tasks, hooks);
+      renderTasks();
       document.getElementById('auto-hooks').innerHTML = hooks.map(renderHookCard).join('');
       document.getElementById('auto-updated').textContent =
-        (data.generated_at || '').replace('T',' ').slice(0,16);
+        (data.generated_at || '').replace('T', ' ').slice(0, 16);
+      renderTimeline(tasks);
 
-      // Category pills
+      // Pills
       const byCat = {};
       tasks.forEach(t => { byCat[t.category] = (byCat[t.category] || 0) + 1; });
       hooks.forEach(h => { byCat[h.category] = (byCat[h.category] || 0) + 1; });
       const pillsEl = document.getElementById('auto-pills');
       const allCount = tasks.length + hooks.length;
       pillsEl.innerHTML = `<div class="auto-pill active" data-cat="all">すべて<span class="cnt">${allCount}</span></div>` +
-        Object.entries(byCat).sort((a,b) => b[1]-a[1]).map(([cat, n]) =>
+        Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([cat, n]) =>
           `<div class="auto-pill" data-cat="${cat}">${cat}<span class="cnt">${n}</span></div>`
         ).join('');
-
       pillsEl.querySelectorAll('.auto-pill').forEach(p => {
         p.addEventListener('click', () => {
           pillsEl.querySelectorAll('.auto-pill').forEach(x => x.classList.remove('active'));
           p.classList.add('active');
+          AUTO_STATE.selectedCat = p.dataset.cat;
           applyAutoFilter();
         });
       });
-      document.getElementById('auto-search-input').addEventListener('input', applyAutoFilter);
+
+      // Search
+      document.getElementById('auto-search-input').addEventListener('input', (e) => {
+        AUTO_STATE.search = e.target.value;
+        applyAutoFilter();
+      });
+
+      // Group select
+      document.getElementById('auto-group-select').addEventListener('change', (e) => {
+        AUTO_STATE.group = e.target.value;
+        renderTasks();
+        applyAutoFilter();
+      });
+
+      // Sort select
+      document.getElementById('auto-sort-select').addEventListener('change', (e) => {
+        AUTO_STATE.sort = e.target.value;
+        renderTasks();
+        applyAutoFilter();
+      });
+
+      // Card click → modal
+      document.getElementById('automation').addEventListener('click', (e) => {
+        const card = e.target.closest('.auto-card');
+        if (!card) return;
+        openAutoModal({ kind: card.dataset.kind, name: card.dataset.name });
+      });
     })
     .catch(err => {
-      document.getElementById('auto-tasks').innerHTML =
+      document.getElementById('auto-tasks-container').innerHTML =
         '<div class="auto-empty" style="color:#fb7185">読み込み失敗: ' + err.message + '</div>';
+      document.getElementById('auto-health-icon').textContent = '❌';
+      document.getElementById('auto-health-title').textContent = '読み込みエラー';
+      document.getElementById('auto-health-sub').textContent = err.message;
     });
 </script>
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T20:51:04.174318",
+  "generated_at": "2026-04-24T20:51:32.802543",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL",
@@ -234,7 +234,7 @@
     {
       "name": "EC_OrdersImport",
       "purpose": "EC注文メール取込（Gmail API） → 経理ダッシュボード反映",
-      "description": "10分ごとにGmailをスキャンし、楽天・Amazon・Yahoo等のEC注文メールを accounting.db の ec_orders に取り込む。メール着信から最大10分で経理ダッシュボードのEC売上に反映される。直近7日分をupsert。",
+      "description": "10分ごとにGmailをスキャンし、カラーミー（shop-pro.jp「ご注文確認メール」）・食べチョク（「商品受注のご連絡」）・さとふる（「お礼品のお申込み」）の注文メールを accounting.db の ec_orders に取り込む。食べチョクは商品価格/送料/クール代/手数料を分離抽出し、total=売上（顧客支払い）・fee=手数料（勘定科目4406）として格納。メール着信から最大10分で経理ダッシュボードのEC売上に反映。直近7日分をupsertし、UNIQUE(channel,order_number,product_name)制約で重複スキップ。",
       "category": "経理",
       "business": "maruko-suisan",
       "icon": "🛒",

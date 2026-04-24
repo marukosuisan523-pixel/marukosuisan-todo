@@ -183,6 +183,18 @@
   .auto-stat.alert .num { color: #fb7185; }
   .auto-stat.info .num { color: #a78bfa; }
 
+  /* Server health grid */
+  .srv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .srv-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  .srv-card.alive { border-color: #14532d; background: linear-gradient(135deg, #0a2e1c 0%, #1e293b 100%); }
+  .srv-card.dead  { border-color: #7f1d1d; background: linear-gradient(135deg, #1a0a0a 0%, #1e293b 100%); }
+  .srv-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 6px currentColor; }
+  .srv-card.alive .srv-dot { background: #4ade80; color: #4ade80; }
+  .srv-card.dead  .srv-dot { background: #fb7185; color: #fb7185; }
+  .srv-info { flex: 1; min-width: 0; }
+  .srv-name { font-size: 0.85rem; font-weight: 700; color: #f8fafc; }
+  .srv-meta { font-size: 0.68rem; color: #94a3b8; margin-top: 2px; }
+
   /* Timeline 24h */
   .auto-timeline-wrap { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px 20px 14px; margin-bottom: 24px; }
   .auto-timeline-title { font-size: 0.78rem; color: #94a3b8; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
@@ -1950,6 +1962,12 @@ graph LR
     <div class="auto-stat alert"><div class="num" id="stat-overdue">—</div><div class="lbl">期限超過</div></div>
   </div>
 
+  <!-- Server health -->
+  <div class="portal-section" style="margin-bottom:20px">
+    <div class="portal-section-title">常駐サーバー稼働状況</div>
+    <div class="srv-grid" id="srv-grid"><div class="auto-empty">読み込み中...</div></div>
+  </div>
+
   <!-- 24h timeline -->
   <div class="auto-timeline-wrap">
     <div class="auto-timeline-title">
@@ -2476,6 +2494,30 @@ graph LR
     applyAutoFilter();
     renderTimeline(AUTO_STATE.tasks);
   }, 60000);
+
+  // --- Server health (refresh every 30s) ---
+  function renderServerHealth() {
+    fetch('server-health?_=' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        const el = document.getElementById('srv-grid');
+        if (!el) return;
+        el.innerHTML = (data.servers || []).map(s => {
+          const cls = s.alive ? 'alive' : 'dead';
+          const meta = s.port ? `Port ${s.port}` : 'プロセス監視';
+          return `<div class="srv-card ${cls}"><div class="srv-dot"></div><div class="srv-info"><div class="srv-name">${s.label}</div><div class="srv-meta">${meta}</div></div></div>`;
+        }).join('');
+      })
+      .catch(() => {
+        const el = document.getElementById('srv-grid');
+        if (el) el.innerHTML = '<div class="auto-empty">取得失敗</div>';
+      });
+  }
+  renderServerHealth();
+  setInterval(() => {
+    if (!document.getElementById('automation')?.classList.contains('active')) return;
+    renderServerHealth();
+  }, 30000);
 
   fetch('automation_index.json?_=' + Date.now())
     .then(r => r.json())

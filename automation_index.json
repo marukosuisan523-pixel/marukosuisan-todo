@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T05:30:04.584880",
+  "generated_at": "2026-05-01T05:32:06.351352",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL_Hourly",
@@ -35,7 +35,7 @@
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/refresh_automation_portal.bat",
       "next_run": "2026/05/02 5:30:00",
-      "last_run": "2026/05/01 5:30:01",
+      "last_run": "2026/05/01 5:32:03",
       "last_result": "267009",
       "status": "Running",
       "action": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\refresh_automation_portal.ps1\"\"",

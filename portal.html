@@ -145,6 +145,12 @@
   .org-table .agent-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-right: 4px; }
   .org-table .skill-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.68rem; background: #1e293b; color: #94a3b8; border: 1px solid #334155; margin: 1px 2px; }
 
+  /* 詳細表のセル内テキスト */
+  .org-table .can-do { font-size: 0.82rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 6px; }
+  .org-table .triggers { font-size: 0.7rem; color: #64748b; line-height: 1.45; }
+  .org-table .triggers::before { content: "声のかけ方： "; color: #475569; font-weight: 600; }
+  .org-table td:last-child { min-width: 280px; max-width: 360px; }
+
   /* ===== ORG PAGE V2 — カード階層型 ===== */
   .org-hero { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
   .org-hero-discord { display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 70%); border: 1px solid #312e81; border-radius: 12px; }
@@ -1671,17 +1677,20 @@
             <th>エージェント</th>
             <th>モデル</th>
             <th>スキル</th>
-            <th>トリガーワード</th>
+            <th>できること / 声のかけ方</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="color:#cbd5e1">秘書室</td>
+            <td style="color:#fcd34d">秘書室</td>
             <td><span style="color:#38bdf8;font-size:0.85em">&#9679;</span> <span style="color:#fb923c;font-size:0.85em">&#9679;</span> <span style="color:#a78bfa;font-size:0.85em">&#9679;</span> 全事業</td>
-            <td style="color:#38bdf8">&#8212; (メインセッション直轄)</td>
+            <td style="color:#fcd34d">&#8212; (メイン直轄)</td>
             <td>Opus 4.6</td>
             <td><span class="skill-tag">task-manager</span></td>
-            <td>スケジュール、リマインド、経営相談</td>
+            <td>
+              <div class="can-do">全体の状況把握と振り分けの司令塔。タスクの追加/完了、リマインド、複数事業をまたぐ判断、レビュー、経営相談に応じます。「どこに振ればいい？」と相談すると最適な部署に渡します。</div>
+              <div class="triggers">スケジュール、リマインド、経営相談、レビュー、振り分けて、確認して</div>
+            </td>
           </tr>
           <tr>
             <td style="color:#4ade80">仕入・販売部</td>
@@ -1689,7 +1698,10 @@
             <td><span class="agent-tag" style="background:#0a2e1c;color:#4ade80">shiire</span></td>
             <td>Sonnet 4.6</td>
             <td><span class="skill-tag">misoca</span><span class="skill-tag">product-master</span></td>
-            <td>請求書、見積書、商品登録、商品一覧、受注、発送</td>
+            <td>
+              <div class="can-do">圓子水産の販売・出荷まわり全般。MISOCA経由で請求書・見積書・納品書をPDF出力、商品マスタへの新商品登録や単価変更、受注の取込、発送指示まで担当します。</div>
+              <div class="triggers">請求書作って、見積書、納品書、商品登録、商品一覧、単価変更、受注、発送</div>
+            </td>
           </tr>
           <tr>
             <td style="color:#6ee7b7">経理部</td>
@@ -1697,15 +1709,21 @@
             <td><span class="agent-tag" style="background:#032e22;color:#6ee7b7">keiri</span></td>
             <td>Sonnet 4.6</td>
             <td><span class="skill-tag">accounting</span></td>
-            <td>仕訳、経理、帳簿、売上、経費、入金、銀行明細、月次、決算</td>
+            <td>
+              <div class="can-do">3事業すべての会計を担当。仕訳CSVの作成（円簿/弥生互換）、銀行明細・POSデータからの自動仕訳、MISOCA請求データの取込、月次・決算・消費税対応、税理士提出用書類の作成まで。</div>
+              <div class="triggers">仕訳、経理、帳簿、売上、経費、入金、出金、銀行明細、POS、月次、決算、消費税、インボイス、税理士</div>
+            </td>
           </tr>
           <tr>
             <td style="color:#a78bfa">労務・給与部</td>
             <td><span style="color:#38bdf8;font-size:0.85em">&#9679;</span> <span style="color:#fb923c;font-size:0.85em">&#9679;</span> 圓子水産・熊の家</td>
             <td><span class="agent-tag" style="background:#1a0a3e;color:#a78bfa">roumu</span></td>
             <td>Sonnet 4.6</td>
-            <td><span class="skill-tag">payroll-slip</span><span class="skill-tag">payroll-attendance</span><span class="skill-tag">payroll-calc</span><span class="skill-tag">payroll-ledger</span><span class="skill-tag">payroll-docs</span><span class="skill-tag">payroll-yukyu</span><span class="skill-tag">payroll-overtime</span><span class="skill-tag">payroll-rules-learn</span><span class="skill-tag">payroll-precheck</span><span class="skill-tag">pdf-generator</span><span class="skill-tag">roumu-progress</span><span class="skill-tag">staff-calendar</span></td>
-            <td>給与、給料、勤怠、シフト、打刻、賃金台帳、入社、退社、有休、振休、残業、36協定、PDF作成、労務進捗</td>
+            <td><span class="skill-tag">payroll-slip</span><span class="skill-tag">payroll-attendance</span><span class="skill-tag">payroll-calc</span><span class="skill-tag">payroll-ledger</span><span class="skill-tag">payroll-docs</span><span class="skill-tag">payroll-yukyu</span><span class="skill-tag">payroll-overtime</span><span class="skill-tag">payroll-rules-learn</span><span class="skill-tag">payroll-precheck</span><span class="skill-tag">pdf-generator</span><span class="skill-tag">roumu-progress</span><span class="skill-tag">staff-calendar</span><span class="skill-tag">employment-rules</span></td>
+            <td>
+              <div class="can-do">月次給与処理を一気通貫で実行。Airシフトからの勤怠CSV自動DL、所得税・社保込みの明細作成、賃金台帳への転記、有休/振休管理、36協定残業チェック、入退社書類（雇用契約書・退職届）まで。就業規則や年間休日計算も対応。</div>
+              <div class="triggers">月次労務、給与、給料、明細、勤怠、シフト、打刻、賃金台帳、入社、退社、雇用契約書、有休、振休、残業、36協定、就業規則、年間休日</div>
+            </td>
           </tr>
           <tr>
             <td style="color:#22d3ee">IT・システム部</td>
@@ -1713,15 +1731,21 @@
             <td><span class="agent-tag" style="background:#041e2b;color:#22d3ee">system</span></td>
             <td>Sonnet 4.6</td>
             <td><span class="skill-tag">browser-auto</span></td>
-            <td>コード、バグ、スクリプト、システム、API、自動化、デプロイ</td>
+            <td>
+              <div class="can-do">社内システムの開発・保守・自動化。コード修正、バグ対応、新機能の実装、API連携、ブラウザ操作の自動化（ログイン必須サイトのスクレイピング含む）、タスクスケジューラ登録、デプロイまで。</div>
+              <div class="triggers">コード書いて、バグ直して、スクリプト、システム、API、自動化、デプロイ、ブラウザ操作、ログインして</div>
+            </td>
           </tr>
           <tr>
-            <td style="color:#94a3b8">総務部</td>
+            <td style="color:#cbd5e1">総務部</td>
             <td><span style="color:#38bdf8;font-size:0.85em">&#9679;</span> <span style="color:#fb923c;font-size:0.85em">&#9679;</span> <span style="color:#a78bfa;font-size:0.85em">&#9679;</span> 全事業</td>
-            <td style="color:#64748b">&#8212; (メインセッション直轄)</td>
+            <td style="color:#cbd5e1">&#8212; (メイン直轄)</td>
             <td>Opus 4.6</td>
-            <td>&#8212;</td>
-            <td>届出、契約、備品、庶務、許認可</td>
+            <td><span class="skill-tag">document-archive</span></td>
+            <td>
+              <div class="can-do">届出・契約・登記・許認可などの公的手続き、備品・庶務全般。スマホ/スキャナで取り込んだ書類PDFを自動で読み取り・分類・リネーム・所定フォルダへ保存します。</div>
+              <div class="triggers">届出、契約、備品、庶務、許認可、登記、書類、スキャン、PDF保存、書類ルール</div>
+            </td>
           </tr>
           <tr>
             <td style="color:#fb7185">YouTube担当</td>
@@ -1729,7 +1753,10 @@
             <td><span class="agent-tag" style="background:#4c0519;color:#fb7185">youtube</span></td>
             <td>Sonnet 4.6</td>
             <td><span class="skill-tag">video-transcribe</span></td>
-            <td>文字起こし、動画の内容、チャンネル監視</td>
+            <td>
+              <div class="can-do">YouTube・X(Twitter)・TikTok・Instagram等のURLやローカル動画から音声を抽出して文字起こし（Whisperでローカル処理）。チャンネル監視や動画内容のサマリーも対応。</div>
+              <div class="triggers">文字起こし、動画、YouTube、この動画の内容、チャンネル監視</div>
+            </td>
           </tr>
         </tbody>
       </table>

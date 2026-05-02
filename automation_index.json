@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-03T05:30:04.943561",
+  "generated_at": "2026-05-03T05:32:06.085761",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL_Hourly",
@@ -36,8 +36,8 @@
       "script": "~/合同会社圓子水産/scripts/airshift_download_current.bat",
       "next_run": "2026/05/04 5:30:00",
       "last_run": "2026/05/03 5:30:01",
-      "last_result": "267009",
-      "status": "Running",
+      "last_result": "0",
+      "status": "Ready",
       "action": "cmd.exe /c \"C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\airshift_download_current.bat\"",
       "schedule": "Daily ",
       "start_time": "5:30:00",
@@ -59,8 +59,8 @@
       "script": "~/合同会社圓子水産/scripts/refresh_automation_portal.bat",
       "next_run": "2026/05/04 5:30:00",
       "last_run": "2026/05/03 5:30:01",
-      "last_result": "267009",
-      "status": "Running",
+      "last_result": "0",
+      "status": "Ready",
       "action": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\refresh_automation_portal.ps1\"\"",
       "schedule": "Daily ",
       "start_time": "5:30:00",

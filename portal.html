@@ -2305,12 +2305,13 @@ graph LR
     const sameDay = next.toDateString() === now.toDateString();
     let cls = '', text = '';
     // next_runが過去 = portal情報が古い or 本当の実行詰まり
-    // generated_at から経過時間を見て区別する（snapshot 30分超古ければ「情報更新待ち」、新しければ本当の詰まり）
+    // 判定: generated_at（snapshot生成時刻）と next_run を比較
+    //   next_run > generated_at → 生成時点では未来、その後経過しただけ = 情報更新待ち
+    //   next_run < generated_at → 生成時点で既に過去 = 本当のoverdue
     if (diffMin < 0) {
       const gen = generatedAt ? parseDate(generatedAt.replace('T', ' ')) : null;
-      const snapshotAgeMin = gen ? Math.round((now - gen) / 60000) : 999;
-      if (snapshotAgeMin > 30) {
-        // snapshotが古い → portalデータ陳腐化が原因（実体は次回実行待ちで動いてる可能性大）
+      if (gen && next > gen) {
+        // snapshot生成後に時刻が過ぎただけ（実体は次回実行待ちで動いてる可能性大）
         text = '情報更新待ち';
         cls = 'stale';
       } else if (diffMin < -60) {

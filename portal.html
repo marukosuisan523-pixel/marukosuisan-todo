@@ -2355,7 +2355,7 @@ graph LR
     const failed = isFailed(t) && !t.disabled;
     const statusCls = failed ? 'st-failed' : (t.disabled ? 'st-disabled' : (t.status === 'Running' ? 'st-running' : 'st-ready'));
     const statusLbl = failed ? '失敗' : (t.disabled ? 'OFF' : (t.status === 'Running' ? '実行中' : '稼働中'));
-    const overdueCls = nxt.cls === 'overdue' ? ' overdue' : '';
+    const overdueCls = nxt.cls === 'overdue' ? ' overdue' : (nxt.cls === 'stale' ? ' stale' : '');
     const disabledCls = t.disabled ? ' is-disabled' : '';
     const failedCls = failed ? ' failed' : '';
     const searchBlob = (t.name + ' ' + t.purpose + ' ' + (t.description||'') + ' ' + t.category).toLowerCase();

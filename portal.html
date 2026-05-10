@@ -348,6 +348,8 @@
   .auto-card:hover { background: #273548; border-color: #475569; transform: translateY(-1px); }
   .auto-card.overdue { background: #2d1818; border-color: #7f1d1d; }
   .auto-card.overdue:hover { background: #3a1f1f; }
+  .auto-card.stale { background: #1f2937; border-color: #475569; }
+  .auto-card-next.stale { color: #94a3b8; font-style: italic; }
   .auto-card.failed { border: 2px solid #fb7185; background: #2d1818; }
   .auto-card.failed::before { content: '⚠️'; position: absolute; top: 8px; right: 8px; font-size: 0.9rem; }
   .auto-card.cat-経理 { border-left-color: #6ee7b7; }
@@ -2293,15 +2295,32 @@ graph LR
     return new Date(+m[1], +m[2]-1, +m[3], +m[4], +m[5]);
   }
 
-  function fmtNext(nextStr) {
+  let __generatedAt = '';
+  function fmtNext(nextStr, generatedAt) {
+    if (generatedAt === undefined) generatedAt = __generatedAt;
     const next = parseDate(nextStr);
     if (!next) return { text: '起動時・手動', cls: 'idle', date: null };
     const now = new Date();
     const diffMin = Math.round((next - now) / 60000);
     const sameDay = next.toDateString() === now.toDateString();
     let cls = '', text = '';
-    if (diffMin < -60) { text = '未実行 (' + Math.round(Math.abs(diffMin)/60) + 'h前)'; cls = 'overdue'; }
-    else if (diffMin < 0) { text = '未実行 (' + Math.abs(diffMin) + '分前)'; cls = 'overdue'; }
+    // next_runが過去 = portal情報が古い or 本当の実行詰まり
+    // generated_at から経過時間を見て区別する（snapshot 30分超古ければ「情報更新待ち」、新しければ本当の詰まり）
+    if (diffMin < 0) {
+      const gen = generatedAt ? parseDate(generatedAt.replace('T', ' ')) : null;
+      const snapshotAgeMin = gen ? Math.round((now - gen) / 60000) : 999;
+      if (snapshotAgeMin > 30) {
+        // snapshotが古い → portalデータ陳腐化が原因（実体は次回実行待ちで動いてる可能性大）
+        text = '情報更新待ち';
+        cls = 'stale';
+      } else if (diffMin < -60) {
+        text = '未実行 (' + Math.round(Math.abs(diffMin)/60) + 'h前)';
+        cls = 'overdue';
+      } else {
+        text = '未実行 (' + Math.abs(diffMin) + '分前)';
+        cls = 'overdue';
+      }
+    }
     else if (diffMin < 60) { text = 'あと ' + diffMin + '分'; cls = 'soon'; }
     else if (sameDay) { text = '今日 ' + String(next.getHours()).padStart(2,'0') + ':' + String(next.getMinutes()).padStart(2,'0'); cls = 'today'; }
     else {
@@ -2646,6 +2665,7 @@ graph LR
     .then(data => {
       const tasks = data.scheduled_tasks || [];
       const hooks = data.claude_hooks || [];
+      __generatedAt = data.generated_at || '';
       AUTO_STATE.tasks = tasks;
       AUTO_STATE.hooks = hooks;
       const activeTasks = tasks.filter(t => !t.disabled);

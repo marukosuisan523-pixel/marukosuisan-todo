@@ -411,6 +411,39 @@
     .auto-toolbar { flex-direction: column; }
     .auto-select { width: 100%; }
   }
+
+  /* ===== FREIGHT PAGE ===== */
+  .freight-header { margin-bottom: 18px; }
+  .freight-header h2 { font-size: 1.4rem; color: #f1f5f9; margin-bottom: 4px; }
+  .freight-meta { font-size: 0.78rem; color: #64748b; }
+  .freight-formula { background: #1e293b; border-left: 3px solid #38bdf8; padding: 12px 16px; border-radius: 6px; margin-bottom: 28px; font-size: 0.88rem; color: #e2e8f0; }
+  .freight-formula strong { color: #38bdf8; margin-right: 6px; }
+  .freight-note { display: block; font-size: 0.72rem; color: #94a3b8; margin-top: 6px; }
+  .freight-section-title { font-size: 0.95rem; color: #cbd5e1; margin: 24px 0 10px; padding-left: 4px; border-left: 3px solid #475569; padding-left: 10px; }
+  .freight-table-wrap { background: #1e293b; border-radius: 8px; padding: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .freight-table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: 0.82rem; }
+  .freight-table th, .freight-table td { padding: 8px 10px; text-align: right; border-bottom: 1px solid #334155; white-space: nowrap; }
+  .freight-table th { background: #0f172a; color: #94a3b8; font-weight: 600; font-size: 0.75rem; text-align: center; }
+  .freight-table td:first-child, .freight-table td:nth-child(2) { color: #94a3b8; text-align: center; font-weight: 600; }
+  .freight-table tbody tr:hover { background: #243348; }
+  .freight-table tr.row-highlight td { background: #1e3a5f; color: #f1f5f9; font-weight: 700; }
+  .freight-table tr.row-highlight:hover td { background: #234670; }
+  .freight-extras { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 28px; }
+  .freight-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px 18px; }
+  .freight-card h4 { font-size: 0.85rem; color: #38bdf8; margin-bottom: 10px; font-weight: 700; }
+  .freight-zones { list-style: none; font-size: 0.78rem; color: #cbd5e1; line-height: 1.7; }
+  .freight-zones li b { display: inline-block; min-width: 64px; color: #94a3b8; }
+  .freight-mini { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .freight-mini th, .freight-mini td { padding: 6px 10px; border-bottom: 1px solid #334155; text-align: center; color: #cbd5e1; }
+  .freight-mini th { color: #94a3b8; font-weight: 600; font-size: 0.74rem; }
+  .freight-mini-note { font-size: 0.7rem; color: #64748b; margin-top: 6px; }
+  .freight-notes { list-style: disc; padding-left: 18px; font-size: 0.78rem; color: #cbd5e1; line-height: 1.8; }
+  .freight-notes b { color: #fbbf24; }
+  @media (max-width: 600px) {
+    .freight-formula { font-size: 0.78rem; }
+    .freight-table { font-size: 0.75rem; min-width: 760px; }
+    .freight-table th, .freight-table td { padding: 6px 6px; }
+  }
 </style>
 </head>
 <body>
@@ -426,6 +459,7 @@
     <button class="tab" data-page="org">組織図</button>
     <button class="tab" data-page="automation">自動化</button>
     <button class="tab" data-page="map">システムマップ</button>
+    <button class="tab" data-page="freight">運賃表</button>
   </div>
 </div>
 
@@ -2151,6 +2185,109 @@ graph LR
       <button class="auto-modal-close" onclick="closeAutoModal()" aria-label="閉じる">✕</button>
     </div>
     <div id="m-body"></div>
+  </div>
+</div>
+
+<!-- ===== FREIGHT PAGE ===== -->
+<div class="page" id="freight">
+  <div class="freight-header">
+    <h2>配送運賃表（佐川 飛脚クール便・当社独自）</h2>
+    <p class="freight-meta">契約 No.15001525-000 ／ 適用期間 2026/04/01〜2027/03/31 ／ 月間 386個前提</p>
+  </div>
+
+  <div class="freight-formula">
+    <strong>計算式：</strong> 請求送料 = ⌈ ( 佐川元運賃 + クール代 + 100円 ) × 1.1 ÷ 10 ⌉ × 10
+    <span class="freight-note">※「100円」= 当社独自の資材・手間代／税込・10円単位切り上げ</span>
+  </div>
+
+  <h3 class="freight-section-title">クール便 — 税抜（見積書・納品書・misoca入力用）</h3>
+  <div class="freight-table-wrap">
+    <table class="freight-table">
+      <thead>
+        <tr><th>サイズ</th><th>重量</th><th>北海道</th><th>北東北</th><th>南東北</th><th>関東</th><th>信越</th><th>東海</th><th>北陸</th><th>関西</th><th>中国</th><th>四国</th><th>北九州</th><th>南九州</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>60cm</td><td>2kg</td><td>920</td><td>1,070</td><td>1,070</td><td>1,120</td><td>1,220</td><td>1,220</td><td>1,220</td><td>1,270</td><td>1,270</td><td>1,270</td><td>1,270</td><td>1,270</td></tr>
+        <tr><td>80cm</td><td>5kg</td><td>1,050</td><td>1,220</td><td>1,220</td><td>1,220</td><td>1,320</td><td>1,320</td><td>1,320</td><td>1,370</td><td>1,470</td><td>1,470</td><td>1,470</td><td>1,470</td></tr>
+        <tr><td>100cm</td><td>10kg</td><td>1,230</td><td>1,530</td><td>1,530</td><td>1,530</td><td>1,730</td><td>1,730</td><td>1,780</td><td>1,780</td><td>1,830</td><td>1,830</td><td>1,930</td><td>1,930</td></tr>
+        <tr class="row-highlight"><td>140cm</td><td>20kg</td><td>1,950</td><td>2,700</td><td>2,800</td><td>2,900</td><td>2,900</td><td>3,000</td><td>3,000</td><td>3,200</td><td>3,300</td><td>3,400</td><td>3,500</td><td>3,500</td></tr>
+        <tr><td>—</td><td>30kg</td><td>3,200</td><td>3,400</td><td>3,500</td><td>3,600</td><td>3,600</td><td>3,700</td><td>3,700</td><td>3,900</td><td>4,000</td><td>4,100</td><td>4,200</td><td>4,200</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="freight-section-title">クール便 — 税込（請求総額・客先表示用）</h3>
+  <div class="freight-table-wrap">
+    <table class="freight-table">
+      <thead>
+        <tr><th>サイズ</th><th>重量</th><th>北海道</th><th>北東北</th><th>南東北</th><th>関東</th><th>信越</th><th>東海</th><th>北陸</th><th>関西</th><th>中国</th><th>四国</th><th>北九州</th><th>南九州</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>60cm</td><td>2kg</td><td>1,020</td><td>1,180</td><td>1,180</td><td>1,240</td><td>1,350</td><td>1,350</td><td>1,350</td><td>1,400</td><td>1,400</td><td>1,400</td><td>1,400</td><td>1,400</td></tr>
+        <tr><td>80cm</td><td>5kg</td><td>1,160</td><td>1,350</td><td>1,350</td><td>1,350</td><td>1,460</td><td>1,460</td><td>1,460</td><td>1,510</td><td>1,620</td><td>1,620</td><td>1,620</td><td>1,620</td></tr>
+        <tr><td>100cm</td><td>10kg</td><td>1,360</td><td>1,690</td><td>1,690</td><td>1,690</td><td>1,910</td><td>1,910</td><td>1,960</td><td>1,960</td><td>2,020</td><td>2,020</td><td>2,130</td><td>2,130</td></tr>
+        <tr class="row-highlight"><td>140cm</td><td>20kg</td><td>2,150</td><td>2,980</td><td>3,090</td><td>3,200</td><td>3,200</td><td>3,310</td><td>3,310</td><td>3,530</td><td>3,640</td><td>3,750</td><td>3,860</td><td>3,860</td></tr>
+        <tr><td>—</td><td>30kg</td><td>3,530</td><td>3,750</td><td>3,860</td><td>3,970</td><td>3,970</td><td>4,080</td><td>4,080</td><td>4,290</td><td>4,400</td><td>4,510</td><td>4,620</td><td>4,620</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="freight-extras">
+    <div class="freight-card">
+      <h4>地帯と県の対応</h4>
+      <ul class="freight-zones">
+        <li><b>北海道</b> — 北海道</li>
+        <li><b>北東北</b> — 青森・岩手・秋田</li>
+        <li><b>南東北</b> — 宮城・山形・福島</li>
+        <li><b>関東</b> — 茨城・栃木・群馬・埼玉・千葉・東京・神奈川・山梨</li>
+        <li><b>信越</b> — 新潟・長野</li>
+        <li><b>東海</b> — 岐阜・静岡・愛知・三重</li>
+        <li><b>北陸</b> — 富山・石川・福井</li>
+        <li><b>関西</b> — 滋賀・京都・大阪・兵庫・奈良・和歌山</li>
+        <li><b>中国</b> — 鳥取・島根・岡山・広島・山口</li>
+        <li><b>四国</b> — 徳島・香川・愛媛・高知</li>
+        <li><b>北九州</b> — 福岡・佐賀・長崎・大分</li>
+        <li><b>南九州</b> — 熊本・宮崎・鹿児島</li>
+        <li><b>沖縄</b> — 別途見積（未対応）</li>
+      </ul>
+    </div>
+
+    <div class="freight-card">
+      <h4>クール代（重量別・冷蔵冷凍同額）</h4>
+      <table class="freight-mini">
+        <tr><th>重量</th><th>クール代</th></tr>
+        <tr><td>2kg</td><td>250</td></tr>
+        <tr><td>5kg</td><td>300</td></tr>
+        <tr><td>10kg</td><td>400</td></tr>
+        <tr><td>20kg</td><td>800</td></tr>
+        <tr><td>30kg</td><td>1,200</td></tr>
+      </table>
+      <p class="freight-mini-note">※ 30kg = 20kg(800) + 増10kg(400)</p>
+    </div>
+
+    <div class="freight-card">
+      <h4>サイズ ↔ 重量の対応</h4>
+      <table class="freight-mini">
+        <tr><th>3辺合計</th><th>重量上限</th></tr>
+        <tr><td>60cm</td><td>2kg</td></tr>
+        <tr><td>80cm</td><td>5kg</td></tr>
+        <tr><td>100cm</td><td>10kg</td></tr>
+        <tr><td>140cm</td><td>20kg</td></tr>
+        <tr><td>140cm</td><td>30kg(超過)</td></tr>
+      </table>
+      <p class="freight-mini-note">※ サイズ140超・30kg超は別途見積</p>
+    </div>
+
+    <div class="freight-card">
+      <h4>注意事項</h4>
+      <ul class="freight-notes">
+        <li>サイズと重量の<b>大きい方</b>の区分が適用される</li>
+        <li>沖縄・一部離島は別途料金（中継料負担）</li>
+        <li>30万円超の出荷は事前にドライバーへ連絡</li>
+        <li>即日配達は正規運賃適用（契約運賃外）</li>
+        <li>ハイライト行（140/20kg）= 15kg箱1個に該当</li>
+      </ul>
+    </div>
   </div>
 </div>
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-17T10:30:05.159354",
+  "generated_at": "2026-05-17T10:52:06.710474",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL_Hourly",
@@ -58,9 +58,9 @@
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/refresh_automation_portal.bat",
       "next_run": "2026/05/18 5:30:00",
-      "last_run": "2026/05/17 10:24:54",
-      "last_result": "-2147020576",
-      "status": "Ready",
+      "last_run": "2026/05/17 10:52:04",
+      "last_result": "267009",
+      "status": "Running",
       "action": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\refresh_automation_portal.ps1\"\"",
       "schedule": "Daily ",
       "start_time": "5:30:00",
@@ -104,8 +104,8 @@
       "disabled": false,
       "script": "~/合同会社圓子水産/経理/dashboard/scripts/run-daily-labor.ps1",
       "next_run": "2026/05/18 6:00:00",
-      "last_run": "2026/05/17 10:24:54",
-      "last_result": "-2147020576",
+      "last_run": "2026/05/17 10:52:03",
+      "last_result": "0",
       "status": "Ready",
       "action": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\邨檎炊\\dashboard\\scripts\\run-daily-labor.ps1\"\"",
       "schedule": "Daily ",
@@ -126,9 +126,9 @@
       "color": "orange",
       "disabled": false,
       "script": "~/合同会社圓子水産/経理/dashboard/scripts/ec_orders_scheduled.bat",
-      "next_run": "2026/05/17 10:34:09",
-      "last_run": "2026/05/17 10:24:54",
-      "last_result": "-2147020576",
+      "next_run": "2026/05/17 10:54:09",
+      "last_run": "2026/05/17 10:44:10",
+      "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\邨檎炊\\dashboard\\scripts\\start-ec-orders-hidden.vbs\"\"",
       "schedule": "One Time Only, Minute ",
@@ -172,9 +172,9 @@
       "color": "purple",
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/gmail-sorter/watchdog.bat",
-      "next_run": "2026/05/17 10:35:40",
-      "last_run": "2026/05/17 10:24:54",
-      "last_result": "-2147020576",
+      "next_run": "2026/05/17 11:05:40",
+      "last_run": "2026/05/17 10:50:41",
+      "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\gmail-sorter\\watchdog.ps1\"\"",
       "schedule": "One Time Only, Minute ",
@@ -264,8 +264,8 @@
       "color": "blue",
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/todo/gcal_sync.py",
-      "next_run": "2026/05/17 10:45:00",
-      "last_run": "2026/05/17 10:30:01",
+      "next_run": "2026/05/17 11:00:00",
+      "last_run": "2026/05/17 10:45:01",
       "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\蜷亥酔莨夂､ｾ蝨灘ｭ先ｰｴ逕｣\\scripts\\todo\\runners\\run-gcal-sync.ps1\"\"",
@@ -530,6 +530,6 @@
       "maruko-suisan": 4,
       "common": 15
     },
-    "failed_tasks": 7
+    "failed_tasks": 3
   }
 }

@@ -2265,26 +2265,26 @@
   </div>
 
   <div class="grid">
-    <div class="card active">
+    <div class="card running">
       <div class="card-header">
         <div class="card-title">在庫管理システム</div>
-        <span class="status-badge status-active">P3完了・スプレッドシート同期済</span>
+        <span class="status-badge status-running">稼働中（機能拡張継続）</span>
       </div>
-      <div class="card-tech">Next.js 16 + Prisma v7 + SQLite + shadcn/ui</div>
+      <div class="card-tech">Next.js 16 + Prisma v7 + SQLite + shadcn/ui + kuroshiro（漢字→ひらがな検索）</div>
       <p class="section-label">完了</p>
       <ul class="done-items">
         <li>P1基盤</li>
-        <li>zaico272品目</li>
+        <li>zaico277品目</li>
         <li>製造ページ</li>
         <li>BOM61件</li>
-        <li>棚卸しページ</li>
-        <li>仕込み計算ページ</li>
-        <li>メニュー49件(199原材料)</li>
+        <li>棚卸し（チェックボックス除外フラグ・今後7日フィルタ）</li>
+        <li>仕込み計算（prep_days_target Float化）</li>
+        <li>メニュー49件</li>
         <li>賞味期限45品目</li>
       </ul>
       <p class="section-label" style="margin-top:8px">次</p>
       <ul class="next-items">
-        <li>けいじの塩焼き定食原材料 → 新メニュー比率設定 → P4自動発注</li>
+        <li>けいじの塩焼き定食原材料 → 新メニュー比率設定 → P4自動発注 → 死亡問題恒久対策</li>
       </ul>
     </div>
 
@@ -2310,14 +2310,16 @@
     <div class="card running">
       <div class="card-header">
         <div class="card-title">LINE通知サーバー</div>
-        <span class="status-badge status-running">稼働中</span>
+        <span class="status-badge status-running">稼働中（機能拡張継続）</span>
       </div>
-      <div class="card-tech">Node.js + LINE Messaging API</div>
+      <div class="card-tech">Node.js + Express + LINE Messaging API + HMAC短期トークンURL（画像配信）</div>
       <p class="section-label">完了</p>
       <ul class="done-items">
-        <li>/send</li>
-        <li>/send-task</li>
-        <li>/webhook エンドポイント</li>
+        <li>- メッセージ系: `/send`</li>
+        <li>`/send-task`</li>
+        <li>`/send-mention`</li>
+        <li>`/send-direct`</li>
+        <li>`/notify`</li>
       </ul>
     </div>
 
@@ -2442,13 +2444,15 @@
     <div class="card running">
       <div class="card-header">
         <div class="card-title">書類整理システム</div>
-        <span class="status-badge status-running">稼働中</span>
+        <span class="status-badge status-running">稼働中（機能拡張継続）</span>
       </div>
       <div class="card-tech">document-archiveスキル + Read（PDF/画像読み取り）</div>
       <p class="section-label">完了</p>
       <ul class="done-items">
         <li>inbox受付</li>
         <li>自動読み取り・分類・リネーム・移動・engram登録</li>
+        <li>名刺DB（meishi.csv 受領場所/日時/経由者）</li>
+        <li>請求書月別×支払状態ルール（2026-05-10 統一）</li>
       </ul>
     </div>
 
@@ -2496,20 +2500,115 @@
       </div>
     </div>
 
-    <div class="card active">
+    <div class="card running">
       <div class="card-header">
         <div class="card-title">労務エージェント（roumu-agent）</div>
-        <span class="status-badge status-active">本番実行可能</span>
+        <span class="status-badge status-running">稼働中・機能拡張継続</span>
       </div>
-      <div class="card-tech">Claude Code エージェント + 既存6スキル + 新規6スキル + Discord進捗UI + PDF生成</div>
-      <p class="section-label" style="margin-top:8px">完了済み</p>
+      <div class="card-tech">Claude Code エージェント + 既存6スキル + 新規5スキル + Playwright</div>
+      <p class="section-label" style="margin-top:8px">次</p>
       <ul class="next-items">
-        <li>Step 1〜5 ✅ 基盤・ルール・スキル・データ・3月検証</li>
-        <li>Step 7〜8 ✅ Discord進捗報告（roumu-progress）+ PDF生成（pdf-generator）</li>
+        <li>roumu-progress（進捗共有スキル）の精度向上</li>
+        <li>年次タスク（税理士連携）の自動化検討</li>
       </ul>
-      <p class="section-label" style="margin-top:8px">残り</p>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">シフト共有（shift-share）</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">Playwright + openpyxl + Pillow + Python urllib</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>Excel自動DL→HTML→画像化→個人LINE→承認→グループLINE二段階配信フロー</li>
+        <li>SKILL登録</li>
+        <li>CLAUDE.mdトリガーワード追加</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
       <ul class="next-items">
-        <li>Step 6: シフト修正自動化（Playwright）— 当面は半自動運用</li>
+        <li>月次自動化（タスクスケジューラor手動トリガー）の検討</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">作業日報PDF</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">reportlab + A4横マトリクス（1日1枚・100枚ストック運用）</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>テンプレ確定（千葉/白岡/小川/田中/コニー/浅倉+バイト3枠）</li>
+        <li>書き方ガイドPDF</li>
+        <li>ヤマヤ記法（ヤ）</li>
+        <li>ご飯屋作業1行統合ルール</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>AI読取→スプレッドシート自動集計（フェーズ2）</li>
+        <li>個人別累計・原価計算ダッシュボード</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">LINE→Discord作業日報ブリッジ</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">Node.js + Express + LINE Content API + Discord webhook</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>画像転送ロジック</li>
+        <li>GitHub Actions keep-alive 10分（/warmup）</li>
+        <li>httpsAgent keep-alive</li>
+        <li>Discord allowlist追加</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">作業日報グリッドOCR</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">OpenCV + 4隅検出 + 透視変換（1405×715 px = 5px/mm）+ テンプレート座標</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>テンプレート方式へ全面移行（罫線検出方式は旧式に退役）</li>
+        <li>nippo-agent統合</li>
+        <li>cell label信頼可</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>集計データのスプレッドシート連携</li>
+      </ul>
+    </div>
+
+    <div class="card running">
+      <div class="card-header">
+        <div class="card-title">在庫管理 公開API</div>
+        <span class="status-badge status-running">稼働中</span>
+      </div>
+      <div class="card-tech">Next.js API Routes + Bearer認証 + CORS ワイルドカード</div>
+      <p class="section-label">完了</p>
+      <ul class="done-items">
+        <li>認証・robots.txt遮断・CORS設定・本番反映</li>
+      </ul>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>外部チャットボット側（自作）の実装着手</li>
+      </ul>
+    </div>
+
+    <div class="card active">
+      <div class="card-header">
+        <div class="card-title">無人氷販売システム</div>
+        <span class="status-badge status-active">構想段階</span>
+      </div>
+      <div class="card-tech">QR決済（PayPay等候補）+ 電気錠 + 業務用冷凍庫 + 監視カメラ（想定）</div>
+      <p class="section-label" style="margin-top:8px">次</p>
+      <ul class="next-items">
+        <li>ハード調達 → PoC → 本格運用</li>
       </ul>
     </div>
 
@@ -2519,34 +2618,116 @@
     <h2>システム依存関係</h2>
     <div class="mermaid">
 graph LR
-    GCal[Googleカレンダー] --> GAS
-    GAS --> Todo[Todoボード]
-    GAS --> Render[Render通知サーバー]
-    Render --> LINE[LINE Messaging API]
-    LINE --> Staff[スタッフグループ]
-    Inventory[在庫管理システム] -.将来.-> Render
-    Zaico[zaico API] <--> Inventory
-    AirRegi[Airレジ] --> SQLite
-    SQLite --> Dashboard[会計ダッシュボード]
-    ColorMe[カラーミー] --> Dashboard
-    Tabechoku[食べチョク] --> Dashboard
-    Satofuru[さとふる] --> Dashboard
-    Gmail[Gmail API] --> GmailSorter[gmail-sorter]
-    GmailSorter --> Label[ラベル付与+アーカイブ]
-    GmailSorter --> Discord[Discord Bot]
-    Discord --> Notify[重要メール通知]
-    TaskSch[タスクスケジューラ] --> ClaudeP[claude -p 自動化基盤]
+    subgraph TASKS["タスク・通知"]
+        GCal[Googleカレンダー]
+        GAS[GAS]
+        Todo[Todoボード]
+        Render[Render通知サーバー]
+        LINE[LINE Messaging API]
+        Staff[スタッフグループ]
+    end
+
+    subgraph SHIFT["シフト・労務"]
+        AirShift[Airシフト]
+        RoumuAgent[労務エージェント]
+        ShiftShare[シフト共有]
+        LINEStaff[業務LINEグループ]
+        PaySlip[給与明細]
+        WageLedger[賃金台帳]
+        YukyuLedger[有休管理台帳]
+        OvertimeTracker[残業累計]
+    end
+
+    subgraph NIPPO["作業日報"]
+        StaffLine[スタッフLINE]
+        DiscordNippo[Discord作業日報ch]
+        NippoAgent[nippo-agent]
+        GridOCR[グリッドOCR]
+        ClaudeVision[Claude Vision]
+    end
+
+    subgraph INV["在庫・公開API"]
+        Zaico[zaico API]
+        Inventory[在庫管理]
+        PubAPI[公開API]
+        Chatbot[外部チャットボット]
+    end
+
+    subgraph SALES["売上ダッシュボード"]
+        AirRegi[Airレジ]
+        SQLite[SQLite]
+        Dashboard[ダッシュボード]
+        ColorMe[カラーミー]
+        Tabechoku[食べチョク]
+        Satofuru[さとふる]
+    end
+
+    subgraph MAIL["メール"]
+        Gmail[Gmail API]
+        GmailSorter[gmail-sorter]
+        Label[ラベル+アーカイブ]
+        Discord[Discord Bot]
+        Notify[重要メール通知]
+    end
+
+    subgraph AUTO["自動化基盤"]
+        TaskSch[タスクスケジューラ]
+        ClaudeP[claude -p 基盤]
+        Engram[engram]
+        Firecrawl[firecrawl]
+        Freee[freee会計MCP]
+    end
+
+    %% タスク・通知の接続
+    GCal --> GAS
+    GAS --> Todo
+    GAS --> Render
+    Render --> LINE
+    LINE --> Staff
+
+    %% シフト・労務
+    AirShift --> RoumuAgent
+    RoumuAgent --> PaySlip
+    RoumuAgent --> WageLedger
+    RoumuAgent --> YukyuLedger
+    RoumuAgent --> OvertimeTracker
+    AirShift --> ShiftShare
+    ShiftShare --> Render
+    Render --> LINEStaff
+
+    %% 作業日報
+    StaffLine --> Render
+    Render --> DiscordNippo
+    DiscordNippo --> NippoAgent
+    NippoAgent --> GridOCR
+    GridOCR --> ClaudeVision
+
+    %% 在庫・公開API
+    Zaico --> Inventory
+    Inventory --> Zaico
+    Inventory -.-> Render
+    Chatbot --> PubAPI
+    PubAPI --> Inventory
+
+    %% 売上
+    AirRegi --> SQLite
+    SQLite --> Dashboard
+    ColorMe --> Dashboard
+    Tabechoku --> Dashboard
+    Satofuru --> Dashboard
+
+    %% メール
+    Gmail --> GmailSorter
+    GmailSorter --> Label
+    GmailSorter --> Discord
+    Discord --> Notify
+
+    %% 自動化基盤
+    TaskSch --> ClaudeP
     ClaudeP --> Discord
-    ClaudeP --> Engram[engram]
-    ClaudeP --> Firecrawl[firecrawl]
-    ClaudeP -.将来.-> Freee[freee会計MCP]
-    AirShift[Airシフト] --> RoumuAgent[労務エージェント]
-    RoumuAgent --> PaySlip[給与明細]
-    RoumuAgent --> WageLedger[賃金台帳]
-    RoumuAgent --> YukyuLedger[有休管理台帳]
-    RoumuAgent --> OvertimeTracker[残業累計トラッカー]
-    RoumuAgent --> DiscordProgress[Discord進捗報告]
-    RoumuAgent --> PDFGen[PDF生成]
+    ClaudeP --> Engram
+    ClaudeP --> Firecrawl
+    ClaudeP -.-> Freee
     </div>
   </div>
 

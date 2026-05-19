@@ -54,10 +54,9 @@
   .expand-btn:hover { background: #334155; color: #94a3b8; }
   .expand-btn.open { transform: rotate(180deg); color: #38bdf8; border-color: #38bdf8; }
 
-  /* Detail panel */
-  .detail-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease; opacity: 0; }
-  .detail-panel.open { opacity: 1; }
-  .detail-inner { background: #151f2e; border: 1px solid #1e3348; border-top: none; border-radius: 0 0 10px 10px; padding: 16px 18px; margin-top: -1px; }
+  /* Detail panel — モーダル化に伴いインライン展開は非表示（DOM保持で innerHTML をモーダルに流す） */
+  .detail-panel { display: none; }
+  .detail-inner { background: #151f2e; border: 1px solid #1e3348; border-radius: 10px; padding: 18px 22px; }
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
   .detail-row { display: flex; flex-direction: column; padding: 5px 0; border-bottom: 1px solid #1a2a3d; }
   .detail-row:last-child { border-bottom: none; }
@@ -71,6 +70,26 @@
 
   /* Open state: remove bottom radius from card */
   .portal-card-wrap.expanded .portal-link { border-radius: 10px 10px 0 0; }
+
+  /* Portal Modal — カード詳細をポップアップ表示 */
+  .portal-modal-bg { position: fixed; inset: 0; background: rgba(2,6,15,0.78); z-index: 1000; display: none; align-items: flex-start; justify-content: center; padding: 32px 16px; overflow-y: auto; backdrop-filter: blur(4px); }
+  .portal-modal-bg.open { display: flex; }
+  .portal-modal { background: #0f1729; border: 1px solid #1e3348; border-radius: 14px; max-width: 960px; width: 100%; padding: 22px 28px 26px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); margin: auto; }
+  .portal-modal-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #1e3348; }
+  .portal-modal-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; flex-shrink: 0; }
+  .portal-modal-title { flex: 1; min-width: 0; }
+  .portal-modal-name { font-size: 1.25rem; font-weight: 700; color: #e2e8f0; }
+  .portal-modal-desc { font-size: 0.85rem; color: #94a3b8; margin-top: 3px; }
+  .portal-modal-close { background: #151f2e; border: 1px solid #334155; color: #cbd5e1; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 0.95rem; transition: background 0.15s; flex-shrink: 0; }
+  .portal-modal-close:hover { background: #1e3348; color: #fff; }
+  .portal-modal-body .detail-inner { border: none; padding: 0; background: transparent; }
+  .portal-modal-body .detail-grid { grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .portal-modal-body .detail-key { font-size: 0.7rem; }
+  .portal-modal-body .detail-val { font-size: 0.88rem; }
+  @media (max-width: 720px) {
+    .portal-modal { padding: 18px 18px 22px; }
+    .portal-modal-body .detail-grid { grid-template-columns: 1fr; }
+  }
 
   /* Icon colors */
   .ic-blue { background: #1e3a5f; color: #38bdf8; }
@@ -412,6 +431,46 @@
     .auto-select { width: 100%; }
   }
 
+  /* ===== WORKFLOW PAGE ===== */
+  .wf-header { margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid #1e3348; }
+  .wf-header h2 { font-size: 1.4rem; color: #f1f5f9; margin-bottom: 4px; }
+  .wf-meta { font-size: 0.78rem; color: #64748b; }
+  .wf-toc { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .wf-toc a { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 8px 14px; border-radius: 999px; font-size: 0.82rem; text-decoration: none; transition: background 0.15s; }
+  .wf-toc a:hover { background: #243348; border-color: #38bdf8; color: #38bdf8; }
+  .wf-section { background: #151f2e; border: 1px solid #1e3348; border-radius: 10px; padding: 22px 26px; margin-bottom: 22px; }
+  .wf-section h3 { font-size: 1.05rem; color: #38bdf8; margin-bottom: 4px; }
+  .wf-section .wf-sub { font-size: 0.78rem; color: #94a3b8; margin-bottom: 18px; }
+  .wf-section h4 { font-size: 0.92rem; color: #cbd5e1; margin: 16px 0 8px; padding-left: 10px; border-left: 3px solid #475569; }
+  .wf-section p { font-size: 0.88rem; color: #cbd5e1; line-height: 1.65; margin-bottom: 10px; }
+  .wf-section ul, .wf-section ol { padding-left: 22px; color: #cbd5e1; font-size: 0.86rem; line-height: 1.7; margin-bottom: 10px; }
+  .wf-section li { margin-bottom: 4px; }
+  .wf-section code { background: #1e293b; padding: 1px 6px; border-radius: 4px; font-size: 0.78rem; color: #94a3b8; font-family: Consolas, Menlo, monospace; }
+  .wf-section strong { color: #f1f5f9; }
+  .wf-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .wf-tl-card { background: #0f172a; border: 1px solid #334155; border-left: 4px solid #38bdf8; border-radius: 8px; padding: 12px 14px; }
+  .wf-tl-card .wf-tl-when { font-size: 0.72rem; color: #38bdf8; font-weight: 700; margin-bottom: 6px; }
+  .wf-tl-card .wf-tl-what { font-size: 0.85rem; color: #e2e8f0; margin-bottom: 4px; }
+  .wf-tl-card .wf-tl-skill { font-size: 0.72rem; color: #94a3b8; }
+  .wf-tl-card.act { border-left-color: #fbbf24; }
+  .wf-tl-card.share { border-left-color: #a78bfa; }
+  .wf-tl-card.match { border-left-color: #22d3ee; }
+  .wf-tl-card.calc { border-left-color: #4ade80; }
+  .wf-skills { display: grid; grid-template-columns: 1fr; gap: 0; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 0; margin: 14px 0; overflow: hidden; }
+  .wf-skill-row { display: grid; grid-template-columns: 180px 110px 1fr; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #1e3348; font-size: 0.82rem; }
+  .wf-skill-row:last-child { border-bottom: none; }
+  .wf-skill-row.head { background: #1e293b; color: #94a3b8; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .wf-skill-row code { background: #1e293b; color: #38bdf8; padding: 1px 6px; border-radius: 4px; font-size: 0.78rem; }
+  .wf-skill-row .wf-skill-phase { color: #94a3b8; }
+  .wf-checklist { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+  .wf-checklist li { color: #cbd5e1; }
+  .wf-tip { background: #1a1800; border-left: 3px solid #f59e0b; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.82rem; color: #fcd34d; }
+  .wf-warn { background: #1f0d0d; border-left: 3px solid #f87171; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.82rem; color: #fca5a5; }
+  @media (max-width: 720px) {
+    .wf-skill-row { grid-template-columns: 1fr; gap: 4px; }
+    .wf-skill-row.head { display: none; }
+  }
+
   /* ===== FREIGHT PAGE ===== */
   .freight-header { margin-bottom: 18px; }
   .freight-header h2 { font-size: 1.4rem; color: #f1f5f9; margin-bottom: 4px; }
@@ -459,6 +518,7 @@
     <button class="tab" data-page="org">組織図</button>
     <button class="tab" data-page="automation">自動化</button>
     <button class="tab" data-page="map">システムマップ</button>
+    <button class="tab" data-page="workflow">ワークフロー</button>
     <button class="tab" data-page="freight">運賃表</button>
   </div>
 </div>
@@ -592,23 +652,79 @@
               <div class="detail-row detail-full"><div class="detail-key">ページ</div><div class="detail-val">ダッシュボード(<code>/</code>) / 在庫一覧(<code>/inventory</code>) / 製造管理(<code>/production</code>) / 棚卸し(<code>/stocktake</code>) / 仕込み計算(<code>/preparation</code>)</div></div>
               <div class="detail-row"><div class="detail-key">zaico連携</div><div class="detail-val">REST API（トークン .env）、全277品目（飲食店134+加工品+資材）</div></div>
               <div class="detail-row"><div class="detail-key">在庫一覧</div><div class="detail-val">部門フィルタ（飲食店/加工品/原材料/資材）+ カテゴリ + 状態フィルタ</div></div>
-              <div class="detail-row"><div class="detail-key">確認周期</div><div class="detail-val">飲食店全品目設定済み（毎日/木/月・木/月・木・日/金/日/月）</div></div>
+              <div class="detail-row"><div class="detail-key">確認周期</div><div class="detail-val">ZAICO+Prisma DB 二重保存（更新時は両方同期必須）。飲食店全品目設定済み</div></div>
               <div class="detail-row"><div class="detail-key">BOM</div><div class="detail-val">61件登録済み（2段階BOM: 無地資材→シール貼付済み→完成品）</div></div>
-              <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応、確認周期で今日の対象品目を自動フィルタ</div></div>
-              <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数 × 注文比率 × 1人前g数（賞味期限ベース）</div></div>
-              <div class="detail-row"><div class="detail-key">DB</div><div class="detail-val"><code>在庫管理/app/dev.db</code> (SQLite)</div></div>
+              <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応・今後7日分の日付ボタンでフィルタ・<code>exclude_from_stocktake</code>チェックボックスで対象外指定可</div></div>
+              <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数×注文比率×1人前g数。<code>prep_days_target</code> Float化で1.5日等小数日対応 ／ <code>exclude_from_prep</code>で除外</div></div>
+              <div class="detail-row"><div class="detail-key">検索機能</div><div class="detail-val">漢字→ひらがな検索対応（kuroshiroで <code>titleYomi</code> 自動生成）</div></div>
+              <div class="detail-row"><div class="detail-key">適正在庫</div><div class="detail-val">月別プリセット運用（2026-05-17実装完了・季節別の最適在庫管理）</div></div>
+              <div class="detail-row"><div class="detail-key">仮想メニュー</div><div class="detail-val">全客対象パターン（おばんざい等）・ratio=1.0+ItemMenuIngredient</div></div>
+              <div class="detail-row"><div class="detail-key">公開API連携</div><div class="detail-val">外部チャットボット向け <code>/api/public/*</code> 5本（別カード参照）</div></div>
+              <div class="detail-row"><div class="detail-key">DB / 本番運用</div><div class="detail-val"><code>在庫管理/app/dev.db</code> (SQLite) ／ port3000 は <code>next start</code> 本番運用（コード変更後は build+restart 必須）</div></div>
               <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/在庫管理/app/</code></div></div>
-              <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注 &#9654; 10分以内死亡問題の恒久対策（HealthMonitor強化）</div></div>
             </div>
+            <div class="detail-note">2026-05-17時点：適正在庫月別プリセット完了・棚卸チェックボックス・漢字検索・公開API稼働中。慢性的にport3000が落ちる問題は調査中</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 在庫管理 公開API -->
+      <div class="portal-card-wrap" data-detail-keywords="公開API REST チャットボット zaiko.marukosuisan.app /api/public/ inventory menus preparation summary Bearer認証 Cloudflare Tunnel robots.txt CHATBOT_API_KEY">
+        <a class="portal-link" href="https://zaiko.marukosuisan.app/api/public/summary" target="_blank" data-keywords="公開API チャットボット REST">
+          <div class="icon ic-emerald">&#128279;</div>
+          <div class="info"><div class="name">在庫管理 公開API</div><div class="desc">外部チャットボット向け REST API</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 180" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-api" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">外部チャットボット</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">自作（瑞樹さん）</text>
+              <path d="M150,38 L178,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-api)"/>
+              <rect x="180" y="10" width="170" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="265" y="28" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold" font-family="Meiryo">Cloudflare Tunnel</text>
+              <text x="265" y="46" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">zaiko.marukosuisan.app</text>
+              <text x="265" y="60" text-anchor="middle" fill="#94a3b8" font-size="8.5" font-family="Meiryo">→ localhost:3000</text>
+              <path d="M350,38 L378,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-api)"/>
+              <rect x="380" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="450" y="32" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">/api/public/*</text>
+              <text x="450" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Bearer認証</text>
+              <path d="M520,38 L548,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-api)"/>
+              <rect x="550" y="10" width="120" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="610" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">JSON応答</text>
+              <text x="610" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">summaryフィールド付</text>
+              <rect x="10" y="86" width="660" height="84" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="104" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">5本のエンドポイント</text>
+              <text x="20" y="120" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; GET /api/public/inventory — 全在庫一覧（ZAICO+Prisma統合）</text>
+              <text x="20" y="134" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; GET /api/public/inventory/search?q= — キーワード検索</text>
+              <text x="20" y="148" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; GET /api/public/menus — メニュー+原材料一覧</text>
+              <text x="20" y="162" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; GET /api/public/preparation?date=...&days=... — 仕込み計算 ／ &#x2022; GET /api/public/summary — 在庫警告サマリー</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">外部チャットボットから在庫・メニュー・仕込み計算を読み取り可能</div></div>
+              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val"><code>Authorization: Bearer &lt;CHATBOT_API_KEY&gt;</code> または <code>?api_key=&lt;key&gt;</code></div></div>
+              <div class="detail-row"><div class="detail-key">公開URL</div><div class="detail-val"><code>https://zaiko.marukosuisan.app/api/public/*</code></div></div>
+              <div class="detail-row"><div class="detail-key">公開手段</div><div class="detail-val">既存Cloudflare Tunnel流用（<code>~/.cloudflared/config.yml</code>記載済）</div></div>
+              <div class="detail-row"><div class="detail-key">実装場所</div><div class="detail-val"><code>在庫管理/app/src/app/api/public/*</code> ／ 共通ヘルパー <code>lib/public-auth.ts</code></div></div>
+              <div class="detail-row"><div class="detail-key">検索リスク対策</div><div class="detail-val"><code>public/robots.txt</code> で <code>Disallow: /</code>（クローラー全遮断）</div></div>
+              <div class="detail-row"><div class="detail-key">CORS</div><div class="detail-val">ワイルドカード許可（チャットボット側ドメイン未確定のため）</div></div>
+            </div>
+            <div class="detail-note">2026-04-24構築。APIキー必須・robots.txt遮断・CORSワイルドカードで「URL漏洩しても認証突破できない」設計</div>
           </div>
         </div>
       </div>
 
       <!-- LINE通知サーバー -->
-      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /webhook 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python">
-        <a class="portal-link" href="https://marukosuisan-line-notify.onrender.com" target="_blank" data-keywords="LINE 通知 render">
+      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /send-direct /notify /webhook /payslip/send /shift/send /warmup /members 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python HMAC keep-alive httpsAgent GitHub Actions 給与明細 シフト共有">
+        <a class="portal-link" href="https://marukosuisan-line-notify.onrender.com" target="_blank" data-keywords="LINE 通知 render 給与明細 シフト">
           <div class="icon ic-emerald">&#128276;</div>
-          <div class="info"><div class="name">LINE通知サーバー</div><div class="desc">Render / Messaging API</div></div>
+          <div class="info"><div class="name">LINE通知サーバー</div><div class="desc">Render / Messaging API ／ 画像配信＋メッセージ</div></div>
           <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
@@ -653,14 +769,20 @@
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">自動で動く。タスクを追加したり完了すると、スタッフのLINEグループに通知が届く</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan-line-notify.onrender.com" target="_blank">marukosuisan-line-notify.onrender.com</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Express</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">エンドポイント</div><div class="detail-val"><code>POST /send</code>（テキスト送信）/ <code>POST /send-task</code>（業務タスク通知）/ <code>POST /webhook</code>（LINE Webhook受信）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（メッセージ系）</div><div class="detail-val"><code>POST /send</code>（テキスト）／<code>/send-task</code>（業務タスク）／<code>/send-mention</code>（メンション付）／<code>/send-direct</code>（1対1）／<code>/notify</code>（統一・private/group振り分け）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（画像・新規）</div><div class="detail-val"><code>POST /payslip/send</code> → <code>GET /payslip/:t/:f</code>（給与明細・HMAC 15分URL）／<code>POST /shift/send</code> → <code>GET /shift/:t/:f</code>（シフト・HMAC 60日URL）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（webhook・管理）</div><div class="detail-val"><code>POST /webhook</code>（LINE受信→Discord転送）／<code>GET /warmup</code>（TLS keep-alive）／<code>GET /members</code>（登録メンバー）／<code>POST /members/map</code>（手動紐付け）</div></div>
               <div class="detail-row"><div class="detail-key">LINE公式</div><div class="detail-val">圓子水産 業務通知 (@035jrawg)</div></div>
               <div class="detail-row"><div class="detail-key">グループID</div><div class="detail-val"><code>Cead6f4532c0c978468dfcd3f78bff9bb</code></div></div>
               <div class="detail-row"><div class="detail-key">Render</div><div class="detail-val"><code>srv-d6rraf3uibrs73dv3hl0</code>（無料プラン・15分スリープ）</div></div>
+              <div class="detail-row"><div class="detail-key">keep-alive</div><div class="detail-val">GitHub Actions <code>.github/workflows/keep-alive.yml</code> で10分ごと <code>/warmup</code> ping ／ httpsAgent (TLS再利用)</div></div>
               <div class="detail-row"><div class="detail-key">GitHub</div><div class="detail-val">marukosuisan523-pixel/marukosuisan-line-notify (private)</div></div>
               <div class="detail-row"><div class="detail-key">デプロイ</div><div class="detail-val">push自動デプロイ（Render GitHub連携）</div></div>
+              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val">画像系は <code>x-upload-key: LINE_PAYSLIP_UPLOAD_KEY</code> ／ HMAC署名URL（<code>LINE_PAYSLIP_HMAC_SECRET</code>）</div></div>
+              <div class="detail-row"><div class="detail-key">画像TTL分離</div><div class="detail-val">給与明細=15分（PAYSLIP_TMP_DIR） ／ シフト=60日（SHIFT_TMP_DIR）・別ディレクトリ運用</div></div>
+              <div class="detail-row"><div class="detail-key">付帯機能</div><div class="detail-val">LINE→Discord作業日報ブリッジ（<code>/webhook</code> 内 image処理→Discord webhook転送）</div></div>
             </div>
-            <div class="detail-note">WindowsのcurlはUTF-8文字化け → Pythonで送信すること</div>
+            <div class="detail-note">2026-05-18 /shift/send 追加で60日URL対応。WindowsのcurlはUTF-8文字化け → Pythonで送信すること</div>
           </div>
         </div>
       </div>
@@ -876,6 +998,245 @@
               <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>payroll-attendance</code>（「勤怠」「シフト」で発動）</div></div>
             </div>
             <div class="detail-note">月次勤怠修正を自動化。PDF生成→Discord送信→承認→反映。進捗はDiscordでリアルタイム確認可能</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シフト共有 -->
+      <div class="portal-card-wrap" data-detail-keywords="シフト 共有 配信 Airシフト Excel 画像 LINE 個人 グループ 承認 shift-share airshift_download_excel shift_excel_to_image shift_share_monthly /shift/send 60日 二段階 月次">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="シフト 共有 配信 LINE 月次">
+          <div class="icon ic-violet">&#128241;</div>
+          <div class="info"><div class="name">シフト共有</div><div class="desc">Air→Excel→画像→LINE二段階配信</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 240" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-share" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-share-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+              </defs>
+              <!-- Step 1: Airシフト確定 -->
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. シフト確定</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Airシフト管理画面</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-share)"/>
+              <!-- Step 2: Excel自動DL -->
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. Excel DL</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">月パターン×Excel</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-share)"/>
+              <!-- Step 3: 整形画像 -->
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. 整形画像</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">色付きHTML→PNG</text>
+              <path d="M430,38 L448,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-share)"/>
+              <!-- Step 4: 個人LINE -->
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">4. 個人LINE</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">プレビュー送信</text>
+              <!-- Step 5: 承認待ち (down) -->
+              <path d="M515,66 L515,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-share)"/>
+              <rect x="450" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="515" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. 承認待ち</text>
+              <text x="515" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">瑞樹さん「OK」</text>
+              <!-- 承認OK → グループ -->
+              <path d="M450,114 L218,114" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-share-ok)"/>
+              <text x="334" y="108" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">OK</text>
+              <!-- Step 6: グループLINE -->
+              <rect x="80" y="86" width="140" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="150" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. 業務グループLINE</text>
+              <text x="150" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">スタッフ全員に配信</text>
+              <!-- 凡例: 出力例 -->
+              <rect x="10" y="160" width="200" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">画像の色凡例</text>
+              <text x="20" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 早番/1030 = 青 / 遅番・通し = 橙</text>
+              <text x="20" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 休み = 赤 / 有休 = 紫 / 振出 = 緑</text>
+              <text x="20" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 週末セルは薄赤背景・凡例同梱</text>
+              <!-- 凡例: スクリプト -->
+              <rect x="230" y="160" width="200" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="240" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">使用スクリプト</text>
+              <text x="240" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; airshift_download_excel.py</text>
+              <text x="240" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; shift_excel_to_image.py</text>
+              <text x="240" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; shift_share_monthly.py（統合）</text>
+              <!-- 凡例: 配信URL -->
+              <rect x="450" y="160" width="220" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="460" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">配信URL（60日有効）</text>
+              <text x="460" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; line-notify-server /shift/send</text>
+              <text x="460" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; HMAC短期トークン+ 60日TTL</text>
+              <text x="460" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 給与明細(15分)と分離</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">確定済みのシフト表を見やすい画像にしてスタッフ全員へLINE配信。下書きでも画像化可能（Excel経由のため）</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">月末・シフト確定後に「来月のシフトみんなに送って」と指示</div></div>
+              <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>shift-share</code>（「シフト共有」「シフト送って」「○月のシフト送信」で発動）</div></div>
+              <div class="detail-row"><div class="detail-key">統合コマンド</div><div class="detail-val"><code>python scripts/shift_share_monthly.py 2026 06</code>（個人）／<code>--to-group</code>（業務LINEグループ）</div></div>
+              <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">個人LINEへ先送信→瑞樹さん「OK」→グループへ配信（CLAUDE.md「取り消し不可な外部操作の鉄則」準拠）</div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/shift/send</code>エンドポイント（render.com）・URLは60日有効</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>.claude/skills/shift-share/SKILL.md</code></div></div>
+            </div>
+            <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 作業日報PDF -->
+      <div class="portal-card-wrap" data-detail-keywords="作業日報 PDF マトリクス A4横 紙運用 担当朝記入 ご飯屋作業 ヤマヤ 完成数 完了 前日累計 ゼブラストライプ generate_daily_report_pdf">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="作業日報 PDF 紙 マトリクス">
+          <div class="icon ic-amber">&#128221;</div>
+          <div class="info"><div class="name">作業日報PDF</div><div class="desc">A4横マトリクス・全員共用・紙運用</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 220" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-nippo" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">1. PDF印刷</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">100枚ストック</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-nippo)"/>
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">2. 担当朝記入</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">残/新規タスク転記</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-nippo)"/>
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">3. 時間記入</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">手書き分数</text>
+              <path d="M430,38 L448,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-nippo)"/>
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">4. 写真→LINE</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">退勤時送信</text>
+              <path d="M515,66 L515,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-nippo)"/>
+              <rect x="450" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="515" y="108" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">5. AI読取</text>
+              <text x="515" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">グリッドOCR→Vision</text>
+              <path d="M450,114 L368,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-nippo)"/>
+              <rect x="236" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="301" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. 集計</text>
+              <text x="301" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">スプレッドシート</text>
+              <rect x="10" y="160" width="660" height="48" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">レイアウト</text>
+              <text x="20" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">作業名 / 前日累計 / 千葉・白岡・小川・田中・コニー・浅倉＋バイト3枠 / 合計時間 / 完成数 / 完了 ／ 1行目=ご飯屋作業固定 ／ 1日1枚</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">複数人作業の時間を1枚の紙にまとめて記入→集計時短。累計の手計算を排除</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎日朝に担当が記入準備→各自時間記入→退勤時に写真送信</div></div>
+              <div class="detail-row"><div class="detail-key">テンプレ</div><div class="detail-val"><code>作業日報/作業日報_テンプレート.pdf</code>（日付なし・再印刷時のみスクリプト実行）</div></div>
+              <div class="detail-row"><div class="detail-key">書き方ガイド</div><div class="detail-val"><code>作業日報/作業日報_書き方ガイド.pdf</code>（Q&A12問・退勤チェックリスト）</div></div>
+              <div class="detail-row"><div class="detail-key">記法</div><div class="detail-val">時間=分単位 / ヤマヤ系=作業名横に（ヤ） / 完了=✓ / ご飯屋作業は1行統合</div></div>
+              <div class="detail-row"><div class="detail-key">生成スクリプト</div><div class="detail-val"><code>scripts/generate_daily_report_pdf.py</code> / <code>generate_qa_pdf.py</code></div></div>
+              <div class="detail-row"><div class="detail-key">対象スタッフ</div><div class="detail-val">千葉・白岡・小川・田中・コニー・浅倉＋バイト3枠（生駒/大石はWOOTBURGER応援で除外）</div></div>
+            </div>
+            <div class="detail-note">2026-04-25運用開始。デザイン上、縦罫線1.5pt/横0.5ptはAI画像認識列判定のため意図的</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LINE→Discord作業日報ブリッジ -->
+      <div class="portal-card-wrap" data-detail-keywords="LINE Discord 作業日報 ブリッジ webhook Render Express 圓子水産業務通知Bot LINE Content API keep-alive httpsAgent warmup">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="LINE Discord 作業日報 ブリッジ webhook">
+          <div class="icon ic-indigo">&#128260;</div>
+          <div class="info"><div class="name">LINE→Discord作業日報ブリッジ</div><div class="desc">LINE画像をDiscord #作業日報へ自動転送</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-bridge" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">スタッフLINE</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">日報写真送信</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-bridge)"/>
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">業務通知Bot</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">LINE公式アカウント</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-bridge)"/>
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">Render</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">webhook受信→画像取得</text>
+              <path d="M430,38 L448,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-bridge)"/>
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">Discord webhook</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">#作業日報 投稿</text>
+              <path d="M515,66 L515,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-bridge)"/>
+              <rect x="450" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="515" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">Claude読取</text>
+              <text x="515" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">副社長解析→集計</text>
+              <rect x="10" y="160" width="660" height="32" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">keep-alive: GitHub Actions 10分間隔で /warmup ping ／ httpsAgent でTLS再利用 ／ Render Free対策</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">スタッフがLINEで送った日報画像をDiscordへ自動転送、Claude常駐セッションで自動解析</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">退勤時にスタッフが業務通知LINEグループまたはDMに写真送信</div></div>
+              <div class="detail-row"><div class="detail-key">経路</div><div class="detail-val">LINE Bot → Render Express → Discord webhook → Claude Code Discord plugin</div></div>
+              <div class="detail-row"><div class="detail-key">実装場所</div><div class="detail-val"><code>TODO管理/line-notify-server/server.js</code> の <code>/webhook</code> 内 image処理</div></div>
+              <div class="detail-row"><div class="detail-key">Discord ch</div><div class="detail-val">#作業日報（id: 1497758275809054800）</div></div>
+              <div class="detail-row"><div class="detail-key">解析担当</div><div class="detail-val">副社長 (常駐clauded) + <code>nippo-agent</code></div></div>
+              <div class="detail-row"><div class="detail-key">既知課題</div><div class="detail-val">Render無料プランのコールドスタートで初回送信が届かない場合あり→2回送り対策</div></div>
+            </div>
+            <div class="detail-note">2026-04-26運用開始。LINE→PC手動コピー作業をゼロ化。keep-alive 10分+ /warmup で安定化済み</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 作業日報グリッドOCR -->
+      <div class="portal-card-wrap" data-detail-keywords="OCR グリッド 罫線検出 OpenCV テンプレート 透視変換 4隅検出 template_extract grid_detector セル切り出し Claude Vision">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="OCR グリッド 罫線 OpenCV">
+          <div class="icon ic-cyan">&#128269;</div>
+          <div class="info"><div class="name">作業日報グリッドOCR</div><div class="desc">写真→4隅検出→透視変換→セル切出</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-ocr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. 写真入力</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">紙の撮影画像</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ocr)"/>
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">2. 4隅検出</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">OpenCV</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ocr)"/>
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">3. 透視変換</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">1405×715 (5px/mm)</text>
+              <path d="M430,38 L448,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ocr)"/>
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">4. テンプレ切出</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">既知座標で15×14セル</text>
+              <path d="M515,66 L515,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ocr)"/>
+              <rect x="450" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="515" y="108" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">5. Vision認識</text>
+              <text x="515" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Claude Vision</text>
+              <path d="M450,114 L368,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ocr)"/>
+              <rect x="236" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="301" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. 結果JSON</text>
+              <text x="301" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">スタッフ別時間集計</text>
+              <rect x="10" y="160" width="660" height="32" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">設計: 罫線検出から「テンプレート方式（PDF既知座標）」に全面移行で列ズレ問題解消（2026-04-27）</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">作業日報写真をセル単位に正確に切り出してAI読取の精度を担保</div></div>
+              <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>作業日報/ocr/template_extract.py</code>（メイン・テンプレ方式）<br><code>grid_detector.py</code>（旧式・互換のため残置）</div></div>
+              <div class="detail-row"><div class="detail-key">出力</div><div class="detail-val"><code>ocr_output_template/cells/</code> / <code>composite.jpg</code> / <code>result.json</code> / <code>debug/</code></div></div>
+              <div class="detail-row"><div class="detail-key">列定義</div><div class="detail-val">作業名/前日累計/9名/合計/完成数/完了 ＝ 列幅 [65,14,16×9,16,32,10]mm</div></div>
+              <div class="detail-row"><div class="detail-key">行定義</div><div class="detail-val">header + 14データ + 合計 ＝ 行高 [8,9×15]mm</div></div>
+              <div class="detail-row"><div class="detail-key">使用</div><div class="detail-val"><code>nippo-agent</code>と統合・cell label信頼可</div></div>
+              <div class="detail-row"><div class="detail-key">失敗条件</div><div class="detail-val">紙の角がフレームから切れる・物で隠れる・ピンボケ→「撮り直し」を返す</div></div>
+            </div>
+            <div class="detail-note">2026-04-27 テンプレート方式へ移行。罫線検出時代の「書き手の癖で行ズレ」「行水増し」問題を構造的に解消</div>
           </div>
         </div>
       </div>
@@ -1113,32 +1474,114 @@
                 <strong>起動時</strong>: L0 identity.txt自動表示 + diary_readで前回要約確認
               </div></div>
               <div class="detail-row"><div class="detail-key">ナレッジグラフ</div><div class="detail-val">2,864エンティティ / 5,569トリプル。kg_query（as_of=日付で時間軸フィルター）、kg_timeline（変遷表示）</div></div>
+              <div class="detail-row"><div class="detail-key">canonical wing</div><div class="detail-val">4つのみ: <code>common</code> / <code>maruko-suisan</code> / <code>kumanoya</code> / <code>kojin</code>（+ agent日記専用 <code>wing_{agent名}</code>）。それ以外は <code>~/.mempalace/wing_aliases.json</code> で自動リダイレクト</div></div>
+              <div class="detail-row"><div class="detail-key">エージェント日記</div><div class="detail-val">秘書 / 副社長 / 労務 / 経理 / 営業 など各エージェントが <code>diary_write</code> で日記保存。次セッション起動時に <code>diary_read</code> で前回内容を確認</div></div>
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（秘書室）</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">mempalace v3.1.0 MCP + engram v1.11.0 MCP + Claude Code auto-memory</div></div>
             </div>
-            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く</div>
+            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く。新事業系wingは作らない（4つ + aliases.json で完結）</div>
           </div>
         </div>
       </div>
 
       <!-- 書類整理システム -->
-      <div class="portal-card-wrap" data-detail-keywords="書類 PDF スキャン inbox 分類 リネーム 保存 総務 document-archive">
-        <a class="portal-link" href="#" onclick="return false" data-keywords="書類 PDF スキャン 整理 保存">
+      <div class="portal-card-wrap" data-detail-keywords="書類 PDF スキャン inbox 分類 リネーム 保存 総務 document-archive 名刺 meishi.csv 請求書 月別 用途別 廃止">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="書類 PDF スキャン 整理 保存 名刺 請求書">
           <div class="icon ic-green">&#128196;</div>
-          <div class="info"><div class="name">書類整理システム</div><div class="desc">書類の自動読み取り・分類・保存</div></div>
+          <div class="info"><div class="name">書類整理システム</div><div class="desc">スキャン→inbox→分類→engram登録</div></div>
           <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
         <div class="detail-panel">
           <div class="detail-inner">
+            <svg viewBox="0 0 680 180" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-doc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. スキャン</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">スマホ／PC</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-doc)"/>
+              <rect x="150" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="210" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. inbox</text>
+              <text x="210" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">~/書類/inbox/</text>
+              <path d="M270,38 L288,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-doc)"/>
+              <rect x="290" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="350" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. 内容判定</text>
+              <text x="350" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Claude Read</text>
+              <path d="M410,38 L428,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-doc)"/>
+              <rect x="430" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="495" y="32" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">4. 分類・移動</text>
+              <text x="495" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">月別×状態フォルダ</text>
+              <path d="M560,38 L578,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-doc)"/>
+              <rect x="580" y="10" width="90" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="625" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. DB登録</text>
+              <text x="625" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">engram + CSV</text>
+              <rect x="10" y="86" width="660" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">書類タイプ別の整理先</text>
+              <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 請求書: <code>書類/YYYY-MM/支払済|未払い/</code>（全事業統一・月別×状態フォルダ）</text>
+              <text x="20" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 名刺: meishi.csv に登録（氏名・会社・役職・連絡先・受領日・元ファイル名）</text>
+              <text x="20" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 通知書・契約書・税務書類: 事業別フォルダに分類</text>
+            </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">届いた書類（PDF・画像）を自動で読み取り、事業別に分類・リネーム・保存。内容もengramに記録されるので後から検索できる</div></div>
-              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">請求書・納品書・通知書などが届いたとき。スマホで撮影 or スキャン → inboxに入れるか、Discordに写真を送るだけ</div></div>
-              <div class="detail-row"><div class="detail-key">使い方</div><div class="detail-val">①<code>~/書類/inbox/</code>にファイルを入れる or Discordに添付送信 → ②「書類」と言えば自動処理開始 → ③確認後に分類保存</div></div>
-              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">document-archiveスキル + Read（PDF/画像読み取り）</div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">届いた書類（PDF・画像）を自動で読み取り、内容判定して適切な場所に分類・リネーム・保存・engram登録</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">請求書・納品書・名刺・通知書が届いたとき。スマホで撮影 → inbox or Discord に送るだけ</div></div>
+              <div class="detail-row"><div class="detail-key">使い方</div><div class="detail-val">①<code>~/書類/inbox/</code> or Discord添付 → ②「書類」と言えば自動処理開始 → ③確認プロンプトで分類保存</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val"><code>document-archive</code> スキル + Read（PDF/画像読み取り）</div></div>
+              <div class="detail-row"><div class="detail-key">請求書ルール</div><div class="detail-val"><code>書類/YYYY-MM/支払済|未払い/</code> 月別×支払状態（全事業統一・用途別フォルダ廃止 2026-05-10）</div></div>
+              <div class="detail-row"><div class="detail-key">名刺DB</div><div class="detail-val">新規名刺はinboxに入れたら自動で出会い情報（場所・日時・経由者）を聞き取り→ <code>meishi.csv</code> 登録</div></div>
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
-              <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（書類メタデータ登録）、Discord（添付受信）</div></div>
+              <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（メタデータ登録）／ Discord（添付受信）／ 経理スキル（請求書取込）</div></div>
             </div>
+            <div class="detail-note">inbox仕分けは都度確認（feedback_inbox_confirm）。請求書は月別×支払状態の構造に統一済み（旧用途別フォルダは廃止）</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 無人氷販売システム -->
+      <div class="portal-card-wrap" data-detail-keywords="無人 氷販売 QR決済 電気錠 店舗内設置 ice unmanned 構想 設計中">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="無人 氷販売 QR 電気錠">
+          <div class="icon ic-slate">&#129482;</div>
+          <div class="info"><div class="name">無人氷販売システム</div><div class="desc">QR決済→電気錠解錠（構想段階）</div></div>
+          <span class="badge badge-dev">設計中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 180" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-ice" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="75" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">1. QR読取</text>
+              <text x="75" y="50" text-anchor="middle" fill="#64748b" font-size="9" font-family="Meiryo">店舗内端末</text>
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow-ice)"/>
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="225" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">2. 決済</text>
+              <text x="225" y="50" text-anchor="middle" fill="#64748b" font-size="9" font-family="Meiryo">PayPay等想定</text>
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow-ice)"/>
+              <rect x="310" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="375" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">3. 電気錠解錠</text>
+              <text x="375" y="50" text-anchor="middle" fill="#64748b" font-size="9" font-family="Meiryo">冷凍庫扉</text>
+              <path d="M440,38 L458,38" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow-ice)"/>
+              <rect x="460" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="525" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">4. 取出・記録</text>
+              <text x="525" y="50" text-anchor="middle" fill="#64748b" font-size="9" font-family="Meiryo">販売ログ</text>
+              <rect x="10" y="86" width="660" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">検討項目（2026-05-17構想開始）</text>
+              <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 設置場所: 店舗内（観光客の朝食材・氷需要を想定）</text>
+              <text x="20" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 決済手段: PayPay / クレカ / 楽天Pay 等の候補比較</text>
+              <text x="20" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; ハードウェア: 業務用冷凍庫 + 電気錠 + QRコード看板 / 監視カメラ</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">無人で氷の販売を可能にする・冷凍ショーケース＋QR決済の組み合わせ</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">店舗営業時間外・営業中の無人対応も視野</div></div>
+              <div class="detail-row"><div class="detail-key">ステータス</div><div class="detail-val">2026-05-17構想段階。実装着手前</div></div>
+              <div class="detail-row"><div class="detail-key">想定顧客</div><div class="detail-val">観光客・地元住民（クーラーボックス用氷の需要）</div></div>
+              <div class="detail-row"><div class="detail-key">類似事例</div><div class="detail-val">無人精米所・冷凍餃子直売所などの仕組みを参考</div></div>
+              <div class="detail-row"><div class="detail-key">未決定</div><div class="detail-val">価格設定・氷の単位（kg / 袋）・補充頻度・在庫切れ通知方式</div></div>
+            </div>
+            <div class="detail-note">構想段階。設計→ハード調達→PoC→本格運用の順で進める想定。実装着手は別途検討</div>
           </div>
         </div>
       </div>
@@ -2198,6 +2641,166 @@ graph LR
 </div>
 
 <!-- ===== FREIGHT PAGE ===== -->
+<div class="page" id="workflow">
+  <div class="wf-header">
+    <h2>業務ワークフロー集</h2>
+    <div class="wf-meta">人が実際にやる業務手順のマニュアル。AIスキル・スクリプトのトリガーワード・タイミング・チェックリスト集</div>
+  </div>
+
+  <div class="wf-toc">
+    <a href="#wf-shift">📅 シフト</a>
+    <a href="#wf-payroll">💰 給与</a>
+    <a href="#wf-keiri">📒 経理</a>
+    <a href="#wf-eigyo">📞 営業</a>
+    <a href="#wf-zaiko">📦 在庫・仕込み</a>
+    <a href="#wf-shorui">📄 書類</a>
+  </div>
+
+  <!-- ===== シフトワークフロー ===== -->
+  <div class="wf-section" id="wf-shift">
+    <h3>📅 シフトワークフロー</h3>
+    <div class="wf-sub">シフト作成 → 共有 → 確定後の勤怠突合 → 給与計算までの月次フロー（2026-05-18完成版）</div>
+
+    <h4>月次タイムライン（5フェーズ）</h4>
+    <div class="wf-timeline">
+      <div class="wf-tl-card act">
+        <div class="wf-tl-when">M月 1〜15日</div>
+        <div class="wf-tl-what">①シフト作成</div>
+        <div class="wf-tl-skill">payroll-shift-fix（全月パターン自動展開）</div>
+      </div>
+      <div class="wf-tl-card share">
+        <div class="wf-tl-when">M月 16〜末日</div>
+        <div class="wf-tl-what">②シフト共有</div>
+        <div class="wf-tl-skill">shift-share（Excel→画像→LINE二段階）</div>
+      </div>
+      <div class="wf-tl-card">
+        <div class="wf-tl-when">M月中</div>
+        <div class="wf-tl-what">③打刻運用</div>
+        <div class="wf-tl-skill">Airシフト（スタッフが打刻）</div>
+      </div>
+      <div class="wf-tl-card match">
+        <div class="wf-tl-when">M+1月 1〜10日</div>
+        <div class="wf-tl-what">④勤怠突合</div>
+        <div class="wf-tl-skill">payroll-attendance + payroll-shift-fix（修正）</div>
+      </div>
+      <div class="wf-tl-card calc">
+        <div class="wf-tl-when">M+1月 10〜25日</div>
+        <div class="wf-tl-what">⑤給与計算・台帳・振込</div>
+        <div class="wf-tl-skill">payroll-calc + payroll-yukyu + payroll-ledger</div>
+      </div>
+    </div>
+
+    <h4>① シフト作成（payroll-shift-fix）</h4>
+    <p>翌月のシフトを Air SHIFT 上に下書きで作成する。自然言語で全月パターンを一括展開できる。</p>
+    <ol>
+      <li><strong>トリガー</strong>: 「○月のシフト作って」「来月のシフト準備して」</li>
+      <li><strong>動作</strong>: 5月CSVを基に基本曜日パターン抽出→秘書が確認→add_shiftで一括反映</li>
+      <li><strong>休みも明示入力</strong>: add_yasumi で休み日も赤セル化（モーダル右上「休み」タブで保存）</li>
+      <li><strong>既存セル保護</strong>: state=empty 以外は skipped_existing で自動回避</li>
+    </ol>
+    <div class="wf-tip">瑞樹さんの「先月と特段流れが変わらない」は <strong>基本曜日パターン引継ぎ</strong>。振出/振休は引継がない。</div>
+
+    <h4>② シフト共有（shift-share）</h4>
+    <p>確定したシフトをスタッフ全員へLINE配信する。下書きでも画像化可能（Excel経由のため）。</p>
+    <ol>
+      <li><strong>トリガー</strong>: 「シフト送って」「来月のシフト共有」「○月のシフト送信」</li>
+      <li><strong>動作</strong>: <code>airshift_download_excel.py</code> → <code>shift_excel_to_image.py</code> → 個人LINEへプレビュー送信</li>
+      <li><strong>承認</strong>: 瑞樹さん「OK」 → <code>shift_share_monthly.py --to-group</code> で業務LINEグループへ配信</li>
+      <li><strong>URL有効期間</strong>: 60日（line-notify-server /shift/send）</li>
+    </ol>
+    <div class="wf-warn"><strong>取り消し不可な外部操作の鉄則</strong>: グループ配信は瑞樹さん承認後のみ実行。承認なしで自動配信しない。</div>
+
+    <h4>③〜⑤ 勤怠突合・給与計算</h4>
+    <p>シフト確定後の月次処理。詳細は <a href="#wf-payroll" style="color:#38bdf8">給与ワークフロー</a> 参照。</p>
+
+    <h4>関連スキル一覧</h4>
+    <div class="wf-skills">
+      <div class="wf-skill-row head"><div>スキル</div><div>フェーズ</div><div>主な処理</div></div>
+      <div class="wf-skill-row"><div><code>payroll-shift-fix</code></div><div class="wf-skill-phase">作成・修正</div><div>Air書き込み（add_shift / add_yasumi / change_shift / remove_shift）</div></div>
+      <div class="wf-skill-row"><div><code>shift-share</code></div><div class="wf-skill-phase">共有</div><div>Excel自動DL→画像化→個人LINE→承認→グループLINE</div></div>
+      <div class="wf-skill-row"><div><code>payroll-attendance</code></div><div class="wf-skill-phase">確定後</div><div>シフト/勤怠CSV自動DL・打刻整形</div></div>
+      <div class="wf-skill-row"><div><code>payroll-rules-learn</code></div><div class="wf-skill-phase">確定後</div><div>修正パターン学習→次回提案</div></div>
+      <div class="wf-skill-row"><div><code>payroll-yukyu</code></div><div class="wf-skill-phase">月次</div><div>有休/振休/振出 台帳管理</div></div>
+      <div class="wf-skill-row"><div><code>payroll-overtime</code></div><div class="wf-skill-phase">月次</div><div>36協定残業累計監視</div></div>
+      <div class="wf-skill-row"><div><code>payroll-calc</code></div><div class="wf-skill-phase">給与</div><div>明細作成・打刻転記・所得税</div></div>
+    </div>
+
+    <h4>シフト作業 チェックリスト</h4>
+    <div class="wf-checklist">
+      <ul>
+        <li>退職者・未入社チェック（feedback_retired_staff_check / prehire_staff_check）</li>
+        <li>基本曜日パターンを瑞樹さんに確認（機械抽出は5月運用反映だが定休日扱いで乖離あり）</li>
+        <li>振休累積を確認（台帳が正本・CSV集計は参考）</li>
+        <li>店休日（火水）と各人個別休日を分けて入力</li>
+        <li>勤務日は add_shift、休み日は add_yasumi で明示入力</li>
+        <li>反映確認はCSVだけで判断しない → スクショ or Excel経由で実態確認</li>
+        <li>共有は <strong>個人LINEプレビュー → 承認 → グループ配信</strong> の二段階</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 給与ワークフロー（プレースホルダ） ===== -->
+  <div class="wf-section" id="wf-payroll">
+    <h3>💰 給与ワークフロー</h3>
+    <div class="wf-sub">月次給与処理の全工程（勤怠取込→明細→台帳→振込）</div>
+    <p>準備中。労務エージェント（roumu-agent）が全工程をオーケストレーション。「月次労務」「今月の給与処理」で起動。</p>
+    <ul>
+      <li><code>payroll-precheck</code> — 保険料率・税額表の最新性チェック</li>
+      <li><code>payroll-attendance</code> — 勤怠CSV取込・整形</li>
+      <li><code>payroll-shift-fix</code> — シフト突合・修正</li>
+      <li><code>payroll-calc</code> — 明細作成・転記・所得税</li>
+      <li><code>payroll-ledger</code> — 賃金台帳転記</li>
+      <li><code>payroll-yukyu</code> — 有休・振休台帳更新</li>
+      <li><code>payroll-overtime</code> — 36協定残業確認</li>
+      <li><code>payroll-final-check</code> — 完了ゲート（7項目機械検証）</li>
+    </ul>
+  </div>
+
+  <!-- ===== 経理ワークフロー（プレースホルダ） ===== -->
+  <div class="wf-section" id="wf-keiri">
+    <h3>📒 経理ワークフロー</h3>
+    <div class="wf-sub">4事業統一経理ワークフロー（圓子水産・熊の家・個人・ICEAGE）</div>
+    <p>準備中。詳細は <code>~/合同会社圓子水産/月次経理フロー.html</code> 参照。</p>
+    <ul>
+      <li><code>accounting</code> — 円簿会計CSV作成・MISOCA取込・銀行・POS取込</li>
+      <li><code>misoca</code> — 請求書・見積書・納品書作成</li>
+      <li><code>freee-keiri-daily</code> — 個人事業の日次経理（現在休止中）</li>
+    </ul>
+  </div>
+
+  <!-- ===== 営業ワークフロー（プレースホルダ） ===== -->
+  <div class="wf-section" id="wf-eigyo">
+    <h3>📞 営業ワークフロー</h3>
+    <div class="wf-sub">キンキ一夜干しの卸売営業・リスト管理・進捗追跡</div>
+    <p>準備中。「営業」「営業メール」「卸売」「取引先」で営業エージェント発動。</p>
+  </div>
+
+  <!-- ===== 在庫・仕込みワークフロー（プレースホルダ） ===== -->
+  <div class="wf-section" id="wf-zaiko">
+    <h3>📦 在庫・仕込みワークフロー</h3>
+    <div class="wf-sub">仕込み計算・棚卸・在庫追加・適正在庫月別プリセット</div>
+    <p>準備中。在庫管理システム（zaiko.marukosuisan.app）が中心。</p>
+    <ul>
+      <li><code>zaico-item-add</code> — ZAICO新規在庫登録（命名・部門・カテゴリ・単位）</li>
+      <li><code>product-master</code> — 販売商品マスタ管理</li>
+      <li>棚卸し: 確認周期で自動フィルタ → スマホ画面で記入</li>
+      <li>仕込み計算: 予想人数×注文比率×1人前g数（賞味期限ベース）</li>
+    </ul>
+  </div>
+
+  <!-- ===== 書類ワークフロー（プレースホルダ） ===== -->
+  <div class="wf-section" id="wf-shorui">
+    <h3>📄 書類ワークフロー</h3>
+    <div class="wf-sub">スキャン → inbox → 自動分類 → engram登録</div>
+    <p>準備中。「書類」「スキャン」「PDF保存」で document-archive スキル発動。</p>
+    <ul>
+      <li>請求書: <code>書類/YYYY-MM/支払済|未払い/</code>（月別×支払状態・全事業統一）</li>
+      <li>名刺: <code>meishi.csv</code> 登録（受領場所・日時・経由者を聞き取り）</li>
+      <li>通知書・契約書・税務書類: 事業別フォルダに分類</li>
+    </ul>
+  </div>
+</div>
+
 <div class="page" id="freight">
   <div class="freight-header">
     <h2>配送運賃表（佐川 飛脚クール便・当社独自）</h2>
@@ -2302,6 +2905,21 @@ graph LR
 
 </div><!-- /.content -->
 
+<!-- Portal Detail Modal (全カード共通・toggleDetailで内容流し込み) -->
+<div class="portal-modal-bg" id="portal-modal-bg" onclick="closePortalModal(event)">
+  <div class="portal-modal" onclick="event.stopPropagation()">
+    <div class="portal-modal-head">
+      <div class="portal-modal-icon" id="pm-icon">📦</div>
+      <div class="portal-modal-title">
+        <div class="portal-modal-name" id="pm-name">—</div>
+        <div class="portal-modal-desc" id="pm-desc"></div>
+      </div>
+      <button class="portal-modal-close" onclick="closePortalModal()" aria-label="閉じる">✕</button>
+    </div>
+    <div class="portal-modal-body" id="pm-body"></div>
+  </div>
+</div>
+
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
   mermaid.initialize({
@@ -2353,38 +2971,49 @@ graph LR
     if (h) activateTab(h);
   });
 
-  // Expand/Collapse detail panels
+  // Open detail panel as modal popup
   function toggleDetail(event, btn) {
     event.preventDefault();
     event.stopPropagation();
     const wrap = btn.closest('.portal-card-wrap');
-    const panel = wrap.querySelector('.detail-panel');
-    const isOpen = panel.classList.contains('open');
+    if (!wrap) return;
+    const link = wrap.querySelector('.portal-link');
+    const iconEl = link?.querySelector('.icon');
+    const name = link?.querySelector('.name')?.textContent || '';
+    const desc = link?.querySelector('.desc')?.textContent || '';
+    const inner = wrap.querySelector('.detail-panel .detail-inner');
+    if (!inner) return;
 
-    if (isOpen) {
-      // Collapse
-      panel.style.maxHeight = panel.scrollHeight + 'px';
-      // Force reflow
-      panel.offsetHeight;
-      panel.style.maxHeight = '0px';
-      panel.classList.remove('open');
-      btn.classList.remove('open');
-      wrap.classList.remove('expanded');
-    } else {
-      // Expand
-      panel.classList.add('open');
-      btn.classList.add('open');
-      wrap.classList.add('expanded');
-      panel.style.maxHeight = panel.scrollHeight + 'px';
-      // After transition, set to auto so content can resize
-      panel.addEventListener('transitionend', function handler() {
-        if (panel.classList.contains('open')) {
-          panel.style.maxHeight = 'auto';
-        }
-        panel.removeEventListener('transitionend', handler);
-      });
-    }
+    const pmIcon = document.getElementById('pm-icon');
+    const iconColorCls = (iconEl?.className.match(/\bic-\w+/) || ['ic-blue'])[0];
+    pmIcon.className = 'portal-modal-icon ' + iconColorCls;
+    pmIcon.innerHTML = iconEl?.innerHTML || '📦';
+    document.getElementById('pm-name').textContent = name;
+    document.getElementById('pm-desc').textContent = desc;
+    document.getElementById('pm-body').innerHTML = inner.innerHTML;
+
+    document.getElementById('portal-modal-bg').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return;
   }
+
+  // Close portal modal (background click or ✕ button or ESC)
+  function closePortalModal(event) {
+    if (event && event.target !== event.currentTarget && event.type === 'click') {
+      // 背景クリックのみ閉じる・内側クリックは閉じない
+      const bg = event.currentTarget;
+      if (event.target !== bg) return;
+    }
+    document.getElementById('portal-modal-bg').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // ESC キーで閉じる
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const bg = document.getElementById('portal-modal-bg');
+      if (bg && bg.classList.contains('open')) closePortalModal();
+    }
+  });
 
   // Search — searches card text, keywords, AND detail content
   document.getElementById('search').addEventListener('input', (e) => {

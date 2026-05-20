@@ -1083,6 +1083,94 @@
         </div>
       </div>
 
+      <!-- LINE Secure File Gateway -->
+      <div class="portal-card-wrap" data-detail-keywords="LINE Secure File Gateway 機微ファイル 賃金台帳 雇用契約書 源泉徴収票 経理書類 xlsx PDF zip docx 1対1 個別配信 HMAC 短期URL TTL 5分 7日 可変 /file/send /file/:t/:f send_secure_file_line.py send_wage_ledger_line.py LINE_FILE_UPLOAD_KEY LINE_FILE_HMAC_SECRET attachment Cache-Control no-store epoch 衝突防止 個別.ttl">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="LINE 機微 ファイル 賃金台帳 契約書 個別配信 xlsx PDF">
+          <div class="icon ic-indigo">&#128274;</div>
+          <div class="info"><div class="name">LINE Secure File Gateway</div><div class="desc">機微xlsx/PDF/zipを個別LINEへHMAC URLで安全配信</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 240" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-secure" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-secure-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+                <marker id="arrow-secure-ng" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f87171"/></marker>
+              </defs>
+              <!-- Step 1: ローカルCLI -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. ローカルCLI</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">--to/--file/--ttl-min</text>
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-secure)"/>
+              <!-- Step 2: /file/send POST -->
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="225" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. /file/send</text>
+              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">X-Upload-Key認証</text>
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-secure)"/>
+              <!-- Step 3: 保存+HMAC URL生成 -->
+              <rect x="310" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="380" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. HMAC URL生成</text>
+              <text x="380" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">{epoch}_filename</text>
+              <path d="M450,38 L468,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-secure)"/>
+              <!-- Step 4: LINE text push -->
+              <rect x="470" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="535" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">4. LINE Push</text>
+              <text x="535" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">text type + URL本文</text>
+              <!-- Step 5: ユーザDLタップ -->
+              <path d="M535,66 L535,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-secure)"/>
+              <rect x="470" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="535" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. URLタップ</text>
+              <text x="535" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">LINE内蔵ブラウザ</text>
+              <!-- 合格→DL / 改ざん・期限切れ→403 -->
+              <path d="M470,114 L290,114" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-secure-ok)"/>
+              <text x="375" y="108" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">HMAC + TTL OK</text>
+              <rect x="160" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="225" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. xlsx DL</text>
+              <text x="225" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Content-Disposition:attachment</text>
+              <path d="M160,114 L60,114" stroke="#f87171" stroke-width="1.5" marker-end="url(#arrow-secure-ng)"/>
+              <text x="115" y="108" text-anchor="middle" fill="#f87171" font-size="9" font-weight="bold" font-family="Meiryo">改ざん・期限切れ</text>
+              <rect x="10" y="86" width="100" height="56" rx="10" fill="#3f1212" stroke="#f87171" stroke-width="1.5"/>
+              <text x="60" y="108" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Meiryo">7. HTTP 403</text>
+              <text x="60" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Expired/Invalid sig</text>
+              <!-- 凡例: 主な用途 -->
+              <rect x="10" y="160" width="210" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">主な用途</text>
+              <text x="20" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 賃金台帳（経理担当・24h）</text>
+              <text x="20" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 雇用契約書（個別契約者・48h）</text>
+              <text x="20" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 源泉徴収票・税務書類等</text>
+              <!-- 凡例: 使用スクリプト -->
+              <rect x="230" y="160" width="220" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="240" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">使用スクリプト</text>
+              <text x="240" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; send_secure_file_line.py（汎用）</text>
+              <text x="240" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; send_wage_ledger_line.py（賃金台帳）</text>
+              <text x="240" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; server.js /file/send + /file/:t/:f</text>
+              <!-- 凡例: セキュリティ -->
+              <rect x="460" y="160" width="210" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="470" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">セキュリティ</text>
+              <text x="470" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; HMAC-SHA256 + base64url</text>
+              <text x="470" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; TTL 5分〜7日可変・個別.ttl</text>
+              <text x="470" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; epoch衝突防止・no-store</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">任意のバイナリ機微ファイル（xlsx/PDF/zip/docx/画像）をスタッフ個人LINE宛に短期HMAC URLで安全配信。期限切れ後はサーバー上から自動削除されて足跡ゼロ</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「○○さんに○○.xlsxをLINEで送って」「賃金台帳を経理に送って」「雇用契約書を本人に送って」と指示</div></div>
+              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python scripts/send_secure_file_line.py --to &lt;氏名orUID&gt; --file &lt;path&gt; --ttl-min &lt;分&gt; --message &lt;文面&gt; --confirm</code></div></div>
+              <div class="detail-row"><div class="detail-key">賃金台帳ラッパ</div><div class="detail-val"><code>python scripts/send_wage_ledger_line.py --to &lt;氏名orUID&gt; --confirm</code>（デフォルトTTL=24時間）</div></div>
+              <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val"><code>--to</code>必須1名のみ・<code>--confirm</code>明示フラグ・本送信前にinteractive「yes」入力（誤送信防止3重ガード）</div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/file/send</code>（POST・X-Upload-Key認証）→ <code>/file/:t/:f</code>（GET・HMAC検証）</div></div>
+              <div class="detail-row"><div class="detail-key">TTL設計</div><div class="detail-val">リクエスト指定・default=60分・min=5分・max=10080分(7日)・ファイル個別<code>.ttl</code>メタファイルで管理・5分間隔自動cleanup</div></div>
+              <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">HMAC-SHA256(<code>filename|expUnix</code>)+base64url・<code>{epoch}_</code>プレフィックス強制で衝突防止・<code>Cache-Control: private, no-store</code>・<code>Content-Disposition: attachment</code></div></div>
+              <div class="detail-row"><div class="detail-key">改ざん防御</div><div class="detail-val">exp改ざん→403 Invalid signature／filename改ざん→403 Invalid signature／期限切れ→403 Expired（T1-T5全合格・2026-05-20）</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">RULE: <code>~/.claude/shared-memory/rule_line_secure_file_gateway.md</code>／実装: <code>TODO管理/line-notify-server/server.js</code>（commit 80a3ec2）</div></div>
+            </div>
+            <div class="detail-note">2026-05-20新規構築。発端=「川島ひなたに賃金台帳をLINEで送って」→ LINE APIはxlsx送信不可なのでHMAC URL+text typeが現実解と判明 → 汎用化して経理書類/契約書/源泉徴収票等の全機微ファイル配信基盤に拡張。給与明細(/payslip 15分)・シフト(/shift 60日)と並ぶ第3系統</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 作業日報PDF -->
       <div class="portal-card-wrap" data-detail-keywords="作業日報 PDF マトリクス A4横 紙運用 担当朝記入 ご飯屋作業 ヤマヤ 完成数 完了 前日累計 ゼブラストライプ generate_daily_report_pdf">
         <a class="portal-link" href="#" onclick="return false" data-keywords="作業日報 PDF 紙 マトリクス">

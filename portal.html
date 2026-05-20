@@ -649,7 +649,10 @@
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">仕込み前の材料確認、棚卸し、メニューの原価計算、在庫が少ない商品の確認に使う</div></div>
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://zaiko.marukosuisan.app" target="_blank">https://zaiko.marukosuisan.app</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + Prisma v7 + SQLite + shadcn/ui + Tailwind CSS v4</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">ページ</div><div class="detail-val">ダッシュボード(<code>/</code>) / 在庫一覧(<code>/inventory</code>) / 製造管理(<code>/production</code>) / 棚卸し(<code>/stocktake</code>) / 仕込み計算(<code>/preparation</code>)</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ページ</div><div class="detail-val">ダッシュボード(<code>/</code>) / 在庫一覧(<code>/inventory</code>) / 製造管理(<code>/production</code>) / 棚卸し(<code>/stocktake</code>) / 仕込み計算(<code>/preparation</code>) / <strong>発注(<code>/order</code>)</strong></div></div>
+              <div class="detail-row"><div class="detail-key">発注ページ</div><div class="detail-val">不足品(danger)+残少(warn)を購入元別グルーピング・発注済みチェックでOrderMark記録・購入元別アクション（🛒Amazonカート / 📧メール / 📞電話 / 🚗店舗 / 📱LINE / 🏭自社）</div></div>
+              <div class="detail-row"><div class="detail-key">Amazon自動カート</div><div class="detail-val">claude-in-chrome経由でAmazonビジネス（本物のChrome＋Business認証）に複数商品を自動カート投入。「Claudeに依頼」ボタンでリストコピー→メインセッションに貼付け</div></div>
+              <div class="detail-row"><div class="detail-key">発注済み日付補正</div><div class="detail-val">毎日22:00 <code>AmazonOrderSync</code> タスクが Amazon注文確認メール(Gmail) から ASIN照合→OrderMark.ordered_at を実注文日に補正</div></div>
               <div class="detail-row"><div class="detail-key">zaico連携</div><div class="detail-val">REST API（トークン .env）、全277品目（飲食店134+加工品+資材）</div></div>
               <div class="detail-row"><div class="detail-key">在庫一覧</div><div class="detail-val">部門フィルタ（飲食店/加工品/原材料/資材）+ カテゴリ + 状態フィルタ</div></div>
               <div class="detail-row"><div class="detail-key">確認周期</div><div class="detail-val">ZAICO+Prisma DB 二重保存（更新時は両方同期必須）。飲食店全品目設定済み</div></div>
@@ -665,6 +668,55 @@
               <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注 &#9654; 10分以内死亡問題の恒久対策（HealthMonitor強化）</div></div>
             </div>
             <div class="detail-note">2026-05-17時点：適正在庫月別プリセット完了・棚卸チェックボックス・漢字検索・公開API稼働中。慢性的にport3000が落ちる問題は調査中</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amazon注文履歴 自動同期 -->
+      <div class="portal-card-wrap" data-detail-keywords="Amazon注文 OrderMark Gmail OAuth ASIN 発注済み同期 amazon-order-sync auto-confirm@amazon.co.jp B0... 毎日22:00 タスクスケジューラ HealthMonitor 在庫管理 発注ページ 自動補正">
+        <a class="portal-link" data-keywords="amazon 注文同期 発注済み 自動補正 gmail">
+          <div class="icon ic-orange">&#128722;</div>
+          <div class="info"><div class="name">Amazon注文履歴 自動同期</div><div class="desc">発注済みフラグを実注文日に毎日補正</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="card-detail">
+          <div class="detail-content">
+            <svg class="detail-svg" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrowAOS" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                  <polygon points="0 0, 10 3, 0 6" fill="#475569"/>
+                </marker>
+              </defs>
+              <rect x="20" y="60" width="100" height="44" rx="8" fill="#1e293b" stroke="#fb923c" stroke-width="1.5"/>
+              <text x="70" y="80" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="bold" font-family="Meiryo">毎日 22:00</text>
+              <text x="70" y="96" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">タスクスケジューラ</text>
+              <line x1="120" y1="82" x2="160" y2="82" stroke="#475569" stroke-width="1.5" marker-end="url(#arrowAOS)"/>
+              <rect x="165" y="60" width="100" height="44" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="215" y="80" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">Gmail検索</text>
+              <text x="215" y="96" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">auto-confirm@amazon</text>
+              <line x1="265" y1="82" x2="305" y2="82" stroke="#475569" stroke-width="1.5" marker-end="url(#arrowAOS)"/>
+              <rect x="310" y="60" width="100" height="44" rx="8" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="360" y="80" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">ASIN抽出</text>
+              <text x="360" y="96" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">本文 B0[A-Z0-9]{8}</text>
+              <line x1="410" y1="82" x2="450" y2="82" stroke="#475569" stroke-width="1.5" marker-end="url(#arrowAOS)"/>
+              <rect x="455" y="60" width="100" height="44" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+              <text x="505" y="80" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Meiryo">OrderMark</text>
+              <text x="505" y="96" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ordered_at 補正</text>
+              <text x="280" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">クリック時=now → 22:00に実注文日に補正</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">/order ページで発注済みチェックをONにすると一旦 ordered_at = now で記録。毎日22:00に Amazon注文確認メール（Gmail）から ASIN を照合して、実際の注文日時に補正する</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">何もしなくて毎日自動で動く。/order /stocktake の「発注済（5月19日）」表示が正確になる</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + googleapis（gmail-sorter OAuth再利用）+ better-sqlite3（Prisma DB直接操作）</div></div>
+              <div class="detail-row"><div class="detail-key">スケジュール</div><div class="detail-val">タスクスケジューラ <code>AmazonOrderSync</code> 毎日 22:00 ／ HealthMonitor監視対象（26h閾値）</div></div>
+              <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/scripts/amazon-order-sync.js</code> + <code>amazon-order-sync.ps1</code></div></div>
+              <div class="detail-row"><div class="detail-key">対象</div><div class="detail-val">OrderMark.note IS NULL or NOT LIKE 'amazon-%' のレコード（補正済みは再照合スキップ）</div></div>
+              <div class="detail-row"><div class="detail-key">ログ</div><div class="detail-val"><code>scripts/logs/amazon-order-sync-YYYY-MM-DD.log</code> ／ 同時実行ロック <code>amazon-order-sync.lock</code></div></div>
+              <div class="detail-row"><div class="detail-key">初回実行結果</div><div class="detail-val">2026-05-20: 28件対象→18件補正成功（Amazon品）／10件スキップ（ミクリード・ロコパン・LINE発注品＝ASIN不在）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">関連スキル</div><div class="detail-val">在庫管理システム /order ページ ／ gmail-sorter（OAuth基盤）</div></div>
+            </div>
+            <div class="detail-note">2026-05-20稼働開始。Amazon以外（ロコパン等）への展開は今後検討。HealthMonitor監視対象。</div>
           </div>
         </div>
       </div>
@@ -1083,8 +1135,85 @@
         </div>
       </div>
 
+      <!-- 給与明細LINE送信 -->
+      <div class="portal-card-wrap" data-detail-keywords="給与明細 LINE 送信 配信 個別 image type プレビュー 月次 PDF JPEG 200dpi PyMuPDF /payslip/send HMAC 15分 send_payslip_line.py roumu-agent 区分 社員 アルバイト registeredName staff_master フルネーム照合 LINE_PAYSLIP_UPLOAD_KEY">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="給与明細 LINE 送信 個別 月次">
+          <div class="icon ic-cyan">&#128181;</div>
+          <div class="info"><div class="name">給与明細LINE送信</div><div class="desc">PDF→JPEG→個人LINEへ image typeで送信</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 220" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-payslip" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- Step 1: 月次給与明細PDF生成 -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. PDF生成</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">export_payslip_pdf.py</text>
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
+              <!-- Step 2: JPEG変換 -->
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="225" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. JPEG変換</text>
+              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">PyMuPDF 200dpi</text>
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
+              <!-- Step 3: /payslip/send -->
+              <rect x="310" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="380" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. /payslip/send</text>
+              <text x="380" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">HMAC 15分URL生成</text>
+              <path d="M450,38 L468,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
+              <!-- Step 4: LINE image push -->
+              <rect x="470" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="535" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">4. LINE image</text>
+              <text x="535" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">プレビュー直接表示</text>
+              <!-- 凡例: 配信対象 -->
+              <rect x="10" y="86" width="210" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">配信対象</text>
+              <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; staff_master.json 現職スタッフ</text>
+              <text x="20" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; registeredName 一致のuserIdへ</text>
+              <text x="20" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 未登録者は no_uid で自動スキップ</text>
+              <text x="20" y="166" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 1対1Push（グループ送信不可）</text>
+              <text x="20" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 社員=25日支給/アルバイト=10日</text>
+              <text x="20" y="194" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; --kubun フィルタで区分別配信</text>
+              <!-- 凡例: 承認フロー -->
+              <rect x="240" y="86" width="210" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="250" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">配信フロー</text>
+              <text x="250" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; MZK指示「給与明細送って」</text>
+              <text x="250" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; dry-run で対象一覧を取得</text>
+              <text x="250" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; Discord承認プロンプト</text>
+              <text x="250" y="166" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; MZK「OK」「送って」で本実行</text>
+              <text x="250" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 結果サマリーをDiscord報告</text>
+              <text x="250" y="194" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 取り消し不可・読み戻し検証必須</text>
+              <!-- 凡例: セキュリティ -->
+              <rect x="470" y="86" width="200" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="480" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">セキュリティ</text>
+              <text x="480" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; HMAC-SHA256+base64url</text>
+              <text x="480" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; TTL 15分（短期）</text>
+              <text x="480" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; PAYSLIP_TMP_DIR 自動削除</text>
+              <text x="480" y="166" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; X-Upload-Key 認証</text>
+              <text x="480" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 1対1のみ（他人見えない）</text>
+              <text x="480" y="194" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; パスワードなし（運用簡素化）</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">月次給与明細PDFをJPEG化して、各スタッフの個人LINEへ image typeでプレビュー送信。LINE内に画像直接表示・タップで拡大・長押し保存</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">給与処理完了後にMZK「給与明細送って」と指示（社員=25日支給日／アルバイト=10日支給日に合わせる）</div></div>
+              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python 給与処理/scripts/send_payslip_line.py --yyyymm 202604 --kubun 社員</code>（区分別）／<code>--all</code>（全員）／<code>--only 田中響,白岡流衣</code>（個別）／<code>--dry-run</code></div></div>
+              <div class="detail-row"><div class="detail-key">スキル/エージェント</div><div class="detail-val">月次労務フローの一環として <code>roumu-agent</code> から呼び出し可・単独でも <code>send_payslip_line.py</code> 直叩き可</div></div>
+              <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">dry-run → Discord承認プロンプト → MZK「OK」「送って」 → 本実行 → 結果サマリー報告（取り消し不可の鉄則準拠）</div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/payslip/send</code>（POST・X-Upload-Key）→ <code>/payslip/:t/:f</code>（GET・HMAC 15分・image inline）</div></div>
+              <div class="detail-row"><div class="detail-key">スタッフ登録</div><div class="detail-val">公式LINE「圓子水産 業務通知 @035jrawg」を友だち追加 → フルネーム送信 → bot自動照合で <code>registeredName</code> 確定 → 配信可能</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">WORKFLOW: <code>~/.claude/shared-memory/合同会社圓子水産/workflow_payroll_line_send.md</code>／RULE: <code>feedback_payroll_line_delivery.md</code></div></div>
+            </div>
+            <div class="detail-note">2026-05-10新規構築（HMAC短期URL基盤の最初のユースケース）。LINE Messaging APIにfile typeなし → PDF→JPEG変換+image typeで画像プレビュー方式に。後発のシフト共有(/shift/send)・LINE Secure File Gateway(/file/send)もこの基盤を踏襲</div>
+          </div>
+        </div>
+      </div>
+
       <!-- LINE Secure File Gateway -->
-      <div class="portal-card-wrap" data-detail-keywords="LINE Secure File Gateway 機微ファイル 賃金台帳 雇用契約書 源泉徴収票 経理書類 xlsx PDF zip docx 1対1 個別配信 HMAC 短期URL TTL 5分 7日 可変 /file/send /file/:t/:f send_secure_file_line.py send_wage_ledger_line.py LINE_FILE_UPLOAD_KEY LINE_FILE_HMAC_SECRET attachment Cache-Control no-store epoch 衝突防止 個別.ttl">
+      <div class="portal-card-wrap" data-detail-keywords="LINE Secure File Gateway 機微ファイル 賃金台帳 雇用契約書 源泉徴収票 経理書類 xlsx PDF zip docx 1対1 個別配信 HMAC 短期URL TTL 5分 7日 可変 /file/send /file/:t/:f send_secure_file_line.py send_wage_ledger_line.py LINE_FILE_UPLOAD_KEY LINE_FILE_HMAC_SECRET attachment Cache-Control no-store epoch 衝突防止 個別.ttl PDF inline LINE内蔵ブラウザ">
         <a class="portal-link" href="#" onclick="return false" data-keywords="LINE 機微 ファイル 賃金台帳 契約書 個別配信 xlsx PDF">
           <div class="icon ic-indigo">&#128274;</div>
           <div class="info"><div class="name">LINE Secure File Gateway</div><div class="desc">機微xlsx/PDF/zipを個別LINEへHMAC URLで安全配信</div></div>

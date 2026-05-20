@@ -721,7 +721,7 @@
       </div>
 
       <!-- LINE通知サーバー -->
-      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /send-direct /notify /webhook /payslip/send /shift/send /warmup /members 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python HMAC keep-alive httpsAgent GitHub Actions 給与明細 シフト共有">
+      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /send-direct /notify /webhook /payslip/send /shift/send /file/send LINE Secure File Gateway /warmup /members 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python HMAC keep-alive httpsAgent GitHub Actions 給与明細 シフト共有 賃金台帳 機微ファイル xlsx PDF zip 汎用配信">
         <a class="portal-link" href="https://marukosuisan-line-notify.onrender.com" target="_blank" data-keywords="LINE 通知 render 給与明細 シフト">
           <div class="icon ic-emerald">&#128276;</div>
           <div class="info"><div class="name">LINE通知サーバー</div><div class="desc">Render / Messaging API ／ 画像配信＋メッセージ</div></div>
@@ -770,7 +770,7 @@
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan-line-notify.onrender.com" target="_blank">marukosuisan-line-notify.onrender.com</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Express</div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント（メッセージ系）</div><div class="detail-val"><code>POST /send</code>（テキスト）／<code>/send-task</code>（業務タスク）／<code>/send-mention</code>（メンション付）／<code>/send-direct</code>（1対1）／<code>/notify</code>（統一・private/group振り分け）</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（画像・新規）</div><div class="detail-val"><code>POST /payslip/send</code> → <code>GET /payslip/:t/:f</code>（給与明細・HMAC 15分URL）／<code>POST /shift/send</code> → <code>GET /shift/:t/:f</code>（シフト・HMAC 60日URL）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（ファイル配信）</div><div class="detail-val"><code>POST /payslip/send</code> → <code>GET /payslip/:t/:f</code>（給与明細JPEG・HMAC 15分URL）／<code>POST /shift/send</code> → <code>GET /shift/:t/:f</code>（シフト画像・HMAC 60日URL）／<code>POST /file/send</code> → <code>GET /file/:t/:f</code>（汎用機微ファイル・xlsx/PDF/zip等・HMAC・TTL 5分〜7日可変・LINE Secure File Gateway）</div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント（webhook・管理）</div><div class="detail-val"><code>POST /webhook</code>（LINE受信→Discord転送）／<code>GET /warmup</code>（TLS keep-alive）／<code>GET /members</code>（登録メンバー）／<code>POST /members/map</code>（手動紐付け）</div></div>
               <div class="detail-row"><div class="detail-key">LINE公式</div><div class="detail-val">圓子水産 業務通知 (@035jrawg)</div></div>
               <div class="detail-row"><div class="detail-key">グループID</div><div class="detail-val"><code>Cead6f4532c0c978468dfcd3f78bff9bb</code></div></div>
@@ -778,11 +778,12 @@
               <div class="detail-row"><div class="detail-key">keep-alive</div><div class="detail-val">GitHub Actions <code>.github/workflows/keep-alive.yml</code> で10分ごと <code>/warmup</code> ping ／ httpsAgent (TLS再利用)</div></div>
               <div class="detail-row"><div class="detail-key">GitHub</div><div class="detail-val">marukosuisan523-pixel/marukosuisan-line-notify (private)</div></div>
               <div class="detail-row"><div class="detail-key">デプロイ</div><div class="detail-val">push自動デプロイ（Render GitHub連携）</div></div>
-              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val">画像系は <code>x-upload-key: LINE_PAYSLIP_UPLOAD_KEY</code> ／ HMAC署名URL（<code>LINE_PAYSLIP_HMAC_SECRET</code>）</div></div>
-              <div class="detail-row"><div class="detail-key">画像TTL分離</div><div class="detail-val">給与明細=15分（PAYSLIP_TMP_DIR） ／ シフト=60日（SHIFT_TMP_DIR）・別ディレクトリ運用</div></div>
+              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val">画像系=<code>X-Upload-Key: LINE_PAYSLIP_UPLOAD_KEY</code> ／ ファイル系=<code>X-Upload-Key: LINE_FILE_UPLOAD_KEY</code> ／ 各々別HMAC秘密鍵（<code>LINE_PAYSLIP_HMAC_SECRET</code> / <code>LINE_FILE_HMAC_SECRET</code>）でURL署名</div></div>
+              <div class="detail-row"><div class="detail-key">TTL分離</div><div class="detail-val">給与明細=15分（<code>PAYSLIP_TMP_DIR</code>）／ シフト=60日（<code>SHIFT_TMP_DIR</code>）／ 汎用ファイル=5分〜7日可変・ファイル個別<code>.ttl</code>メタ（<code>FILE_TMP_DIR</code>）・全て別ディレクトリ運用</div></div>
+              <div class="detail-row"><div class="detail-key">ローカルCLI</div><div class="detail-val"><code>給与処理/scripts/send_payslip_line.py</code>（給与明細）／<code>send_secure_file_line.py</code>（汎用機微ファイル）／<code>send_wage_ledger_line.py</code>（賃金台帳ラッパ）</div></div>
               <div class="detail-row"><div class="detail-key">付帯機能</div><div class="detail-val">LINE→Discord作業日報ブリッジ（<code>/webhook</code> 内 image処理→Discord webhook転送）</div></div>
             </div>
-            <div class="detail-note">2026-05-18 /shift/send 追加で60日URL対応。WindowsのcurlはUTF-8文字化け → Pythonで送信すること</div>
+            <div class="detail-note">2026-05-20 <code>/file/send</code> 追加（LINE Secure File Gateway・xlsx/PDF/zip対応・賃金台帳が第1ユースケース・Content-Disposition: attachment + Cache-Control: no-store）。WindowsのcurlはUTF-8文字化け → Pythonで送信</div>
           </div>
         </div>
       </div>

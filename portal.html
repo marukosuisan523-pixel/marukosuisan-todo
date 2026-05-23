@@ -608,7 +608,7 @@
       </div>
 
       <!-- 在庫管理システム -->
-      <div class="portal-card-wrap" data-detail-keywords="Next.js Prisma SQLite shadcn Tailwind ダッシュボード 製造管理 棚卸し 仕込み計算 BOM 61件 277品目 2段階BOM dev.db 部門フィルタ 確認周期 適正在庫自動更新">
+      <div class="portal-card-wrap" data-detail-keywords="Next.js Prisma SQLite shadcn Tailwind ダッシュボード 製造管理 棚卸し 仕込み計算 BOM 61件 277品目 2段階BOM dev.db 部門フィルタ 確認周期 適正在庫自動更新 団体予約 JTB 太平洋トラベル 吉田様 メニュー別仕込み ご飯やカレンダー連携 Menu.aliases GroupReservation 主食 副菜 mealPersons isMainDish menu_undecided 通常客 確定人数 合算 未確定団体バナー">
         <a class="portal-link" href="https://zaiko.marukosuisan.app" target="_blank" data-keywords="在庫 zaico 棚卸し 製造 BOM 仕込み">
           <div class="icon ic-amber">&#128230;</div>
           <div class="info"><div class="name">在庫管理システム</div><div class="desc">BOM・製造・棚卸し・仕込み</div></div>
@@ -642,7 +642,13 @@
               <text x="270" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">確認周期で自動抽出</text>
               <rect x="350" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
               <text x="420" y="132" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">仕込み計算</text>
-              <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">メニュー→原材料→必要量</text>
+              <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">通常客+団体→必要量</text>
+              <!-- 右側: 団体予約フロー -->
+              <rect x="510" y="10" width="160" height="56" rx="10" fill="#2d1a3d" stroke="#c084fc" stroke-width="1.5"/>
+              <text x="590" y="32" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="bold" font-family="Meiryo">ポータル団体予約</text>
+              <text x="590" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">GCal+Misoca統合JSON</text>
+              <path d="M590,66 L590,84 L420,84 L420,108" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow-inv)"/>
+              <text x="510" y="98" fill="#c084fc" font-size="8.5" font-family="Meiryo">6:45/17:45 sync</text>
             </svg>
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">全商品277品目の在庫数・賞味期限を管理。仕込みに必要な材料を自動計算し、棚卸しもアプリ上で完結する</div></div>
@@ -658,16 +664,20 @@
               <div class="detail-row"><div class="detail-key">確認周期</div><div class="detail-val">ZAICO+Prisma DB 二重保存（更新時は両方同期必須）。飲食店全品目設定済み</div></div>
               <div class="detail-row"><div class="detail-key">BOM</div><div class="detail-val">61件登録済み（2段階BOM: 無地資材→シール貼付済み→完成品）</div></div>
               <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応・今後7日分の日付ボタンでフィルタ・<code>exclude_from_stocktake</code>チェックボックスで対象外指定可</div></div>
-              <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数×注文比率×1人前g数。<code>prep_days_target</code> Float化で1.5日等小数日対応 ／ <code>exclude_from_prep</code>で除外</div></div>
+              <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数×注文比率×1人前g数。<code>prep_days_target</code> Float化で1.5日等小数日対応 ／ <code>exclude_from_prep</code>で除外 ／ <strong>団体予約は確定数量として別計算</strong>（2026-05-20追加）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">団体予約連携</div><div class="detail-val">ポータル <code>gohan_reservations.json</code>（GCal+Misoca統合）を取込→<code>GroupReservation</code>テーブルへupsert。<strong>主食メニュー</strong>は団体が食べる数量のみ加算（海鮮丼30人前→しれとこづけ丼に+30）、<strong>副菜メニュー</strong>は団体料理人数を客数に合算（おばんざい・汁物等）。<code>Menu.aliases</code> JSONで表記揺れ吸収（「知床漬け丼」「鮭いくら丼」→しれとこづけ丼）。5段階マッチング（alias完全→name完全→正規化→部分→未マッチ）。子供・T/C+D/R は料理人数から除外</div></div>
+              <div class="detail-row"><div class="detail-key">団体予約UI</div><div class="detail-val">仕込み画面の予想人数カレンダーに「予想人数（通常客）/団体（確定）/合計」3行表示・⚠️未確定団体バナー（メニュー未定・社内検討中は仕込み加算なし＋通知）</div></div>
               <div class="detail-row"><div class="detail-key">検索機能</div><div class="detail-val">漢字→ひらがな検索対応（kuroshiroで <code>titleYomi</code> 自動生成）</div></div>
               <div class="detail-row"><div class="detail-key">適正在庫</div><div class="detail-val">月別プリセット運用（2026-05-17実装完了・季節別の最適在庫管理）</div></div>
               <div class="detail-row"><div class="detail-key">仮想メニュー</div><div class="detail-val">全客対象パターン（おばんざい等）・ratio=1.0+ItemMenuIngredient</div></div>
               <div class="detail-row"><div class="detail-key">公開API連携</div><div class="detail-val">外部チャットボット向け <code>/api/public/*</code> 5本（別カード参照）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">主なAPI</div><div class="detail-val"><code>GET /api/preparation</code> 仕込み計算 ／ <code>GET/POST /api/forecast/generate</code> 予想人数 ／ <code>GET /api/menus</code> メニュー（PUT で aliases 更新可） ／ <strong><code>POST /api/group-reservations/sync</code></strong> 団体予約同期 ／ <strong><code>GET /api/group-reservations</code></strong> 団体一覧 ／ <code>GET /api/items</code> 在庫</div></div>
+              <div class="detail-row"><div class="detail-key">団体同期スケジュール</div><div class="detail-val">Windowsタスク <code>GroupReservations_Sync</code>（毎日6:45/17:45）・ポータル <code>GohanReservations_Refresh</code>（6:30/17:30）の15分後に走らせる ／ ログ <code>scripts/logs/group_reservations_sync.log</code></div></div>
               <div class="detail-row"><div class="detail-key">DB / 本番運用</div><div class="detail-val"><code>在庫管理/app/dev.db</code> (SQLite) ／ port3000 は <code>next start</code> 本番運用（コード変更後は build+restart 必須）</div></div>
               <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/在庫管理/app/</code></div></div>
-              <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注 &#9654; 10分以内死亡問題の恒久対策（HealthMonitor強化）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注 &#9654; 10分以内死亡問題の恒久対策（HealthMonitor強化） &#9654; Menu.aliases 編集UI（Menu編集画面に入力欄追加）</div></div>
             </div>
-            <div class="detail-note">2026-05-17時点：適正在庫月別プリセット完了・棚卸チェックボックス・漢字検索・公開API稼働中。慢性的にport3000が落ちる問題は調査中</div>
+            <div class="detail-note">2026-05-23時点：団体予約連携完了（GCal/Misocaから自動取込・主食/副菜別計算・未確定団体バナー）・適正在庫月別プリセット完了・棚卸チェックボックス・漢字検索・公開API稼働中。慢性的にport3000が落ちる問題は調査中</div>
           </div>
         </div>
       </div>

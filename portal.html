@@ -1766,6 +1766,77 @@
         </div>
       </div>
 
+      <!-- inbox自動学習 -->
+      <div class="portal-card-wrap" data-detail-keywords="inbox 自動学習 振り分け 学習 機械学習 過去実績 差出人 doc_type 保存先 learn_from_history build_proposal auto_update_rules record_correction backtest_learning leave-one-out _learned_patterns _batch_move _extracted JOIN Layer1 Layer2 Layer3 命名規則 confirmed 承認制 rules.json corrections フィードバックループ 使うほど賢くなる InboxAutoLearning 毎晩23:00 スケジューラ 保存先一致 書類整理 document-archive _doc_learning_common run_inbox_learning">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="inbox 自動学習 振り分け 書類 学習 賢くなる">
+          <div class="icon ic-purple">&#128218;</div>
+          <div class="info"><div class="name">inbox自動学習</div><div class="desc">過去実績から振り分け先を学習（使うほど賢くなる）</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 190" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-ial" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-ialfb" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb7185"/></marker>
+              </defs>
+              <text x="214" y="11" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="Meiryo">毎晩23:00 自動実行（InboxAutoLearning）</text>
+              <!-- inputs -->
+              <rect x="8" y="18" width="120" height="40" rx="9" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="68" y="36" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="Meiryo">過去の振り分け実績</text>
+              <text x="68" y="50" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">_batch_move_*.py</text>
+              <rect x="8" y="66" width="120" height="40" rx="9" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="68" y="84" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="Meiryo">読取結果</text>
+              <text x="68" y="98" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">_extracted_*.json</text>
+              <path d="M128,38 L150,55" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ial)"/>
+              <path d="M128,86 L150,69" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ial)"/>
+              <!-- learn -->
+              <rect x="152" y="42" width="118" height="40" rx="9" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="211" y="60" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold" font-family="Meiryo">learn_from_history</text>
+              <text x="211" y="74" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">filenameでJOIN→集計</text>
+              <path d="M270,62 L296,62" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ial)"/>
+              <!-- learned -->
+              <rect x="298" y="42" width="135" height="40" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="365" y="60" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">_learned_patterns</text>
+              <text x="365" y="74" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">差出人+種類→保存先</text>
+              <path d="M433,62 L459,62" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ial)"/>
+              <!-- build_proposal -->
+              <rect x="461" y="42" width="135" height="40" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="528" y="60" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">build_proposal</text>
+              <text x="528" y="74" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">振り分け案を生成</text>
+              <!-- feedback loop -->
+              <rect x="298" y="128" width="180" height="44" rx="9" fill="#1e3a5f" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="388" y="147" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold" font-family="Meiryo">瑞樹さんが修正</text>
+              <text x="388" y="162" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">record_correction → corrections.jsonl</text>
+              <path d="M528,82 L528,150 L478,150" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ial)"/>
+              <path d="M298,150 L211,150 L211,82" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-ialfb)"/>
+              <text x="150" y="118" fill="#fb7185" font-size="8" font-family="Meiryo">次回学習に反映（weight×3）</text>
+              <!-- rule branch (approval-gated) -->
+              <rect x="500" y="128" width="172" height="44" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="586" y="146" text-anchor="middle" fill="#a78bfa" font-size="9.5" font-weight="bold" font-family="Meiryo">新ルール候補（承認制）</text>
+              <text x="586" y="161" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">auto_update_rules（rules.json保護）</text>
+              <path d="M433,76 L490,76 L490,128" stroke="#475569" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arrow-ial)"/>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row detail-full"><div class="detail-key">何ができる？</div><div class="detail-val">過去約340件の振り分け実績から「<strong>差出人＋書類種類 → 保存先フォルダ</strong>」を学習し、新しい書類の振り分け先を高精度に提案する。書類整理システムの提案エンジンを賢くする土台</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">いつ使う？</div><div class="detail-val">inbox整理のたびに自動で効く。瑞樹さんが振り分けを直すほど精度が上がる（使うほど賢くなる）。毎晩23:00に学習を自動更新</div></div>
+              <div class="detail-row"><div class="detail-key">効果（実測）</div><div class="detail-val">leave-one-outバックテストで保存先フォルダ一致 <strong>6%→63%</strong>・完全一致61%（事業判定は本文読取96%維持）</div></div>
+              <div class="detail-row"><div class="detail-key">学習の3層</div><div class="detail-val">Layer1=差出人+種類→保存先 ／ Layer2=実フォルダ階層 ／ Layer3=命名規則テンプレ</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">フィードバックループ</div><div class="detail-val"><code>record_correction.py</code> で修正を <code>corrections.jsonl</code> に記録 → 次回 <code>learn_from_history.py</code> 実行で weight×3 反映。1修正で即高信頼パターン化</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">新ルール提案（承認制）</div><div class="detail-val"><code>auto_update_rules.py</code> が高信頼パターンを <code>_rules_proposed.json</code> に候補出力。承認(approved=true)分のみ <code>--apply</code> で反映。<strong>rules.jsonは自動書換えしない</strong>・新規はconfirmed=1（推定）開始・confirmed≥2（確認なし自動処理）境界は <code>--allow-auto-tier</code> 明示承認必須</div></div>
+              <div class="detail-row"><div class="detail-key">自動実行</div><div class="detail-val">Windowsタスク <code>InboxAutoLearning</code>（毎晩23:00・<code>run_inbox_learning.bat</code> → learn → build_proposal・StartWhenAvailable）</div></div>
+              <div class="detail-row"><div class="detail-key">安全</div><div class="detail-val">実書類フォルダ・履歴は読むだけ（移動/削除しない）・労務(PII)はLayer2走査から除外</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Python（AST解析・deterministic・LLM不要）＋ 共通モジュール <code>_doc_learning_common.py</code>（正規化/事業ルート/確信度を一本化）</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>document-archive</code>（書類整理の手動分類フロー）と連携。学習結果で提案精度を底上げ</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/書類/scripts/</code>（learn_from_history / build_proposal / auto_update_rules / record_correction / backtest_learning / _doc_learning_common / run_inbox_learning.bat）／ 仕様書 <code>~/書類/docs/inbox_auto_learning_spec.md</code></div></div>
+            </div>
+            <div class="detail-note">2026-05-29構築（20体サブエージェントによる多角レビュー＋leave-one-outバックテストで検証済）。再学習は毎晩23:00（PCオフ時はStartWhenAvailableで次回起動時に実行）。新ルールは承認制でrules.jsonを自動書換えしない</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 無人氷販売システム -->
       <div class="portal-card-wrap" data-detail-keywords="無人 氷販売 QR決済 電気錠 店舗内設置 ice unmanned 構想 設計中">
         <a class="portal-link" href="#" onclick="return false" data-keywords="無人 氷販売 QR 電気錠">

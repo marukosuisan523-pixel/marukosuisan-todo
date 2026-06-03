@@ -1702,21 +1702,21 @@
                 <strong>起動時</strong>: L0 identity.txt自動表示 + diary_readで前回要約確認
               </div></div>
               <div class="detail-row"><div class="detail-key">ナレッジグラフ</div><div class="detail-val">2,864エンティティ / 5,569トリプル。kg_query（as_of=日付で時間軸フィルター）、kg_timeline（変遷表示）</div></div>
-              <div class="detail-row"><div class="detail-key">canonical wing</div><div class="detail-val">4つのみ: <code>common</code> / <code>maruko-suisan</code> / <code>kumanoya</code> / <code>kojin</code>（+ agent日記専用 <code>wing_{agent名}</code>）。それ以外は <code>~/.mempalace/wing_aliases.json</code> で自動リダイレクト</div></div>
+              <div class="detail-row"><div class="detail-key">canonical wing</div><div class="detail-val">5つ: <code>common</code> / <code>maruko-suisan</code> / <code>kumanoya</code> / <code>kojin</code> / <code>iceage</code>（iceage=ICEAGE・LANTOKO TOUR等の個人事業。+ agent日記専用 <code>wing_{agent名}</code>）。それ以外は <code>~/.mempalace/wing_aliases.json</code> で自動リダイレクト</div></div>
               <div class="detail-row"><div class="detail-key">エージェント日記</div><div class="detail-val">秘書 / 副社長 / 労務 / 経理 / 営業 など各エージェントが <code>diary_write</code> で日記保存。次セッション起動時に <code>diary_read</code> で前回内容を確認</div></div>
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（秘書室）</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">mempalace v3.1.0 MCP + engram v1.11.0 MCP + Claude Code auto-memory</div></div>
             </div>
-            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く。新事業系wingは作らない（4つ + aliases.json で完結）</div>
+            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く。新事業系wingは作らない（5つ + aliases.json で完結・iceage は2026-06-02 新設）</div>
           </div>
         </div>
       </div>
 
       <!-- 書類整理システム -->
-      <div class="portal-card-wrap" data-detail-keywords="書類 PDF スキャン inbox 分類 リネーム 保存 総務 document-archive 名刺 meishi.csv 請求書 月別 用途別 廃止">
+      <div class="portal-card-wrap" data-detail-keywords="書類 PDF スキャン inbox 分類 リネーム 保存 総務 document-archive 名刺 meishi.csv 請求書 月別 用途別 廃止 記憶 ベクトル 意味検索 継続蓄積 自動蓄積 夜間点検 取りこぼし register_document reconcile_documents MemoryReconcileDocuments pending_vision 指紋 冪等 backfill engram">
         <a class="portal-link" href="#" onclick="return false" data-keywords="書類 PDF スキャン 整理 保存 名刺 請求書">
           <div class="icon ic-green">&#128196;</div>
-          <div class="info"><div class="name">書類整理システム</div><div class="desc">スキャン→inbox→分類→engram登録</div></div>
+          <div class="info"><div class="name">書類整理システム</div><div class="desc">スキャン→分類→記憶（全文+意味検索）に継続自動蓄積</div></div>
           <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
@@ -1743,8 +1743,8 @@
               <text x="495" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">月別×状態フォルダ</text>
               <path d="M560,38 L578,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-doc)"/>
               <rect x="580" y="10" width="90" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
-              <text x="625" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. DB登録</text>
-              <text x="625" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">engram + CSV</text>
+              <text x="625" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. 記憶登録</text>
+              <text x="625" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">engram+ベクトル</text>
               <rect x="10" y="86" width="660" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
               <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">書類タイプ別の整理先</text>
               <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 請求書: <code>書類/YYYY-MM/支払済|未払い/</code>（全事業統一・月別×状態フォルダ）</text>
@@ -1752,16 +1752,18 @@
               <text x="20" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 通知書・契約書・税務書類: 事業別フォルダに分類</text>
             </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">届いた書類（PDF・画像）を自動で読み取り、内容判定して適切な場所に分類・リネーム・保存・engram登録</div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">届いた書類（PDF・画像）を自動で読み取り、内容判定して分類・リネーム・保存し、<strong>記憶（engram全文検索＋mempalaceベクトル意味検索）に継続自動蓄積</strong>。過去書類1,038件はバックフィル済み</div></div>
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">請求書・納品書・名刺・通知書が届いたとき。スマホで撮影 → inbox or Discord に送るだけ</div></div>
               <div class="detail-row"><div class="detail-key">使い方</div><div class="detail-val">①<code>~/書類/inbox/</code> or Discord添付 → ②「書類」と言えば自動処理開始 → ③確認プロンプトで分類保存</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val"><code>document-archive</code> スキル + Read（PDF/画像読み取り）</div></div>
               <div class="detail-row"><div class="detail-key">請求書ルール</div><div class="detail-val"><code>書類/YYYY-MM/支払済|未払い/</code> 月別×支払状態（全事業統一・用途別フォルダ廃止 2026-05-10）</div></div>
               <div class="detail-row"><div class="detail-key">名刺DB</div><div class="detail-val">新規名刺はinboxに入れたら自動で出会い情報（場所・日時・経由者）を聞き取り→ <code>meishi.csv</code> 登録</div></div>
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
-              <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（メタデータ登録）／ Discord（添付受信）／ 経理スキル（請求書取込）</div></div>
+              <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（全文検索）／ mempalaceベクトル（意味検索）／ Discord（添付受信）／ 経理スキル（請求書取込）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">記憶への継続蓄積（案B・2026-06-02）</div><div class="detail-val"><strong>① 即時</strong>: 書類を移動した直後に <code>register_document.py</code> が engram＋ベクトルへ冪等登録（安全な順番待ち経路・MCP稼働中でも無人安全）。<strong>③ 夜間点検</strong>: 毎晩3:00に <code>reconcile_documents.py</code>（Windowsタスク <code>MemoryReconcileDocuments</code>・HealthMonitor監視）が全フォルダ×控え帳を突合し未登録を自動登録＝<strong>取りこぼし0</strong>。手で移動した書類も翌朝までに必ず記憶へ。画像/化けPDFは <code>pending_vision.json</code> へ退避。指紋による自己冪等化＋専用ロックで二重登録なし</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル</div><div class="detail-val"><code>~/書類/scripts/register_document.py</code> / <code>reconcile_documents.py</code>・控え帳 <code>_backfill/registered.json</code></div></div>
             </div>
-            <div class="detail-note">inbox仕分けは都度確認（feedback_inbox_confirm）。請求書は月別×支払状態の構造に統一済み（旧用途別フォルダは廃止）</div>
+            <div class="detail-note">inbox仕分けは都度確認（feedback_inbox_confirm）。請求書は月別×支払状態の構造に統一済み（旧用途別フォルダは廃止）。<strong>記憶への継続自動蓄積（案B・2026-06-02）</strong>＝即時登録＋毎晩3:00の取りこぼし点検で engram全文＋ベクトル意味検索に積み続ける（過去はAIの手作業頼みで漏れていた問題を根治）</div>
           </div>
         </div>
       </div>

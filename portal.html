@@ -1768,8 +1768,103 @@
         </div>
       </div>
 
+      <!-- 書類inbox 番人（自動取込・経路A/B/C） -->
+      <div class="portal-card-wrap" data-detail-keywords="番人 watcher inbox-watcher watcher.js Discord 取込 自動取込 経路A 経路B 経路C 即時 夜間 23:00 InboxNightlyRouteB メンション @メンション プッシュ通知 鳴らない notify_inbox inbox_process_once inbox_correction 修正ループ 返信 reply HealthMonitor 常駐 daemon ポーリング 60秒 リアルタイム 1509880700701249597 WORKS 要確認 安全弁 allowed_mentions MENTION_USER_ID 番人カード">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="番人 inbox 自動取込 Discord 通知 メンション watcher">
+          <div class="icon ic-cyan">&#128229;</div>
+          <div class="info"><div class="name">書類inbox 番人（自動取込）</div><div class="desc">Discord #inboxに投げると自動取込→振り分け→@メンション通知（24時間無人）</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 250" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-ban" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 経路A 即時 -->
+              <rect x="8" y="14" width="60" height="44" rx="9" fill="#0e2233" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="38" y="34" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">経路A</text>
+              <text x="38" y="48" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">即時</text>
+              <rect x="74" y="14" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="133" y="34" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="bold" font-family="Meiryo">Discord #inbox</text>
+              <text x="133" y="48" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">PDF/画像を投げる</text>
+              <path d="M192,36 L208,36" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="210" y="14" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="269" y="34" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="bold" font-family="Meiryo">番人 watcher.js</text>
+              <text x="269" y="48" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">60秒で検知・DL</text>
+              <path d="M328,36 L344,36" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="346" y="14" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="405" y="34" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="bold" font-family="Meiryo">自動処理</text>
+              <text x="405" y="48" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">読取→振り分け</text>
+              <path d="M464,36 L480,36" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="482" y="14" width="150" height="44" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="557" y="34" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">@メンション通知</text>
+              <text x="557" y="48" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">スマホが鳴る</text>
+              <!-- 経路B 夜間 -->
+              <rect x="8" y="72" width="60" height="44" rx="9" fill="#2a2310" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="38" y="92" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">経路B</text>
+              <text x="38" y="106" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">夜間</text>
+              <rect x="74" y="72" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="133" y="92" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">PC → inbox/</text>
+              <text x="133" y="106" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">直接置く</text>
+              <path d="M192,94 L208,94" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="210" y="72" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="269" y="92" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">毎晩23:00</text>
+              <text x="269" y="106" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">InboxNightly</text>
+              <path d="M328,94 L344,94" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="346" y="72" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="405" y="92" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">一括処理</text>
+              <text x="405" y="106" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">新着のみ</text>
+              <path d="M464,94 L480,94" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="482" y="72" width="150" height="44" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="557" y="92" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">@メンション通知</text>
+              <text x="557" y="106" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">翌朝に結果</text>
+              <!-- 経路C 修正 -->
+              <rect x="8" y="130" width="60" height="44" rx="9" fill="#2a1018" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="38" y="150" text-anchor="middle" fill="#fb7185" font-size="11" font-weight="bold" font-family="Meiryo">経路C</text>
+              <text x="38" y="164" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">修正</text>
+              <rect x="74" y="130" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="133" y="150" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold" font-family="Meiryo">通知に返信</text>
+              <text x="133" y="164" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">訂正コメント</text>
+              <path d="M192,152 L208,152" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="210" y="130" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="269" y="150" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold" font-family="Meiryo">番人が検知</text>
+              <text x="269" y="164" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">本人replyのみ</text>
+              <path d="M328,152 L344,152" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="346" y="130" width="118" height="44" rx="9" fill="#1e3a5f" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="405" y="150" text-anchor="middle" fill="#fb7185" font-size="9.5" font-weight="bold" font-family="Meiryo">inbox_correction</text>
+              <text x="405" y="164" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">移動＋学習</text>
+              <path d="M464,152 L480,152" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-ban)"/>
+              <rect x="482" y="130" width="150" height="44" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="557" y="150" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">@メンション返信</text>
+              <text x="557" y="164" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">結果を通知</text>
+              <!-- 注記バー -->
+              <rect x="8" y="186" width="624" height="56" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="206" fill="#fbbf24" font-size="9" font-weight="bold" font-family="Meiryo">&#128241; なぜ@メンション？</text>
+              <text x="20" y="220" fill="#94a3b8" font-size="8.5" font-family="Meiryo">サーバーchへのbot投稿は @メンション無しだとスマホのプッシュが鳴らない → 全通知に瑞樹さんへの@メンションを付けて確実に鳴らす（2026-06-03）</text>
+              <text x="20" y="234" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#128737; 確信度の低い書類は自動で動かさず「要確認」で保留（誤分類防止）／番人は HealthMonitor 監視下で落ちたら自動再起動</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row detail-full"><div class="detail-key">何ができる？</div><div class="detail-val">Discord <code>#inbox</code> にPDF/画像を投げると、<strong>常駐の番人が60秒以内に検知→自動ダウンロード→読取→振り分け→@メンション付きでDiscord通知</strong>。24時間無人で取りこぼさない（落ちても復帰時に追いつく設計）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">いつ使う？</div><div class="detail-val">出先でスマホから書類を撮って Discord #inbox に送るだけ。PCのスキャナからは <code>~/書類/inbox/</code> に置けば夜間にまとめて処理</div></div>
+              <div class="detail-row"><div class="detail-key">経路A（即時）</div><div class="detail-val">Discord #inbox投入 → 番人(<code>watcher.js</code>)が60秒ポーリングで検知 → DL＆✅リアクション → パイプライン(<code>inbox_process_once.py</code>) → @メンション通知</div></div>
+              <div class="detail-row"><div class="detail-key">経路B（夜間）</div><div class="detail-val">PCから直接 <code>~/書類/inbox/</code> 投入 → 毎晩23:00 <code>InboxNightlyRouteB</code> が一括処理 → 通知（新着があった時だけ）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">経路C（修正ループ）</div><div class="detail-val">通知に<strong>「返信」</strong>で訂正コメント（例「これは熊の家の経理」）→ 番人が検知 → <code>inbox_correction.py</code> が解釈 → 正しい場所へ移動＋<strong>record_correctionで学習</strong> → @メンション付きで結果返信。<strong>修正返信は瑞樹さん本人のreplyのみ有効</strong>（bot投稿は除外＝無限ループ防止）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">通知（重要）</div><div class="detail-val">Discordの<strong>サーバーチャンネルへのbot投稿は @メンション無しだとスマホのプッシュ通知が鳴らない</strong>（既定=@メンションのみ通知）。投稿は成功してもチャンネルを開かないと気づけない。→ <code>notify_inbox.py</code>／番人ともに瑞樹さんへの@メンション(<code>allowed_mentions</code>付き)を組込み、確実に鳴らす（2026-06-03 実装・実機実証）</div></div>
+              <div class="detail-row"><div class="detail-key">安全弁</div><div class="detail-val">確信度の低い書類は自動移動せず「要確認」で保留（誤分類防止・4事業ルート限定・read-back検証）。読取役claudeはツール不使用＝悪意PDFでもインジェクション無害</div></div>
+              <div class="detail-row"><div class="detail-key">監視・復帰</div><div class="detail-val">HealthMonitor が番人(Pattern <code>inbox-watcher</code>)を常時監視・落ちたら自動再起動。lastSeenIdをディスク永続し復帰時 after= で取りこぼし回収</div></div>
+              <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js常駐daemon(<code>watcher.js</code>) + Discord Bot API直叩き(User-Agent必須) + <code>claude -p</code>読取 + Pythonパイプライン</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/合同会社圓子水産/inbox-watcher/watcher.js</code> ／ <code>~/書類/scripts/</code>(<code>inbox_process_once.py</code> / <code>notify_inbox.py</code> / <code>inbox_correction.py</code>) ／ <code>scripts/health-monitor.ps1</code> の $Targets / 夜間 <code>run_inbox_nightly.ps1</code></div></div>
+            </div>
+            <div class="detail-note">Discord #inbox = WORKSサーバー(ch <code>1509880700701249597</code>)。2026-05-31 本番稼働開始 → 2026-06-03 に<strong>@メンション通知化＋経路C修正ループを実機実証</strong>（通知が「届かない」真因＝プッシュ未発火を解決）。経路Bの夜間バッチはPCスリープ時の23:00は走らない。<strong>新着が無い時は通知しない設計</strong>（便りがないのは良い便り）。連携: 書類整理システム／inbox自動学習（提案エンジン）</div>
+          </div>
+        </div>
+      </div>
+
       <!-- inbox自動学習 -->
-      <div class="portal-card-wrap" data-detail-keywords="inbox 自動学習 振り分け 学習 機械学習 過去実績 差出人 doc_type 保存先 learn_from_history build_proposal auto_update_rules record_correction backtest_learning leave-one-out _learned_patterns _batch_move _extracted JOIN Layer1 Layer2 Layer3 命名規則 confirmed 承認制 rules.json corrections フィードバックループ 使うほど賢くなる InboxAutoLearning 毎晩23:00 スケジューラ 保存先一致 書類整理 document-archive _doc_learning_common run_inbox_learning">
+      <div class="portal-card-wrap" data-detail-keywords="inbox 自動学習 振り分け 学習 機械学習 過去実績 差出人 doc_type 保存先 learn_from_history build_proposal auto_update_rules record_correction backtest_learning leave-one-out _learned_patterns _batch_move _extracted JOIN Layer1 Layer2 Layer3 命名規則 confirmed 承認制 rules.json corrections フィードバックループ 使うほど賢くなる InboxNightlyRouteB InboxAutoLearning 毎晩23:00 スケジューラ 保存先一致 書類整理 document-archive _doc_learning_common run_inbox_nightly run_inbox_learning">
         <a class="portal-link" href="#" onclick="return false" data-keywords="inbox 自動学習 振り分け 書類 学習 賢くなる">
           <div class="icon ic-purple">&#128218;</div>
           <div class="info"><div class="name">inbox自動学習</div><div class="desc">過去実績から振り分け先を学習（使うほど賢くなる）</div></div>
@@ -1784,7 +1879,7 @@
                 <marker id="arrow-ial" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
                 <marker id="arrow-ialfb" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb7185"/></marker>
               </defs>
-              <text x="214" y="11" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="Meiryo">毎晩23:00 自動実行（InboxAutoLearning）</text>
+              <text x="214" y="11" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="Meiryo">毎晩23:00 自動実行（InboxNightlyRouteB）</text>
               <!-- inputs -->
               <rect x="8" y="18" width="120" height="40" rx="9" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
               <text x="68" y="36" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="Meiryo">過去の振り分け実績</text>
@@ -1828,13 +1923,13 @@
               <div class="detail-row"><div class="detail-key">学習の3層</div><div class="detail-val">Layer1=差出人+種類→保存先 ／ Layer2=実フォルダ階層 ／ Layer3=命名規則テンプレ</div></div>
               <div class="detail-row detail-full"><div class="detail-key">フィードバックループ</div><div class="detail-val"><code>record_correction.py</code> で修正を <code>corrections.jsonl</code> に記録 → 次回 <code>learn_from_history.py</code> 実行で weight×3 反映。1修正で即高信頼パターン化</div></div>
               <div class="detail-row detail-full"><div class="detail-key">新ルール提案（承認制）</div><div class="detail-val"><code>auto_update_rules.py</code> が高信頼パターンを <code>_rules_proposed.json</code> に候補出力。承認(approved=true)分のみ <code>--apply</code> で反映。<strong>rules.jsonは自動書換えしない</strong>・新規はconfirmed=1（推定）開始・confirmed≥2（確認なし自動処理）境界は <code>--allow-auto-tier</code> 明示承認必須</div></div>
-              <div class="detail-row"><div class="detail-key">自動実行</div><div class="detail-val">Windowsタスク <code>InboxAutoLearning</code>（毎晩23:00・<code>run_inbox_learning.bat</code> → learn → build_proposal・StartWhenAvailable）</div></div>
+              <div class="detail-row"><div class="detail-key">自動実行</div><div class="detail-val">Windowsタスク <code>InboxNightlyRouteB</code>（毎晩23:00・<code>run_inbox_nightly.ps1</code> → learn → <code>inbox_process_once.py --apply</code> → 通知）。旧 <code>InboxAutoLearning</code>（run_inbox_learning.bat）は Disabled（経路Bに統合・戻せる）</div></div>
               <div class="detail-row"><div class="detail-key">安全</div><div class="detail-val">実書類フォルダ・履歴は読むだけ（移動/削除しない）・労務(PII)はLayer2走査から除外</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Python（AST解析・deterministic・LLM不要）＋ 共通モジュール <code>_doc_learning_common.py</code>（正規化/事業ルート/確信度を一本化）</div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>document-archive</code>（書類整理の手動分類フロー）と連携。学習結果で提案精度を底上げ</div></div>
               <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/書類/scripts/</code>（learn_from_history / build_proposal / auto_update_rules / record_correction / backtest_learning / _doc_learning_common / run_inbox_learning.bat）／ 仕様書 <code>~/書類/docs/inbox_auto_learning_spec.md</code></div></div>
             </div>
-            <div class="detail-note">2026-05-29構築（20体サブエージェントによる多角レビュー＋leave-one-outバックテストで検証済）。再学習は毎晩23:00（PCオフ時はStartWhenAvailableで次回起動時に実行）。新ルールは承認制でrules.jsonを自動書換えしない</div>
+            <div class="detail-note">2026-05-29構築（20体サブエージェントによる多角レビュー＋leave-one-outバックテストで検証済）。再学習は毎晩23:00（<code>InboxNightlyRouteB</code>・Interactive principal＝PCスリープ/ログオフ時は走らない）。新ルールは承認制でrules.jsonを自動書換えしない</div>
           </div>
         </div>
       </div>

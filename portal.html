@@ -1150,8 +1150,8 @@
       <div class="portal-card-wrap" data-detail-keywords="給与明細 LINE 送信 配信 個別 image type プレビュー 月次 PDF JPEG 200dpi PyMuPDF /payslip/send HMAC 15分 send_payslip_line.py roumu-agent 区分 社員 アルバイト registeredName staff_master フルネーム照合 LINE_PAYSLIP_UPLOAD_KEY">
         <a class="portal-link" href="#" onclick="return false" data-keywords="給与明細 LINE 送信 個別 月次">
           <div class="icon ic-cyan">&#128181;</div>
-          <div class="info"><div class="name">給与明細LINE送信</div><div class="desc">PDF→JPEG→個人LINEへ image typeで送信</div></div>
-          <span class="badge badge-live">稼働中</span>
+          <div class="info"><div class="name">給与明細LINE送信</div><div class="desc">PDF→JPEG→個人LINEへ image typeで送信【⚠️設計のみ・未運用】</div></div>
+          <span class="badge badge-dev">設計完了・未運用</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
         <div class="detail-panel">
@@ -1216,9 +1216,10 @@
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">dry-run → Discord承認プロンプト → MZK「OK」「送って」 → 本実行 → 結果サマリー報告（取り消し不可の鉄則準拠）</div></div>
               <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/payslip/send</code>（POST・X-Upload-Key）→ <code>/payslip/:t/:f</code>（GET・HMAC 15分・image inline）</div></div>
               <div class="detail-row"><div class="detail-key">スタッフ登録</div><div class="detail-val">公式LINE「圓子水産 業務通知 @035jrawg」を友だち追加 → フルネーム送信 → bot自動照合で <code>registeredName</code> 確定 → 配信可能</div></div>
+              <div class="detail-row"><div class="detail-key">⚠️ 実運用状況</div><div class="detail-val"><strong>2026-06-06 調査判明：未運用</strong>。<code>send_payslip_line.py</code>はどこからも呼ばれていない（roumu-agent/payroll-slipスキルから参照なし・IMG/ディレクトリも空＝一度も実行されてない）。月次給与明細の実運用は「Discord送信→瑞樹さん確認」で完結し、スタッフ一斉LINE配信フローは設計のみで未稼働。本格運用するなら、Render Free planのephemeral fsで実は数日でファイル消失する仕様問題があるため、R2 presigned URL（最大7日）への改修が必須（Task #10）</div></div>
               <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">WORKFLOW: <code>~/.claude/shared-memory/合同会社圓子水産/workflow_payroll_line_send.md</code>／RULE: <code>feedback_payroll_line_delivery.md</code></div></div>
             </div>
-            <div class="detail-note">2026-05-10新規構築（HMAC短期URL基盤の最初のユースケース）。LINE Messaging APIにfile typeなし → PDF→JPEG変換+image typeで画像プレビュー方式に。後発のシフト共有(/shift/send)・LINE Secure File Gateway(/file/send)もこの基盤を踏襲</div>
+            <div class="detail-note">2026-05-10新規構築（HMAC短期URL基盤の最初のユースケース）。LINE Messaging APIにfile typeなし → PDF→JPEG変換+image typeで画像プレビュー方式に。後発のシフト共有(/shift/send)・LINE Secure File Gateway(/file/send)もこの基盤を踏襲。<strong>2026-06-06更新：実態調査で未運用と判明</strong>。本格運用はR2 presigned URL改修後（Task #10）</div>
           </div>
         </div>
       </div>
@@ -1304,9 +1305,10 @@
               <div class="detail-row"><div class="detail-key">TTL設計</div><div class="detail-val">リクエスト指定・default=60分・min=5分・max=10080分(7日)・ファイル個別<code>.ttl</code>メタファイルで管理・5分間隔自動cleanup</div></div>
               <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">HMAC-SHA256(<code>filename|expUnix</code>)+base64url・<code>{epoch}_</code>プレフィックス強制で衝突防止・<code>Cache-Control: private, no-store</code>・<code>Content-Disposition: attachment</code></div></div>
               <div class="detail-row"><div class="detail-key">改ざん防御</div><div class="detail-val">exp改ざん→403 Invalid signature／filename改ざん→403 Invalid signature／期限切れ→403 Expired（T1-T5全合格・2026-05-20）</div></div>
+              <div class="detail-row"><div class="detail-key">⚠️ 永続性リスク</div><div class="detail-val"><strong>2026-06-06判明</strong>: TTL最大7日は名目だけ。Render Free planはephemeral filesystem + 15分非アクティブspin downで、tmpファイルが<strong>実際は数十分〜数時間で消失</strong>する。HMAC URLが有効でもファイル本体がなければ404。賃金台帳等を送ったあと受信者が後日タップしても見られない可能性大。シフトはR2移行で解消済、本ゲートウェイ系は<strong>R2 presigned URL改修</strong>（Task #10）で根治予定</div></div>
               <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">RULE: <code>~/.claude/shared-memory/rule_line_secure_file_gateway.md</code>／実装: <code>TODO管理/line-notify-server/server.js</code>（commit 80a3ec2）</div></div>
             </div>
-            <div class="detail-note">2026-05-20新規構築。発端=「川島ひなたに賃金台帳をLINEで送って」→ LINE APIはxlsx送信不可なのでHMAC URL+text typeが現実解と判明 → 汎用化して経理書類/契約書/源泉徴収票等の全機微ファイル配信基盤に拡張。給与明細(/payslip 15分)・シフト(/shift 60日)と並ぶ第3系統</div>
+            <div class="detail-note">2026-05-20新規構築。発端=「川島ひなたに賃金台帳をLINEで送って」→ LINE APIはxlsx送信不可なのでHMAC URL+text typeが現実解と判明 → 汎用化して経理書類/契約書/源泉徴収票等の全機微ファイル配信基盤に拡張。給与明細(/payslip 15分)・シフト(/shift 60日)と並ぶ第3系統。<strong>2026-06-06更新</strong>: Render ephemeral fs問題でTTL名目は実態と乖離・R2 presigned URL移行が必要（Task #10）</div>
           </div>
         </div>
       </div>

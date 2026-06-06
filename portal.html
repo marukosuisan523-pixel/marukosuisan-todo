@@ -1310,6 +1310,95 @@
         </div>
       </div>
 
+      <!-- LINE PDF 長期配信（R2経由・転送OK・期限なし） -->
+      <div class="portal-card-wrap" data-detail-keywords="LINE PDF 長期配信 R2 Cloudflare files.marukosuisan.app marukosuisan-files バケット 転送OK 期限なし 公開URL 取引先共有 boto3 send_pdf_longterm_line.py まるこみずきフォールバック 手動転送 Object Read Write APIトークン Custom Domain Asia-Pacific Standard ストレージ 10GB 無料枠 UUID prefix Content-Disposition inline line-send 長期版">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="LINE PDF 長期 転送 R2 期限なし 公開 取引先">
+          <div class="icon ic-cyan">&#128190;</div>
+          <div class="info"><div class="name">LINE PDF 長期配信（R2）</div><div class="desc">PDFをR2経由で期限なし・転送OKでLINE送信</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 240" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-r2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-r2-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+              </defs>
+              <!-- Step 1: ローカルCLI -->
+              <rect x="10" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. ローカルCLI</text>
+              <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">--to/--file/--message</text>
+              <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-r2)"/>
+              <!-- Step 2: R2 PUT -->
+              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="225" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. R2 PUT</text>
+              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">boto3 / S3互換</text>
+              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-r2)"/>
+              <!-- Step 3: 公開URL生成 -->
+              <rect x="310" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="380" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. 公開URL生成</text>
+              <text x="380" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">{date}/{uuid8}_name</text>
+              <path d="M450,38 L468,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-r2)"/>
+              <!-- Step 4: LINE Push -->
+              <rect x="470" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="535" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">4. LINE Push</text>
+              <text x="535" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Messaging API直叩き</text>
+              <!-- Step 5: 受信→開封 -->
+              <path d="M535,66 L535,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-r2)"/>
+              <rect x="470" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="535" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">5. URLタップ</text>
+              <text x="535" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">PDF inline表示</text>
+              <!-- Step 6: 任意転送 -->
+              <path d="M470,114 L290,114" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-r2-ok)"/>
+              <text x="375" y="108" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">期限なし・誰でもOK</text>
+              <rect x="160" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="225" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. 他者へ転送</text>
+              <text x="225" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">URL貼り付け→開封OK</text>
+              <!-- IDわからない時のフォールバック -->
+              <path d="M140,38 L140,86" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+              <rect x="10" y="86" width="100" height="56" rx="10" fill="#3f2e12" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="60" y="104" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">ID不明時</text>
+              <text x="60" y="120" text-anchor="middle" fill="#94a3b8" font-size="8.5" font-family="Meiryo">→まるこみずき</text>
+              <text x="60" y="132" text-anchor="middle" fill="#94a3b8" font-size="8.5" font-family="Meiryo">→手動転送</text>
+              <!-- 凡例: 主な用途 -->
+              <rect x="10" y="160" width="210" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">主な用途</text>
+              <text x="20" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 取引先・業者への書類共有</text>
+              <text x="20" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 関係者が複数いる資料配布</text>
+              <text x="20" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 公開可能な業務PDF全般</text>
+              <!-- 凡例: 構成 -->
+              <rect x="230" y="160" width="220" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="240" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">構成</text>
+              <text x="240" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; send_pdf_longterm_line.py</text>
+              <text x="240" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; R2 marukosuisan-files</text>
+              <text x="240" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; files.marukosuisan.app</text>
+              <!-- 凡例: 短期版との違い -->
+              <rect x="460" y="160" width="210" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="470" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">短期版(/file/send)との違い</text>
+              <text x="470" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; TTL: 期限なし vs 最大7日</text>
+              <text x="470" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 転送: OK vs 不可</text>
+              <text x="470" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 保管: 永続R2 vs onrender/tmp</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">PDFをCloudflare R2にアップロード→<code>files.marukosuisan.app</code>配下の公開URLを生成→LINE Push送信。URLは期限なしで、受信者が誰に転送しても開ける</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「○○をLINEで送って、誰に転送しても開けるように」「期限なしで」「みんなに渡せる形で」「長期保存」「転送OK」と指示／取引先や関係者に渡す書類で「受け取った人がさらに転送して使う」想定</div></div>
+              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python TODO管理/line-notify-server/scripts/send_pdf_longterm_line.py --to &lt;氏名orUID&gt; --file &lt;PDF&gt; --message &lt;文面&gt; --confirm --yes</code></div></div>
+              <div class="detail-row"><div class="detail-key">ID不明時のフォールバック</div><div class="detail-val"><code>--to "まるこみずき"</code>で瑞樹さん本人(<code>U308c28cbd8280efbd386cbb223c14564</code>)へ送信→LINE手動転送。アドレス帳に無い相手にも届けられる</div></div>
+              <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val"><code>--to</code>必須1名のみ・<code>--confirm</code>明示フラグ・<code>--yes</code>でEnter確認スキップ（既存send_secure_file_line.pyと同パターン）</div></div>
+              <div class="detail-row"><div class="detail-key">ストレージ</div><div class="detail-val">Cloudflare R2 bucket=<code>marukosuisan-files</code>（Asia-Pacific・10GB/月無料枠・S3互換・egress無料）／APIトークン名=<code>LINE PDF Send</code>（Object Read &amp; Write・marukosuisan-files限定・Forever TTL）</div></div>
+              <div class="detail-row"><div class="detail-key">公開URL構造</div><div class="detail-val"><code>https://files.marukosuisan.app/{YYYY-MM-DD}/{uuid8}_{元ファイル名}</code>・<code>Content-Disposition: inline</code>でブラウザ直接表示・元ファイル名保持</div></div>
+              <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">公開URLは推測困難（UUID 8桁 + 日付パス）だが、URLを知っている人は全員アクセス可能。⚠️機微情報（給与明細・契約書）は短期版(/file/send)を使う</div></div>
+              <div class="detail-row"><div class="detail-key">LINE送信方式</div><div class="detail-val">LINE Messaging API（<code>api.line.me/v2/bot/message/push</code>）を直叩き。onrender経由しないのでスリープ問題回避・低遅延</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>line-send</code>スキルが短期版/長期版の自動分岐・トリガーで適切な方を選択</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code>／実装: <code>TODO管理/line-notify-server/scripts/send_pdf_longterm_line.py</code>／スキル: <code>.claude/skills/line-send/SKILL.md</code></div></div>
+            </div>
+            <div class="detail-note">2026-06-06新規構築。発端=「LINE経由でPDFを送ると、転送した相手が開けない」問題（LINE一時URLは送信者と受信者専用）→ 既存/file/sendは最大TTL7日でRender無料プランだと数日でファイル消失リスク → R2永続ストレージ+独自ドメインで「期限なし・転送OK」を実現。瑞樹さん本人へのフォールバック設計でアドレス帳未登録相手にも届けられる。⚠️副次発見=既存/shift/send(60日URL)・/file/send(7日URL)もRender無料プランの<code>/tmp</code>使用で実は数日でファイル消失している可能性大（要検証・別タスク）</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 作業日報PDF -->
       <div class="portal-card-wrap" data-detail-keywords="作業日報 PDF マトリクス A4横 紙運用 担当朝記入 ご飯屋作業 ヤマヤ 完成数 完了 前日累計 ゼブラストライプ generate_daily_report_pdf">
         <a class="portal-link" href="#" onclick="return false" data-keywords="作業日報 PDF 紙 マトリクス">

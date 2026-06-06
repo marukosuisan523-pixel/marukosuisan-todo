@@ -1137,10 +1137,11 @@
               <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>shift-share</code>（「シフト共有」「シフト送って」「○月のシフト送信」で発動）</div></div>
               <div class="detail-row"><div class="detail-key">統合コマンド</div><div class="detail-val"><code>python scripts/shift_share_monthly.py 2026 06</code>（個人）／<code>--to-group</code>（業務LINEグループ）</div></div>
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">個人LINEへ先送信→瑞樹さん「OK」→グループへ配信（CLAUDE.md「取り消し不可な外部操作の鉄則」準拠）</div></div>
-              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/shift/send</code>エンドポイント（render.com）・URLは60日有効</div></div>
-              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>.claude/skills/shift-share/SKILL.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><strong>【2026-06-06 R2移行済】</strong> Cloudflare R2 → <code>files.marukosuisan.app/shift/{YYYY-MM}/{uuid8}_filename.jpg</code> 永続URL → LINE Messaging API直叩き（image type）。旧 <code>line-notify-server /shift/send</code> はRender Free planのephemeral fsで実際は数十分〜数時間でファイル消失する仕様問題があり廃止</div></div>
+              <div class="detail-row"><div class="detail-key">送信スクリプト</div><div class="detail-val">正本: <code>scripts/send_shift_to_line_group_r2.py</code>（R2版）／統合: <code>scripts/shift_share_monthly.py</code>（内部でR2版呼出）</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>.claude/skills/shift-share/SKILL.md</code>／メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code></div></div>
             </div>
-            <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路</div>
+            <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路。<strong>2026-06-06 R2永続URL移行</strong>=Render Free planはephemeral filesystemで15分非アクティブspin downでtmpファイル消失するため、60日URLは実態を反映してなかった。Cloudflare R2に切替で本当に永続化。残課題=<code>/file/send</code>(機微ファイル)・<code>/payslip/send</code>(給与明細)は本人限定が必要なのでR2 presigned URL対応の別タスク</div>
           </div>
         </div>
       </div>

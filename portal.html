@@ -608,7 +608,7 @@
       </div>
 
       <!-- 在庫管理システム -->
-      <div class="portal-card-wrap" data-detail-keywords="Next.js Prisma SQLite shadcn Tailwind ダッシュボード 製造管理 棚卸し 仕込み計算 BOM 61件 277品目 2段階BOM dev.db 部門フィルタ 確認周期 適正在庫自動更新 団体予約 JTB 太平洋トラベル 吉田様 メニュー別仕込み ご飯やカレンダー連携 Menu.aliases GroupReservation 主食 副菜 mealPersons isMainDish menu_undecided 通常客 確定人数 合算 未確定団体バナー">
+      <div class="portal-card-wrap" data-detail-keywords="Next.js Prisma SQLite shadcn Tailwind ダッシュボード 製造管理 棚卸し 仕込み計算 BOM 61件 277品目 2段階BOM dev.db 部門フィルタ 確認周期 適正在庫自動更新 団体予約 JTB 太平洋トラベル 吉田様 メニュー別仕込み ご飯やカレンダー連携 Menu.aliases GroupReservation 主食 副菜 mealPersons isMainDish menu_undecided 通常客 確定人数 合算 未確定団体バナー OrderMark自動失効 発注済みマーク失効 check_cycle連動 棚卸履歴 履歴modal 案4 changed タグ付け 集計サマリー 30日折れ線 stocktake-history StockTakeLog">
         <a class="portal-link" href="https://zaiko.marukosuisan.app" target="_blank" data-keywords="在庫 zaico 棚卸し 製造 BOM 仕込み">
           <div class="icon ic-amber">&#128230;</div>
           <div class="info"><div class="name">在庫管理システム</div><div class="desc">BOM・製造・棚卸し・仕込み</div></div>
@@ -657,13 +657,15 @@
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + Prisma v7 + SQLite + shadcn/ui + Tailwind CSS v4</div></div>
               <div class="detail-row detail-full"><div class="detail-key">ページ</div><div class="detail-val">ダッシュボード(<code>/</code>) / 在庫一覧(<code>/inventory</code>) / 製造管理(<code>/production</code>) / 棚卸し(<code>/stocktake</code>) / 仕込み計算(<code>/preparation</code>) / <strong>発注(<code>/order</code>)</strong></div></div>
               <div class="detail-row"><div class="detail-key">発注ページ</div><div class="detail-val">不足品(danger)+残少(warn)を購入元別グルーピング・発注済みチェックでOrderMark記録・購入元別アクション（🛒Amazonカート / 📧メール / 📞電話 / 🚗店舗 / 📱LINE / 🏭自社）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">OrderMark自動失効</div><div class="detail-val"><strong>check_cycle連動の日数経過で発注済みフラグを自動解除</strong>（週1=5日/週2=4日/週3+=3日/毎日=3日/月一系「１５日」「末日」=15日/空=5日）。部分入荷で在庫が適正未満のまま放置→永久に発注タブから消える事故を根治（2026-06-06生めん滞留19件→1件で実証）。force-dynamic SSRなので確認周期を変えれば次の画面更新で即追従</div></div>
               <div class="detail-row"><div class="detail-key">Amazon自動カート</div><div class="detail-val">claude-in-chrome経由でAmazonビジネス（本物のChrome＋Business認証）に複数商品を自動カート投入。「Claudeに依頼」ボタンでリストコピー→メインセッションに貼付け</div></div>
               <div class="detail-row"><div class="detail-key">発注済み日付補正</div><div class="detail-val">毎日22:00 <code>AmazonOrderSync</code> タスクが Amazon注文確認メール(Gmail) から ASIN照合→OrderMark.ordered_at を実注文日に補正</div></div>
               <div class="detail-row"><div class="detail-key">zaico連携</div><div class="detail-val">REST API（トークン .env）、全277品目（飲食店134+加工品+資材）</div></div>
               <div class="detail-row"><div class="detail-key">在庫一覧</div><div class="detail-val">部門フィルタ（飲食店/加工品/原材料/資材）+ カテゴリ + 状態フィルタ</div></div>
               <div class="detail-row"><div class="detail-key">確認周期</div><div class="detail-val">ZAICO+Prisma DB 二重保存（更新時は両方同期必須）。飲食店全品目設定済み</div></div>
               <div class="detail-row"><div class="detail-key">BOM</div><div class="detail-val">61件登録済み（2段階BOM: 無地資材→シール貼付済み→完成品）</div></div>
-              <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応・今後7日分の日付ボタンでフィルタ・<code>exclude_from_stocktake</code>チェックボックスで対象外指定可</div></div>
+              <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応・今後7日分の日付ボタンでフィルタ・<code>exclude_from_stocktake</code>チェックボックスで対象外指定可・<strong>「確定」した全品目を記録</strong>（数量変化あり/なしを <code>changed</code> タグで区別／2026-06-07実装）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">棚卸履歴modal</div><div class="detail-val"><strong>在庫一覧／棚卸ページの品名タップ→案4 modal</strong>（4つのサマリー＝確定回数/純変動/変化あり/確認のみ・過去30日折れ線グラフ・「すべて／変化ありのみ」トグル・ログ最新100件）。保存期間 <strong>上限なし</strong>（年14k件で約7MB／10年でも数百MB）。API: <code>GET /api/items/[itemId]/stocktake-history</code></div></div>
               <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数×注文比率×1人前g数。<code>prep_days_target</code> Float化で1.5日等小数日対応 ／ <code>exclude_from_prep</code>で除外 ／ <strong>団体予約は確定数量として別計算</strong>（2026-05-20追加）</div></div>
               <div class="detail-row detail-full"><div class="detail-key">団体予約連携</div><div class="detail-val">ポータル <code>gohan_reservations.json</code>（GCal+Misoca統合）を取込→<code>GroupReservation</code>テーブルへupsert。<strong>主食メニュー</strong>は団体が食べる数量のみ加算（海鮮丼30人前→しれとこづけ丼に+30）、<strong>副菜メニュー</strong>は団体料理人数を客数に合算（おばんざい・汁物等）。<code>Menu.aliases</code> JSONで表記揺れ吸収（「知床漬け丼」「鮭いくら丼」→しれとこづけ丼）。5段階マッチング（alias完全→name完全→正規化→部分→未マッチ）。子供・T/C+D/R は料理人数から除外</div></div>
               <div class="detail-row"><div class="detail-key">団体予約UI</div><div class="detail-val">仕込み画面の予想人数カレンダーに「予想人数（通常客）/団体（確定）/合計」3行表示・⚠️未確定団体バナー（メニュー未定・社内検討中は仕込み加算なし＋通知）</div></div>
@@ -671,13 +673,13 @@
               <div class="detail-row"><div class="detail-key">適正在庫</div><div class="detail-val">月別プリセット運用（2026-05-17実装完了・季節別の最適在庫管理）</div></div>
               <div class="detail-row"><div class="detail-key">仮想メニュー</div><div class="detail-val">全客対象パターン（おばんざい等）・ratio=1.0+ItemMenuIngredient</div></div>
               <div class="detail-row"><div class="detail-key">公開API連携</div><div class="detail-val">外部チャットボット向け <code>/api/public/*</code> 5本（別カード参照）</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">主なAPI</div><div class="detail-val"><code>GET /api/preparation</code> 仕込み計算 ／ <code>GET/POST /api/forecast/generate</code> 予想人数 ／ <code>GET /api/menus</code> メニュー（PUT で aliases 更新可） ／ <strong><code>POST /api/group-reservations/sync</code></strong> 団体予約同期 ／ <strong><code>GET /api/group-reservations</code></strong> 団体一覧 ／ <code>GET /api/items</code> 在庫</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">主なAPI</div><div class="detail-val"><code>GET /api/preparation</code> 仕込み計算 ／ <code>GET/POST /api/forecast/generate</code> 予想人数 ／ <code>GET /api/menus</code> メニュー（PUT で aliases 更新可） ／ <strong><code>POST /api/group-reservations/sync</code></strong> 団体予約同期 ／ <strong><code>GET /api/group-reservations</code></strong> 団体一覧 ／ <code>GET /api/items</code> 在庫 ／ <strong><code>GET /api/items/[itemId]/stocktake-history</code></strong> 棚卸履歴（最新100件＋過去30日サマリー）</div></div>
               <div class="detail-row"><div class="detail-key">団体同期スケジュール</div><div class="detail-val">Windowsタスク <code>GroupReservations_Sync</code>（毎日6:45/17:45）・ポータル <code>GohanReservations_Refresh</code>（6:30/17:30）の15分後に走らせる ／ ログ <code>scripts/logs/group_reservations_sync.log</code></div></div>
               <div class="detail-row"><div class="detail-key">DB / 本番運用</div><div class="detail-val"><code>在庫管理/app/dev.db</code> (SQLite) ／ port3000 は <code>next start</code> 本番運用（コード変更後は build+restart 必須）</div></div>
               <div class="detail-row"><div class="detail-key">場所</div><div class="detail-val"><code>合同会社圓子水産/在庫管理/app/</code></div></div>
               <div class="detail-row detail-full"><div class="detail-key">次ステップ</div><div class="detail-val">&#9654; 適正在庫自動更新（野菜・海産物を仕込み計算で毎日算出→zaico反映）&#9654; 加工品/資材の確認周期整理 &#9654; P4自動発注 &#9654; 10分以内死亡問題の恒久対策（HealthMonitor強化） &#9654; Menu.aliases 編集UI（Menu編集画面に入力欄追加）</div></div>
             </div>
-            <div class="detail-note">2026-05-23時点：団体予約連携完了（GCal/Misocaから自動取込・主食/副菜別計算・未確定団体バナー）・適正在庫月別プリセット完了・棚卸チェックボックス・漢字検索・公開API稼働中。慢性的にport3000が落ちる問題は調査中</div>
+            <div class="detail-note">2026-06-07時点：<strong>OrderMark自動失効</strong>（check_cycle連動／生めん滞留事件で根治・滞留19件→1件）＋<strong>棚卸履歴機能</strong>（changed タグ・在庫一覧／棚卸ページ品名タップで案4 modal・保存上限なし）追加。団体予約連携・適正在庫月別プリセット・漢字検索・公開API も稼働中。慢性的にport3000が落ちる問題は調査中</div>
           </div>
         </div>
       </div>
@@ -1141,7 +1143,7 @@
               <div class="detail-row"><div class="detail-key">送信スクリプト</div><div class="detail-val">正本: <code>scripts/send_shift_to_line_group_r2.py</code>（R2版）／統合: <code>scripts/shift_share_monthly.py</code>（内部でR2版呼出）</div></div>
               <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>.claude/skills/shift-share/SKILL.md</code>／メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code></div></div>
             </div>
-            <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路。<strong>2026-06-06 R2永続URL移行</strong>=Render Free planはephemeral filesystemで15分非アクティブspin downでtmpファイル消失するため、60日URLは実態を反映してなかった。Cloudflare R2に切替で本当に永続化。残課題=<code>/file/send</code>(機微ファイル)・<code>/payslip/send</code>(給与明細)は本人限定が必要なのでR2 presigned URL対応の別タスク</div>
+            <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路。<strong>2026-06-06 R2永続URL移行</strong>=Render Free planはephemeral filesystemで15分非アクティブspin downでtmpファイル消失するため、60日URLは実態を反映してなかった。Cloudflare R2に切替で本当に永続化。<strong>2026-06-07 Task #10完了</strong>=機微ファイル(<code>/file/send</code>)・給与明細(<code>/payslip/send</code>)も Cloudflare Worker 署名URL方式（<code>secure-files-worker</code>）へ全面移行・両カード参照</div>
           </div>
         </div>
       </div>
@@ -1214,18 +1216,18 @@
               <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python 給与処理/scripts/send_payslip_line.py --yyyymm 202604 --kubun 社員</code>（区分別）／<code>--all</code>（全員）／<code>--only 田中響,白岡流衣</code>（個別）／<code>--dry-run</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル/エージェント</div><div class="detail-val">月次労務フローの一環として <code>roumu-agent</code> から呼び出し可・単独でも <code>send_payslip_line.py</code> 直叩き可</div></div>
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">dry-run → Discord承認プロンプト → MZK「OK」「送って」 → 本実行 → 結果サマリー報告（取り消し不可の鉄則準拠）</div></div>
-              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/payslip/send</code>（POST・X-Upload-Key）→ <code>/payslip/:t/:f</code>（GET・HMAC 15分・image inline）</div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><strong>【2026-06-07 R2署名URL方式へ移行済】</strong> Cloudflare R2 <code>secure/payslip/{YYYYMM}/</code> + <code>secure-files-worker</code>（HMAC-SHA256署名URL） → LINE Messaging API 直叩き（text type + URL）。PDF直リンクで JPG変換廃止。default TTL=43200分(30日)・100日まで自由指定</div></div>
               <div class="detail-row"><div class="detail-key">スタッフ登録</div><div class="detail-val">公式LINE「圓子水産 業務通知 @035jrawg」を友だち追加 → フルネーム送信 → bot自動照合で <code>registeredName</code> 確定 → 配信可能</div></div>
-              <div class="detail-row"><div class="detail-key">⚠️ 実運用状況</div><div class="detail-val"><strong>2026-06-06 調査判明：未運用</strong>。<code>send_payslip_line.py</code>はどこからも呼ばれていない（roumu-agent/payroll-slipスキルから参照なし・IMG/ディレクトリも空＝一度も実行されてない）。月次給与明細の実運用は「Discord送信→瑞樹さん確認」で完結し、スタッフ一斉LINE配信フローは設計のみで未稼働。本格運用するなら、Render Free planのephemeral fsで実は数日でファイル消失する仕様問題があるため、R2 presigned URL（最大7日）への改修が必須（Task #10）</div></div>
+              <div class="detail-row"><div class="detail-key">実運用状況</div><div class="detail-val"><strong>✅ 2026-06-07 本稼働可能化</strong>。Task #10（R2署名URL移行）完了で永続性問題解消。スタッフ一斉配信フロー稼働可能。月次給与処理完了後に <code>--kubun 社員</code>/<code>--kubun アルバイト</code>/<code>--all</code> で配信</div></div>
               <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">WORKFLOW: <code>~/.claude/shared-memory/合同会社圓子水産/workflow_payroll_line_send.md</code>／RULE: <code>feedback_payroll_line_delivery.md</code></div></div>
             </div>
-            <div class="detail-note">2026-05-10新規構築（HMAC短期URL基盤の最初のユースケース）。LINE Messaging APIにfile typeなし → PDF→JPEG変換+image typeで画像プレビュー方式に。後発のシフト共有(/shift/send)・LINE Secure File Gateway(/file/send)もこの基盤を踏襲。<strong>2026-06-06更新：実態調査で未運用と判明</strong>。本格運用はR2 presigned URL改修後（Task #10）</div>
+            <div class="detail-note">2026-05-10新規構築（旧HMAC短期URL基盤の最初のユースケース）。LINE Messaging APIにfile typeなし → 初版はPDF→JPEG変換+image typeで画像プレビュー方式。<strong>2026-06-07更新：R2署名URL方式（Task #10）へ移行</strong>。PDF直リンク・JPG変換廃止・default 30日有効。送信履歴は <code>~/.line-send-log/YYYY-MM.jsonl</code> 自動記録、誤送信時は <code>r2_revoke.py</code> で即時無効化可能</div>
           </div>
         </div>
       </div>
 
       <!-- LINE Secure File Gateway -->
-      <div class="portal-card-wrap" data-detail-keywords="LINE Secure File Gateway 機微ファイル 賃金台帳 雇用契約書 源泉徴収票 経理書類 xlsx PDF zip docx 1対1 個別配信 HMAC 短期URL TTL 5分 7日 可変 /file/send /file/:t/:f send_secure_file_line.py send_wage_ledger_line.py LINE_FILE_UPLOAD_KEY LINE_FILE_HMAC_SECRET attachment Cache-Control no-store epoch 衝突防止 個別.ttl PDF inline LINE内蔵ブラウザ">
+      <div class="portal-card-wrap" data-detail-keywords="LINE Secure File Gateway 機微ファイル 賃金台帳 雇用契約書 源泉徴収票 経理書類 xlsx PDF zip docx 1対1 個別配信 HMAC SHA256 署名URL TTL 100日 可変 secure-files-worker Cloudflare Workers R2 marukosuisan-files secure prefix R2_SIGN_SECRET send_secure_file_line.py send_wage_ledger_line.py _r2_signed_url.py _send_log.py r2_revoke.py 送信ログ Lifecycle 180日 自動削除 files.marukosuisan.app exp sig 410 403 期限切れ 改ざん 自然言語TTL">
         <a class="portal-link" href="#" onclick="return false" data-keywords="LINE 機微 ファイル 賃金台帳 契約書 個別配信 xlsx PDF">
           <div class="icon ic-indigo">&#128274;</div>
           <div class="info"><div class="name">LINE Secure File Gateway</div><div class="desc">機微xlsx/PDF/zipを個別LINEへHMAC URLで安全配信</div></div>
@@ -1296,19 +1298,19 @@
               <text x="470" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; epoch衝突防止・no-store</text>
             </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">任意のバイナリ機微ファイル（xlsx/PDF/zip/docx/画像）をスタッフ個人LINE宛に短期HMAC URLで安全配信。期限切れ後はサーバー上から自動削除されて足跡ゼロ</div></div>
-              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「○○さんに○○.xlsxをLINEで送って」「賃金台帳を経理に送って」「雇用契約書を本人に送って」と指示</div></div>
-              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python scripts/send_secure_file_line.py --to &lt;氏名orUID&gt; --file &lt;path&gt; --ttl-min &lt;分&gt; --message &lt;文面&gt; --confirm</code></div></div>
-              <div class="detail-row"><div class="detail-key">賃金台帳ラッパ</div><div class="detail-val"><code>python scripts/send_wage_ledger_line.py --to &lt;氏名orUID&gt; --confirm</code>（デフォルトTTL=24時間）</div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">任意のバイナリ機微ファイル（xlsx/PDF/zip/docx/画像）をスタッフ個人LINE宛にR2署名URLで安全配信。期限切れで全員開けなくなる（本人縛りなしだがURL知ってる人は期限内なら開ける）</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「○○さんに○○.xlsxをLINEで送って」「賃金台帳を経理に」「雇用契約書を本人に」「3日有効で」「明日まで」等。TTL自然言語マッピングはline-sendスキル参照</div></div>
+              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>py -3 scripts/send_secure_file_line.py --to &lt;氏名orUID&gt; --file &lt;path&gt; --ttl-min &lt;分&gt; --message &lt;文面&gt; --confirm --yes</code></div></div>
+              <div class="detail-row"><div class="detail-key">賃金台帳ラッパ</div><div class="detail-val"><code>py -3 scripts/send_wage_ledger_line.py --to &lt;氏名orUID&gt; --confirm --yes</code>（デフォルトTTL=24時間）</div></div>
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val"><code>--to</code>必須1名のみ・<code>--confirm</code>明示フラグ・本送信前にinteractive「yes」入力（誤送信防止3重ガード）</div></div>
-              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><code>line-notify-server</code>の<code>/file/send</code>（POST・X-Upload-Key認証）→ <code>/file/:t/:f</code>（GET・HMAC検証）</div></div>
-              <div class="detail-row"><div class="detail-key">TTL設計</div><div class="detail-val">リクエスト指定・default=60分・min=5分・max=10080分(7日)・ファイル個別<code>.ttl</code>メタファイルで管理・5分間隔自動cleanup</div></div>
-              <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">HMAC-SHA256(<code>filename|expUnix</code>)+base64url・<code>{epoch}_</code>プレフィックス強制で衝突防止・<code>Cache-Control: private, no-store</code>・<code>Content-Disposition: attachment</code></div></div>
-              <div class="detail-row"><div class="detail-key">改ざん防御</div><div class="detail-val">exp改ざん→403 Invalid signature／filename改ざん→403 Invalid signature／期限切れ→403 Expired（T1-T5全合格・2026-05-20）</div></div>
-              <div class="detail-row"><div class="detail-key">⚠️ 永続性リスク</div><div class="detail-val"><strong>2026-06-06判明</strong>: TTL最大7日は名目だけ。Render Free planはephemeral filesystem + 15分非アクティブspin downで、tmpファイルが<strong>実際は数十分〜数時間で消失</strong>する。HMAC URLが有効でもファイル本体がなければ404。賃金台帳等を送ったあと受信者が後日タップしても見られない可能性大。シフトはR2移行で解消済、本ゲートウェイ系は<strong>R2 presigned URL改修</strong>（Task #10）で根治予定</div></div>
-              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">RULE: <code>~/.claude/shared-memory/rule_line_secure_file_gateway.md</code>／実装: <code>TODO管理/line-notify-server/server.js</code>（commit 80a3ec2）</div></div>
+              <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><strong>【2026-06-07 R2署名URL方式へ移行済】</strong> Cloudflare R2 <code>secure/</code> prefix + <code>secure-files-worker</code>（HMAC-SHA256検証）→ <code>files.marukosuisan.app/secure/&lt;key&gt;?exp=&amp;sig=</code> → LINE Messaging API 直叩き（text + URL）。旧 <code>/file/send</code> (onrender Express + ephemeral fs)は deprecation・残置のみ</div></div>
+              <div class="detail-row"><div class="detail-key">TTL設計</div><div class="detail-val">リクエスト指定・default=1440分(24h)・min=5分・<strong>max=144000分(100日)に拡張</strong>・期限自由設定可能・期限切れ→Worker 410返却</div></div>
+              <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">HMAC-SHA256(<code>${key}\n${exp}</code>) hex・Worker SIGN_SECRET と Python R2_SIGN_SECRET の同一64文字hex対称鍵・1対1配信（再送には別UUID8発行）</div></div>
+              <div class="detail-row"><div class="detail-key">改ざん防御</div><div class="detail-val">exp改ざん→410 / sig改ざん→403 / オブジェクト不在→404 / 正常→200（2026-06-07 全テスト合格）</div></div>
+              <div class="detail-row"><div class="detail-key">運用補強</div><div class="detail-val">送信ログ自動記録 <code>~/.line-send-log/YYYY-MM.jsonl</code>（<code>_send_log.py</code>で検索）／誤送信即時取消 <code>r2_revoke.py --last 10</code>／R2 Lifecycle Rule <code>secure-expire-180d</code>（180日自動削除）</div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">memo: <code>project_line_pdf_longterm.md</code>／Worker実装: <code>~/合同会社圓子水産/TODO管理/secure-files-worker/src/index.js</code>／Python: <code>~/合同会社圓子水産/給与処理/scripts/_r2_signed_url.py</code></div></div>
             </div>
-            <div class="detail-note">2026-05-20新規構築。発端=「川島ひなたに賃金台帳をLINEで送って」→ LINE APIはxlsx送信不可なのでHMAC URL+text typeが現実解と判明 → 汎用化して経理書類/契約書/源泉徴収票等の全機微ファイル配信基盤に拡張。給与明細(/payslip 15分)・シフト(/shift 60日)と並ぶ第3系統。<strong>2026-06-06更新</strong>: Render ephemeral fs問題でTTL名目は実態と乖離・R2 presigned URL移行が必要（Task #10）</div>
+            <div class="detail-note">2026-05-20新規構築。発端=「川島ひなたに賃金台帳をLINEで送って」→ LINE APIはxlsx送信不可なのでHMAC URL+text typeが現実解と判明 → 汎用化して経理書類/契約書/源泉徴収票等の全機微ファイル配信基盤に拡張。<strong>2026-06-07 Task #10完了</strong>: Render ephemeral fs問題解消のため Cloudflare R2 + Worker（<code>secure-files-worker</code>）の署名URL方式に全面移行。TTL自然言語IF・送信ログ・即時取消・180日自動削除まで運用補強完了</div>
           </div>
         </div>
       </div>
@@ -1317,7 +1319,7 @@
       <div class="portal-card-wrap" data-detail-keywords="LINE PDF 長期配信 R2 Cloudflare files.marukosuisan.app marukosuisan-files バケット 転送OK 期限なし 公開URL 取引先共有 boto3 send_pdf_longterm_line.py まるこみずきフォールバック 手動転送 Object Read Write APIトークン Custom Domain Asia-Pacific Standard ストレージ 10GB 無料枠 UUID prefix Content-Disposition inline line-send 長期版">
         <a class="portal-link" href="#" onclick="return false" data-keywords="LINE PDF 長期 転送 R2 期限なし 公開 取引先">
           <div class="icon ic-cyan">&#128190;</div>
-          <div class="info"><div class="name">LINE PDF 長期配信（R2）</div><div class="desc">PDFをR2経由で期限なし・転送OKでLINE送信</div></div>
+          <div class="info"><div class="name">LINE PDF 長期配信（R2・公開URL版）</div><div class="desc">PDFをR2経由で期限なし・転送OKでLINE送信（機微なら署名URL版へ）</div></div>
           <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>

@@ -540,10 +540,10 @@
     <div class="portal-grid">
 
       <!-- ご飯や予約カレンダー -->
-      <div class="portal-card-wrap" data-detail-keywords="予約 カレンダー 海鮮丼 ご飯や 太平洋トラベル 団体予約 月表示">
-        <a class="portal-link" href="/reservations" target="_blank" data-keywords="予約 カレンダー 海鮮丼 ご飯や 団体">
+      <div class="portal-card-wrap" data-detail-keywords="予約 カレンダー 海鮮丼 ご飯や 太平洋トラベル 団体予約 月表示 削除ボタン カレンダーごと削除 キャンセル delete-reservation GCal削除 仕込み連携 reconcile 自動除外 delete_gohan_event">
+        <a class="portal-link" href="/reservations" target="_blank" data-keywords="予約 カレンダー 海鮮丼 ご飯や 団体 削除 キャンセル">
           <div class="icon ic-blue">&#128197;</div>
-          <div class="info"><div class="name">ご飯や予約カレンダー</div><div class="desc">業務カレンダー＋Misoca団体予約 月表示</div></div>
+          <div class="info"><div class="name">ご飯や予約カレンダー</div><div class="desc">業務カレンダー＋Misoca団体予約 月表示・予約タップで詳細＆🗑カレンダーごと削除（カレンダー由来のみ・削除→仕込み自動除外）</div></div>
           <span class="badge badge-live">稼働中</span>
         </a>
       </div>
@@ -667,7 +667,7 @@
               <div class="detail-row"><div class="detail-key">棚卸し</div><div class="detail-val">スマホ対応・今後7日分の日付ボタンでフィルタ・<code>exclude_from_stocktake</code>チェックボックスで対象外指定可・<strong>「確定」した全品目を記録</strong>（数量変化あり/なしを <code>changed</code> タグで区別／2026-06-07実装）</div></div>
               <div class="detail-row detail-full"><div class="detail-key">棚卸履歴modal</div><div class="detail-val"><strong>在庫一覧／棚卸ページの品名タップ→案4 modal</strong>（4つのサマリー＝確定回数/純変動/変化あり/確認のみ・過去30日折れ線グラフ・「すべて／変化ありのみ」トグル・ログ最新100件）。保存期間 <strong>上限なし</strong>（年14k件で約7MB／10年でも数百MB）。API: <code>GET /api/items/[itemId]/stocktake-history</code></div></div>
               <div class="detail-row"><div class="detail-key">仕込み計算</div><div class="detail-val">予想人数×注文比率×1人前g数。<code>prep_days_target</code> Float化で1.5日等小数日対応 ／ <code>exclude_from_prep</code>で除外 ／ <strong>団体予約は確定数量として別計算</strong>（2026-05-20追加）</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">団体予約連携</div><div class="detail-val">ポータル <code>gohan_reservations.json</code>（GCal+Misoca統合）を取込→<code>GroupReservation</code>テーブルへupsert。<strong>主食メニュー</strong>は団体が食べる数量のみ加算（海鮮丼30人前→しれとこづけ丼に+30）、<strong>副菜メニュー</strong>は団体料理人数を客数に合算（おばんざい・汁物等）。<code>Menu.aliases</code> JSONで表記揺れ吸収（「知床漬け丼」「鮭いくら丼」→しれとこづけ丼）。5段階マッチング（alias完全→name完全→正規化→部分→未マッチ）。子供・T/C+D/R は料理人数から除外</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">団体予約連携</div><div class="detail-val">ポータル <code>gohan_reservations.json</code>（GCal+Misoca統合）を取込→<code>GroupReservation</code>テーブルへupsert。<strong>主食メニュー</strong>は団体が食べる数量のみ加算（海鮮丼30人前→しれとこづけ丼に+30）、<strong>副菜メニュー</strong>は団体料理人数を客数に合算（おばんざい・汁物等）。<code>Menu.aliases</code> JSONで表記揺れ吸収（「知床漬け丼」「鮭いくら丼」→しれとこづけ丼）。5段階マッチング（alias完全→name完全→正規化→部分→未マッチ）。子供・T/C+D/R は料理人数から除外。<strong>reconcile（2026-06-07追加）</strong>＝ポータルから消えた「今日以降」の予約（=キャンセル）を <code>GroupReservation</code> から自動削除（過去は保護・ポータル0件時は全削除しない安全ガード付き）。これで団体キャンセルは毎日の同期で仕込みから自動除外（手作業不要）</div></div>
               <div class="detail-row"><div class="detail-key">団体予約UI</div><div class="detail-val">仕込み画面の予想人数カレンダーに「予想人数（通常客）/団体（確定）/合計」3行表示・⚠️未確定団体バナー（メニュー未定・社内検討中は仕込み加算なし＋通知）</div></div>
               <div class="detail-row"><div class="detail-key">検索機能</div><div class="detail-val">漢字→ひらがな検索対応（kuroshiroで <code>titleYomi</code> 自動生成）</div></div>
               <div class="detail-row"><div class="detail-key">適正在庫</div><div class="detail-val">月別プリセット運用（2026-05-17実装完了・季節別の最適在庫管理）</div></div>

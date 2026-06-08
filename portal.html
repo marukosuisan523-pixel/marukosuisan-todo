@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -785,7 +786,7 @@
       </div>
 
       <!-- LINE通知サーバー -->
-      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /send-direct /notify /webhook /payslip/send /shift/send /file/send LINE Secure File Gateway /warmup /members 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python HMAC keep-alive httpsAgent GitHub Actions 給与明細 シフト共有 賃金台帳 機微ファイル xlsx PDF zip 汎用配信">
+      <div class="portal-card-wrap" data-detail-keywords="Node.js Express Render /send /send-task /send-direct /notify /webhook /shift/send /file/send LINE Secure File Gateway /warmup /members 圓子水産 業務通知 @035jrawg グループID 自動デプロイ UTF-8 Python HMAC keep-alive httpsAgent GitHub Actions 給与明細 シフト共有 賃金台帳 機微ファイル xlsx PDF zip 汎用配信 R2署名URL 410Gone deprecated /payslip/send">
         <a class="portal-link" href="https://marukosuisan-line-notify.onrender.com" target="_blank" data-keywords="LINE 通知 render 給与明細 シフト">
           <div class="icon ic-emerald">&#128276;</div>
           <div class="info"><div class="name">LINE通知サーバー</div><div class="desc">Render / Messaging API ／ 画像配信＋メッセージ</div></div>
@@ -834,7 +835,7 @@
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://marukosuisan-line-notify.onrender.com" target="_blank">marukosuisan-line-notify.onrender.com</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Node.js + Express</div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント（メッセージ系）</div><div class="detail-val"><code>POST /send</code>（テキスト）／<code>/send-task</code>（業務タスク）／<code>/send-mention</code>（メンション付）／<code>/send-direct</code>（1対1）／<code>/notify</code>（統一・private/group振り分け）</div></div>
-              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（ファイル配信）</div><div class="detail-val"><code>POST /payslip/send</code> → <code>GET /payslip/:t/:f</code>（給与明細JPEG・HMAC 15分URL）／<code>POST /shift/send</code> → <code>GET /shift/:t/:f</code>（シフト画像・HMAC 60日URL）／<code>POST /file/send</code> → <code>GET /file/:t/:f</code>（汎用機微ファイル・xlsx/PDF/zip等・HMAC・TTL 5分〜7日可変・LINE Secure File Gateway）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント（ファイル配信）</div><div class="detail-val"><code>POST /shift/send</code> → <code>GET /shift/:t/:f</code>（シフト画像・HMAC 60日URL）／<code>POST /file/send</code> → <code>GET /file/:t/:f</code>（汎用機微ファイル・xlsx/PDF/zip等・HMAC・TTL 5分〜7日可変・LINE Secure File Gateway）／給与明細・機微ファイルは R2署名URL（<code>files.marukosuisan.app/secure/...</code>）方式へ移行済。<strong>旧 <code>POST /payslip/send</code> と <code>GET /payslip/:t/:f</code> は2026-06-08に410 Gone化（deprecation ガード）</strong></div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント（webhook・管理）</div><div class="detail-val"><code>POST /webhook</code>（LINE受信→Discord転送）／<code>GET /warmup</code>（TLS keep-alive）／<code>GET /members</code>（登録メンバー）／<code>POST /members/map</code>（手動紐付け）</div></div>
               <div class="detail-row"><div class="detail-key">LINE公式</div><div class="detail-val">圓子水産 業務通知 (@035jrawg)</div></div>
               <div class="detail-row"><div class="detail-key">グループID</div><div class="detail-val"><code>Cead6f4532c0c978468dfcd3f78bff9bb</code></div></div>
@@ -842,8 +843,8 @@
               <div class="detail-row"><div class="detail-key">keep-alive</div><div class="detail-val">GitHub Actions <code>.github/workflows/keep-alive.yml</code> で10分ごと <code>/warmup</code> ping ／ httpsAgent (TLS再利用)</div></div>
               <div class="detail-row"><div class="detail-key">GitHub</div><div class="detail-val">marukosuisan523-pixel/marukosuisan-line-notify (private)</div></div>
               <div class="detail-row"><div class="detail-key">デプロイ</div><div class="detail-val">push自動デプロイ（Render GitHub連携）</div></div>
-              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val">画像系=<code>X-Upload-Key: LINE_PAYSLIP_UPLOAD_KEY</code> ／ ファイル系=<code>X-Upload-Key: LINE_FILE_UPLOAD_KEY</code> ／ 各々別HMAC秘密鍵（<code>LINE_PAYSLIP_HMAC_SECRET</code> / <code>LINE_FILE_HMAC_SECRET</code>）でURL署名</div></div>
-              <div class="detail-row"><div class="detail-key">TTL分離</div><div class="detail-val">給与明細=15分（<code>PAYSLIP_TMP_DIR</code>）／ シフト=60日（<code>SHIFT_TMP_DIR</code>）／ 汎用ファイル=5分〜7日可変・ファイル個別<code>.ttl</code>メタ（<code>FILE_TMP_DIR</code>）・全て別ディレクトリ運用</div></div>
+              <div class="detail-row"><div class="detail-key">認証</div><div class="detail-val">ファイル系=<code>X-Upload-Key: LINE_FILE_UPLOAD_KEY</code> + <code>LINE_FILE_HMAC_SECRET</code>でURL署名／ 給与明細・機微ファイルは R2署名URL方式（<code>R2_SIGN_SECRET</code>＋Cloudflare Worker検証）に移行済。<strong>旧 LINE_PAYSLIP_UPLOAD_KEY / LINE_PAYSLIP_HMAC_SECRET は2026-06-08に廃止（410 Gone）</strong></div></div>
+              <div class="detail-row"><div class="detail-key">TTL分離</div><div class="detail-val">シフト=60日（<code>SHIFT_TMP_DIR</code>）／ 汎用ファイル=5分〜7日可変・ファイル個別<code>.ttl</code>メタ（<code>FILE_TMP_DIR</code>）／ 給与明細・機微ファイルは R2署名URL（5分〜100日・default 30日）。<strong>旧 PAYSLIP_TMP_DIR（15分）は2026-06-08に停止</strong></div></div>
               <div class="detail-row"><div class="detail-key">ローカルCLI</div><div class="detail-val"><code>給与処理/scripts/send_payslip_line.py</code>（給与明細）／<code>send_secure_file_line.py</code>（汎用機微ファイル）／<code>send_wage_ledger_line.py</code>（賃金台帳ラッパ）</div></div>
               <div class="detail-row"><div class="detail-key">付帯機能</div><div class="detail-val">LINE→Discord作業日報ブリッジ（<code>/webhook</code> 内 image処理→Discord webhook転送）</div></div>
             </div>
@@ -1207,11 +1208,11 @@
       </div>
 
       <!-- 給与明細LINE送信 -->
-      <div class="portal-card-wrap" data-detail-keywords="給与明細 LINE 送信 配信 個別 image type プレビュー 月次 PDF JPEG 200dpi PyMuPDF /payslip/send HMAC 15分 send_payslip_line.py roumu-agent 区分 社員 アルバイト registeredName staff_master フルネーム照合 LINE_PAYSLIP_UPLOAD_KEY">
-        <a class="portal-link" href="#" onclick="return false" data-keywords="給与明細 LINE 送信 個別 月次">
+      <div class="portal-card-wrap" data-detail-keywords="給与明細 LINE 送信 配信 個別 月次 PDF R2署名URL secure-files-worker files.marukosuisan.app TTL 30日 send_payslip_line.py send_secure_file_line.py roumu-agent 区分 社員 アルバイト registeredName staff_master フルネーム照合 R2_SIGN_SECRET /payslip/send deprecated 410Gone">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="給与明細 LINE 送信 個別 月次 R2">
           <div class="icon ic-cyan">&#128181;</div>
-          <div class="info"><div class="name">給与明細LINE送信</div><div class="desc">PDF→JPEG→個人LINEへ image typeで送信【⚠️設計のみ・未運用】</div></div>
-          <span class="badge badge-dev">設計完了・未運用</span>
+          <div class="info"><div class="name">給与明細LINE送信</div><div class="desc">PDFをR2署名URLで個人LINEへ送信（30日有効）</div></div>
+          <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
         <div class="detail-panel">
@@ -1226,20 +1227,20 @@
               <text x="75" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. PDF生成</text>
               <text x="75" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">export_payslip_pdf.py</text>
               <path d="M140,38 L158,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
-              <!-- Step 2: JPEG変換 -->
-              <rect x="160" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
-              <text x="225" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. JPEG変換</text>
-              <text x="225" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">PyMuPDF 200dpi</text>
-              <path d="M290,38 L308,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
-              <!-- Step 3: /payslip/send -->
-              <rect x="310" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
-              <text x="380" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. /payslip/send</text>
-              <text x="380" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">HMAC 15分URL生成</text>
-              <path d="M450,38 L468,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
-              <!-- Step 4: LINE image push -->
-              <rect x="470" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
-              <text x="535" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">4. LINE image</text>
-              <text x="535" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">プレビュー直接表示</text>
+              <!-- Step 2: R2アップロード -->
+              <rect x="160" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="230" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. R2アップロード</text>
+              <text x="230" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">secure/payslip/{YYYYMM}/</text>
+              <path d="M300,38 L318,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
+              <!-- Step 3: 署名URL生成 -->
+              <rect x="320" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="390" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">3. 署名URL生成</text>
+              <text x="390" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">HMAC-SHA256/exp+sig</text>
+              <path d="M460,38 L478,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-payslip)"/>
+              <!-- Step 4: LINE text+URL push -->
+              <rect x="480" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="545" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">4. LINE push</text>
+              <text x="545" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">text+URL（PDF直リンク）</text>
               <!-- 凡例: 配信対象 -->
               <rect x="10" y="86" width="210" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
               <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">配信対象</text>
@@ -1261,15 +1262,15 @@
               <!-- 凡例: セキュリティ -->
               <rect x="470" y="86" width="200" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
               <text x="480" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">セキュリティ</text>
-              <text x="480" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; HMAC-SHA256+base64url</text>
-              <text x="480" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; TTL 15分（短期）</text>
-              <text x="480" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; PAYSLIP_TMP_DIR 自動削除</text>
-              <text x="480" y="166" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; X-Upload-Key 認証</text>
+              <text x="480" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; HMAC-SHA256（R2_SIGN_SECRET）</text>
+              <text x="480" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; TTL 5分〜100日（default 30日）</text>
+              <text x="480" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; R2 Lifecycle 180日で自動削除</text>
+              <text x="480" y="166" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; Worker検証（exp/sig）</text>
               <text x="480" y="180" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 1対1のみ（他人見えない）</text>
-              <text x="480" y="194" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; パスワードなし（運用簡素化）</text>
+              <text x="480" y="194" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; r2_revoke.py で即時取消可</text>
             </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">月次給与明細PDFをJPEG化して、各スタッフの個人LINEへ image typeでプレビュー送信。LINE内に画像直接表示・タップで拡大・長押し保存</div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">月次給与明細PDFをCloudflare R2にアップロードし、HMAC-SHA256署名URL（30日有効）を生成して各スタッフの個人LINEへ text+URL push。LINEでURLをタップしてPDFを開く</div></div>
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">給与処理完了後にMZK「給与明細送って」と指示（社員=25日支給日／アルバイト=10日支給日に合わせる）</div></div>
               <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python 給与処理/scripts/send_payslip_line.py --yyyymm 202604 --kubun 社員</code>（区分別）／<code>--all</code>（全員）／<code>--only 田中響,白岡流衣</code>（個別）／<code>--dry-run</code></div></div>
               <div class="detail-row"><div class="detail-key">スキル/エージェント</div><div class="detail-val">月次労務フローの一環として <code>roumu-agent</code> から呼び出し可・単独でも <code>send_payslip_line.py</code> 直叩き可</div></div>

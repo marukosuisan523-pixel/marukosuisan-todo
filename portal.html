@@ -2210,6 +2210,68 @@
         </div>
       </div>
 
+      <!-- Google Driveバックアップ（圓子水産書類） -->
+      <div class="portal-card-wrap" data-detail-keywords="Google Drive rclone バックアップ 書類 自動同期 タスクスケジューラ 毎時 sync copy max-delete 50 安全装置 marukosuisan523 ~/合同会社圓子水産/書類/ gdrive 書類バックアップ/圓子水産 rclone-sync.ps1 rclone-exclude.txt _sync_logs ログローテ 7日 winget Rclone.Rclone OAuth gdrive remote 1177件 1.061GiB 初回アップロード 自動化稼働 2026-06-09 PowerShell Register-ScheduledTask クラウド退避 PC障害 復旧 災害対策">
+        <a class="portal-link" href="https://drive.google.com/drive/u/0/my-drive" target="_blank" data-keywords="Drive バックアップ 書類 rclone 同期">
+          <div class="icon ic-cyan">&#9729;</div>
+          <div class="info"><div class="name">Google Driveバックアップ</div><div class="desc">書類を毎時Driveへ自動同期（rclone sync・--max-delete 50安全装置）</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-gdrive" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- 上段: 書類フォルダ → スケジューラ → rclone → Google Drive -->
+              <rect x="10" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="80" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">ローカル書類</text>
+              <text x="80" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">~/合同会社圓子水産/書類/</text>
+              <path d="M150,38 L178,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <rect x="180" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="250" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">タスクスケジューラ</text>
+              <text x="250" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">毎時0分起動</text>
+              <path d="M320,38 L348,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <rect x="350" y="10" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="420" y="32" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">rclone sync</text>
+              <text x="420" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">差分のみアップ</text>
+              <path d="M490,38 L518,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <rect x="520" y="10" width="140" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="590" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">Google Drive</text>
+              <text x="590" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">書類バックアップ/圓子水産/</text>
+              <!-- 下段: rcloneから分岐 - 除外 / 安全装置 / ログ -->
+              <path d="M390,66 L390,84 L130,84 L130,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <path d="M420,66 L420,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <path d="M450,66 L450,84 L580,84 L580,108" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gdrive)"/>
+              <rect x="60" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#94a3b8" stroke-width="1.5"/>
+              <text x="130" y="132" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">除外ルール</text>
+              <text x="130" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">_data/ *.tmp ログ</text>
+              <rect x="350" y="110" width="140" height="56" rx="10" fill="#4a1d1d" stroke="#f87171" stroke-width="1.5"/>
+              <text x="420" y="132" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Meiryo">安全装置</text>
+              <text x="420" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">--max-delete 50</text>
+              <rect x="510" y="110" width="140" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="580" y="132" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">ログローテ</text>
+              <text x="580" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">_sync_logs/ 7日</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">圓子水産の書類フォルダをGoogle Drive(<code>marukosuisan523@gmail.com</code>)へ自動バックアップ。PC側で追加・編集・削除した内容が1時間以内にDriveへ反映される。PC障害・誤操作・ランサムウェア時の救済用クラウド退避</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">明示操作は不要。<code>~/合同会社圓子水産/書類/</code> にファイルを入れるだけで毎時0分に自動同期</div></div>
+              <div class="detail-row"><div class="detail-key">同期スケジュール</div><div class="detail-val">毎時0分（Windowsタスクスケジューラ「<code>Rclone Sync 圓子水産書類</code>」）。手動即実行は <code>Start-ScheduledTask -TaskName 'Rclone Sync 圓子水産書類'</code></div></div>
+              <div class="detail-row"><div class="detail-key">同期モード</div><div class="detail-val"><code>rclone sync</code>（PC→Drive 片方向ミラー・削除も反映）</div></div>
+              <div class="detail-row"><div class="detail-key">安全装置</div><div class="detail-val"><code>--max-delete 50</code> ＝ 1回の同期で50件超を削除しようとしたら自動停止（誤って書類フォルダ全消去等の事故防止）</div></div>
+              <div class="detail-row"><div class="detail-key">除外ルール</div><div class="detail-val"><code>_data/</code>・<code>_sync_logs/</code>・<code>_duplicates_report.json</code>・<code>rclone-sync.ps1</code>・<code>rclone-exclude.txt</code>・<code>rclone-*.log</code>・<code>*.tmp</code>・<code>*.lock</code>・<code>Thumbs.db</code>・<code>.DS_Store</code>・<code>desktop.ini</code>・<code>~$*</code></div></div>
+              <div class="detail-row"><div class="detail-key">送信元 → 送信先</div><div class="detail-val"><code>C:\Users\mizuk\合同会社圓子水産\書類\</code> → <code>gdrive:書類バックアップ/圓子水産/</code></div></div>
+              <div class="detail-row"><div class="detail-key">ログ</div><div class="detail-val"><code>_sync_logs/sync-{YYYYMMDD-HHMM}.log</code>（7日経過で自動削除）</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">rclone v1.74.3（winget導入・OAuth認証済）／PowerShell 7／Windowsタスクスケジューラ（現在ユーザー・管理者権限不要）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val">同期スクリプト: <code>~/合同会社圓子水産/書類/rclone-sync.ps1</code>／除外リスト: <code>~/合同会社圓子水産/書類/rclone-exclude.txt</code>／タスク登録スクリプト: <code>~/合同会社圓子水産/書類/register-task.ps1</code>／rclone本体: <code>~/AppData/Local/Microsoft/WinGet/Packages/Rclone.Rclone_*/rclone-v1.74.3-windows-amd64/rclone.exe</code>／rclone config: <code>~/AppData/Roaming/rclone/rclone.conf</code> の <code>[gdrive]</code></div></div>
+            </div>
+            <div class="detail-note">2026-06-08初回アップロード完了（1,177件 / 1.061 GiB）→ 2026-06-09 自動化稼働。検証実績: 16:53手動トリガー Exit 0 / 17:00自動起動 Exit 0。<br>⚠️ 同期対象は<strong>圓子水産のみ</strong>（熊の家・個人事業の書類は対象外）。<br>⚠️ <code>copy</code>ではなく<code>sync</code>のため、PCで誤って書類を消すとDrive側も消える（<code>--max-delete 50</code>で50件超は止まるが49件以下なら反映される）。心配なら定期的にDriveのゴミ箱を空にせず復元元として活用。</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

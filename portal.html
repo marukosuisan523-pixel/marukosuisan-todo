@@ -1830,7 +1830,7 @@
       </div>
 
       <!-- 記憶システム（mempalace + engram + md） -->
-      <div class="portal-card-wrap" data-detail-keywords="記憶 メモリ 永続化 MCP SQLite セッション 保存 検索 履歴 mempalace engram palace ナレッジグラフ ベクトル検索">
+      <div class="portal-card-wrap" data-detail-keywords="記憶 メモリ 永続化 MCP SQLite セッション 保存 検索 履歴 mempalace engram palace ナレッジグラフ ベクトル検索 デーモン daemon 単一デーモン C案 47600 HNSW デシンク 索引 複数セッション 並走 MempalaceDaemon 死活監視">
         <a class="portal-link" href="#" onclick="return false" data-keywords="記憶 メモリ mempalace engram 永続化">
           <div class="icon ic-purple">&#129504;</div>
           <div class="info"><div class="name">記憶システム（2層構造）</div><div class="desc">mempalace + engram + md の3システム統合</div></div>
@@ -1845,7 +1845,8 @@
                 <strong>上の階</strong>（要約・構造化）: wing/room に手動保存（add_drawer）。高品質な決定・設定・方針を格納<br>
                 <strong>下の階</strong>（毎ターン自動ログ）: wing/room/log に全応答を自動保存（Stopフック）。漏れゼロの生データ
               </div></div>
-              <div class="detail-row"><div class="detail-key">mempalace</div><div class="detail-val">メイン記憶。ChromaDBベクトル検索 + SQLiteナレッジグラフ（時間軸クエリ対応）。19,600件超、751MB</div></div>
+              <div class="detail-row"><div class="detail-key">mempalace</div><div class="detail-val">メイン記憶。ChromaDBベクトル検索 + SQLiteナレッジグラフ（時間軸クエリ対応）。28,000件超</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">🏛️ 単一デーモン（C案・2026-06-10本番昇格）</div><div class="detail-val">記憶DB（ChromaDB）を開くのは常駐デーモン<strong>1プロセスのみ</strong>。全セッション・全フックは <code>127.0.0.1:47600</code> のHTTP経由で読み書きを依頼する。複数セッション並走時に「古いメモリ上の索引でファイルを上書き→ベクトル消失」するHNSW索引デシンク事故（2026-06-10・55件消失）を<strong>構造的に再発不能</strong>にする恒久対処。<code>daemon.json</code> マーカー存在中は自動デーモン経由・デーモン停止で従来ロック方式に自動フォールバック（記憶は落ちない）。自動起動は三段構え＝ログオン時（MempalaceDaemonLogon）＋毎時（MempalaceDaemon・多重起動ガード）＋HealthMonitor 5分巡回（port 47600死活→自動再起動）。pip更新時は <code>apply_daemon_routing_patch.py</code> 再実行</div></div>
               <div class="detail-row"><div class="detail-key">engram</div><div class="detail-val">FTS5キーワード検索インデックス。add_drawer時にフックで自動コピー。8MB</div></div>
               <div class="detail-row"><div class="detail-key">md (shared-memory)</div><div class="detail-val">セッション起動時に自動読込される永続メモリ。119ファイル、2.1MB</div></div>
               <div class="detail-row detail-full"><div class="detail-key">自動フロー</div><div class="detail-val">
@@ -1860,7 +1861,7 @@
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（秘書室）</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">mempalace v3.1.0 MCP + engram v1.11.0 MCP + Claude Code auto-memory</div></div>
             </div>
-            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く。新事業系wingは作らない（5つ + aliases.json で完結・iceage は2026-06-02 新設）</div>
+            <div class="detail-note">保存はadd_drawer一本に統一。mem_saveは使わない。セッション終了前にdiary_writeで要約日記を必ず書く。新事業系wingは作らない（5つ + aliases.json で完結・iceage は2026-06-02 新設）。2026-06-10〜 DB直接アクセスは廃止＝単一デーモン経由（運用: health確認 <code>python ~/.mempalace/daemon/mempalace_client.py health</code> / ログ <code>~/.mempalace/daemon/daemon.log</code> / ロールバック=タスク無効化+デーモン停止のみ）</div>
           </div>
         </div>
       </div>

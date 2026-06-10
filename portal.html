@@ -1900,7 +1900,7 @@
               <text x="625" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">engram+ベクトル</text>
               <rect x="10" y="86" width="660" height="80" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
               <text x="20" y="106" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">書類タイプ別の整理先</text>
-              <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 請求書: <code>書類/YYYY-MM/支払済|未払い/</code>（全事業統一・月別×状態フォルダ）</text>
+              <text x="20" y="124" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 請求書: <code>書類/経理/受領/YYYY-MM/支払済|未払い/</code>（全事業統一・月別×状態フォルダ）</text>
               <text x="20" y="138" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 名刺: meishi.csv に登録（氏名・会社・役職・連絡先・受領日・元ファイル名）</text>
               <text x="20" y="152" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 通知書・契約書・税務書類: 事業別フォルダに分類</text>
             </svg>
@@ -1909,7 +1909,7 @@
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">請求書・納品書・名刺・通知書が届いたとき。スマホで撮影 → inbox or Discord に送るだけ</div></div>
               <div class="detail-row"><div class="detail-key">使い方</div><div class="detail-val">①<code>~/書類/inbox/</code> or Discord添付 → ②「書類」と言えば自動処理開始 → ③確認プロンプトで分類保存</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val"><code>document-archive</code> スキル + Read（PDF/画像読み取り）</div></div>
-              <div class="detail-row"><div class="detail-key">請求書ルール</div><div class="detail-val"><code>書類/YYYY-MM/支払済|未払い/</code> 月別×支払状態（全事業統一・用途別フォルダ廃止 2026-05-10）</div></div>
+              <div class="detail-row"><div class="detail-key">請求書ルール</div><div class="detail-val"><code>書類/経理/受領/YYYY-MM/支払済|未払い/</code> 月別×支払状態（全事業統一・2026-06-10整理ルールで経理/受領/配下へ。既存ファイルは物理移動完了まで旧 書類/YYYY-MM/ に残存・成績表エンジンは両対応）</div></div>
               <div class="detail-row"><div class="detail-key">名刺DB</div><div class="detail-val">新規名刺はinboxに入れたら自動で出会い情報（場所・日時・経由者）を聞き取り→ <code>meishi.csv</code> 登録</div></div>
               <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
               <div class="detail-row"><div class="detail-key">連携</div><div class="detail-val">engram（全文検索）／ mempalaceベクトル（意味検索）／ Discord（添付受信）／ 経理スキル（請求書取込）</div></div>
@@ -3689,7 +3689,7 @@ graph LR
     <div class="wf-sub">スキャン → inbox → 自動分類 → engram登録</div>
     <p>準備中。「書類」「スキャン」「PDF保存」で document-archive スキル発動。</p>
     <ul>
-      <li>請求書: <code>書類/YYYY-MM/支払済|未払い/</code>（月別×支払状態・全事業統一）</li>
+      <li>請求書: <code>書類/経理/受領/YYYY-MM/支払済|未払い/</code>（月別×支払状態・全事業統一・2026-06-10〜）</li>
       <li>名刺: <code>meishi.csv</code> 登録（受領場所・日時・経由者を聞き取り）</li>
       <li>通知書・契約書・税務書類: 事業別フォルダに分類</li>
     </ul>

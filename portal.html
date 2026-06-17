@@ -2018,6 +2018,80 @@
         </div>
       </div>
 
+      <!-- 書類inbox振り分けwebapp（スマホ/PC・3階層cascade UI＋背景プリ分析） -->
+      <div class="portal-card-wrap" data-detail-keywords="書類 inbox 振り分け webapp ウェブアプリ web スマホ モバイル iPhone 1画面 cascade 3階層 事業 大カテゴリ サブカテゴリ Top6 もっと 推薦 ヒント Flask Python 8765 cloudflared Cloudflare Access PIN 認証 inbox.marukosuisan.app marukosuisan523 Claude Haiku 背景 プリ分析 事前分析 自動分析 analysis_cache.json undo 履歴 ピロン トースト Web Audio API サムネ thumbs PDF 分析 _background_worker 60秒 5分 SCAN_INTERVAL inbox_preprocess summary.json HealthMonitor 監視 自動再起動 死活 Port-based pdf_analyzer claude-haiku-v1 rule-v1 fallback alias parser issue_date issuer document_type total_amount エイリアス suggested_filename YYYY-MM-DD_取引先_書類タイプ start_silent.vbs start.bat startup folder inbox_sorter.lnk app.py folder_config.py _refresh_file_index list_inbox_files _resolve_collision _readback_move undo_history 即時表示 開く 6分 50PDF キャッシュ 既存サブスク 課金なし ANTHROPIC_API_KEY claude -p subprocess Flask再起動 PID readback サブカテゴリ配置 推薦ヒント">
+        <a class="portal-link" href="https://inbox.marukosuisan.app/" target="_blank" rel="noopener" data-keywords="書類 inbox 振り分け webapp スマホ 分析 Claude Haiku">
+          <div class="icon ic-cyan">&#128194;</div>
+          <div class="info"><div class="name">書類inbox振り分けwebapp</div><div class="desc">スマホ/PCから書類を3階層cascadeで分類・Claude Haiku が背景で事前分析</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 220" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-iws" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-iwsbg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#22d3ee"/></marker>
+              </defs>
+              <!-- 上段: 投入→preprocess→分析→キャッシュ（背景・自動） -->
+              <text x="340" y="11" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="Meiryo">背景プリ分析パイプライン（Flask内 _background_worker・60秒おき）</text>
+              <rect x="8" y="20" width="118" height="40" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="67" y="38" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">PDF投入</text>
+              <text x="67" y="52" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">~/書類/inbox/</text>
+              <path d="M126,40 L150,40" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow-iwsbg)"/>
+              <rect x="152" y="20" width="130" height="40" rx="9" fill="#0f172a" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="217" y="38" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="bold" font-family="Meiryo">inbox_preprocess</text>
+              <text x="217" y="52" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">pypdf→summary.json</text>
+              <path d="M282,40 L306,40" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow-iwsbg)"/>
+              <rect x="308" y="20" width="138" height="40" rx="9" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="377" y="38" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold" font-family="Meiryo">Claude Haiku</text>
+              <text x="377" y="52" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">日付/取引先/種類/金額</text>
+              <path d="M446,40 L470,40" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow-iwsbg)"/>
+              <rect x="472" y="20" width="130" height="40" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="537" y="38" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">分析キャッシュ</text>
+              <text x="537" y="52" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">analysis_cache.json</text>
+              <!-- 下段: ユーザー操作 -->
+              <text x="340" y="84" text-anchor="middle" fill="#64748b" font-size="8.5" font-family="Meiryo">瑞樹さんの操作（開いた時には分析済み・即表示）</text>
+              <rect x="8" y="94" width="118" height="42" rx="9" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="67" y="112" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="Meiryo">スマホで開く</text>
+              <text x="67" y="126" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">inbox.marukosuisan.app</text>
+              <path d="M126,115 L150,115" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-iws)"/>
+              <rect x="152" y="94" width="130" height="42" rx="9" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="217" y="112" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="Meiryo">Cloudflare Access</text>
+              <text x="217" y="126" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">PIN → Gmail認証</text>
+              <path d="M282,115 L306,115" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-iws)"/>
+              <rect x="308" y="94" width="138" height="42" rx="9" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="377" y="112" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="Meiryo">3階層cascade</text>
+              <text x="377" y="126" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">事業→大→サブ</text>
+              <path d="M446,115 L470,115" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-iws)"/>
+              <rect x="472" y="94" width="130" height="42" rx="9" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="537" y="112" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold" font-family="Meiryo">確定→移動</text>
+              <text x="537" y="126" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Meiryo">readback検証+undo</text>
+              <!-- 監視 -->
+              <rect x="180" y="160" width="320" height="44" rx="9" fill="#1e293b" stroke="#fb7185" stroke-width="1.5"/>
+              <text x="340" y="180" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold" font-family="Meiryo">HealthMonitor 監視（5分おき・port 8765生存確認）</text>
+              <text x="340" y="195" text-anchor="middle" fill="#94a3b8" font-size="8.5" font-family="Meiryo">死んだら python app.py で自動再起動・15秒で復旧・Discord通知</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row detail-full"><div class="detail-key">何ができる？</div><div class="detail-val">PCに溜まった書類PDFを、<strong>スマホから片手で3階層cascade（事業→大カテゴリ→サブカテゴリ）で振り分け</strong>。Claude Haikuが背景で事前分析した「日付・取引先・書類タイプ・金額」を黄色枠で提示し、確定で <code>YYYY-MM-DD_取引先_書類タイプ.pdf</code> に自動リネーム＋移動</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">いつ使う？</div><div class="detail-val">PCで何もしてない隙間時間に、ソファ・電車・移動中などスマホで書類を片付けたい時。<strong>開いた瞬間に分析結果が出る</strong>（裏で済んでる）</div></div>
+              <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><code>https://inbox.marukosuisan.app/</code>（Cloudflare Access PIN→marukosuisan523@gmail.com宛にPIN届く・初回のみ）</div></div>
+              <div class="detail-row"><div class="detail-key">UI仕様</div><div class="detail-val">1画面3階層cascade・Top6+「もっと」展開・推薦ヒント・サムネ56/60両面・トースト+ピロン音(Web Audio)・undo履歴永続化・確定ボタン下固定(safe-area対応)</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">背景プリ分析（2026-06-15新設）</div><div class="detail-val">Flask内 <code>_background_worker</code> daemon thread が60秒おきにinbox全スキャン → summary.json未登録は <code>inbox_preprocess.py</code> 自動実行（5分間隔上限） → <code>analysis_cache.json</code> 未登録を Claude Haiku で逐次分析（2秒throttle）。50PDFで約6分カバー</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">Claude Haiku分析（2026-06-14精度2倍化）</div><div class="detail-val">旧rule-v1（正規表現）9/20 → <strong>claude-haiku-v1で16/20</strong>（日付4/5・取引先5/5・書類5/5・金額2/5）。<code>claude -p haiku</code> subprocess経由で<strong>既存サブスク利用（API追加課金なし）</strong>。失敗時はrule-v1にフォールバック・alias parser（issue_date→date等）でHaikuの自由解釈に追従</div></div>
+              <div class="detail-row"><div class="detail-key">監視・自動復旧</div><div class="detail-val">HealthMonitor が <code>port 8765</code> を5分おき生存確認 → 死んだら <code>python app.py</code> で15秒自動復旧・Discordに🟢通知（30分クールダウン）。冷pidまで <code>Inbox_Sorter-stderr.log</code> 保存</div></div>
+              <div class="detail-row"><div class="detail-key">起動</div><div class="detail-val">Flask = スタートアップフォルダ <code>inbox_sorter.lnk</code>（<code>start_silent.vbs</code>）／cloudflared = タスクスケジューラ AtLogOn。PC電源入ってれば常時稼働</div></div>
+              <div class="detail-row"><div class="detail-key">使用部門</div><div class="detail-val">全社共通（総務部）</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Flask 3.1 + cloudflared(既存tunnel cf8889da hostname追加) + Claude Code CLI subprocess + pypdf + PyMuPDF（thumb生成）</div></div>
+              <div class="detail-row"><div class="detail-key">関連</div><div class="detail-val">書類管理システム（記憶自動蓄積）／書類inbox 番人（Discord経路A取込）／inbox自動学習（提案エンジン）と同じ <code>~/書類/inbox/</code> を見る</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/scripts/inbox_sorter/</code>（app.py / folder_config.py / pdf_analyzer.py / static/index.html / start.bat / start_silent.vbs / analysis_cache.json / undo_history.json） ／ HealthMonitor登録 <code>~/合同会社圓子水産/scripts/health-monitor.ps1</code> $Targets</div></div>
+            </div>
+            <div class="detail-note">2026-06-14 構築（scratch→本番公開→QA→bugfix→PDF分析機能まで1セッション一気通貫）／2026-06-14 Claude Haiku化（精度2倍）／2026-06-15 背景プリ分析ワーカー内蔵（開く前に分析終了）／2026-06-17 HealthMonitor監視追加（kill→15秒復旧実証済）</div>
+          </div>
+        </div>
+      </div>
+
       <!-- inbox自動学習 -->
       <div class="portal-card-wrap" data-detail-keywords="inbox 自動学習 振り分け 学習 機械学習 過去実績 差出人 doc_type 保存先 learn_from_history build_proposal auto_update_rules record_correction backtest_learning leave-one-out _learned_patterns _batch_move _extracted JOIN Layer1 Layer2 Layer3 命名規則 confirmed 承認制 rules.json corrections フィードバックループ 使うほど賢くなる InboxNightlyRouteB InboxAutoLearning 毎晩23:00 スケジューラ 保存先一致 書類整理 document-archive _doc_learning_common run_inbox_nightly run_inbox_learning">
         <a class="portal-link" href="#" onclick="return false" data-keywords="inbox 自動学習 振り分け 書類 学習 賢くなる">

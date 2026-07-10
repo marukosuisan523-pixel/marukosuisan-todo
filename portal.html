@@ -1692,6 +1692,51 @@
         </div>
       </div>
 
+      <!-- 作業日報ingest（workreport-ingest） -->
+      <div class="portal-card-wrap" data-detail-keywords="workreport-ingest 作業日報 ingest OCR DB登録 二段ゲート task_name_dict kansan_gate canonical alias task_name_aliases workreport.db Codex CLI Vision gpt-5.5 SKILL.md references 分割リファクタ nippo-agent">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="作業日報 ingest DB登録 ゲート workreport-ingest">
+          <div class="icon ic-emerald">&#128452;</div>
+          <div class="info"><div class="name">作業日報 ingest（workreport-ingest）</div><div class="desc">OCR結果→二段ゲート→workreport.db登録</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <svg viewBox="0 0 680 128" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-workreport" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">OCR result</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">Codex CLI Vision</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-workreport)"/>
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">Phase1辞書ゲート</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">task_name alias照合</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-workreport)"/>
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">Phase2検算ゲート</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">kansan_gate 前日累計</text>
+              <path d="M430,38 L448,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-workreport)"/>
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">DB登録</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">workreport.db INSERT</text>
+              <rect x="10" y="86" width="570" height="32" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="106" fill="#94a3b8" font-size="8.5" font-family="Meiryo">書込前bak作成 → INSERT → read-back SELECT必須（親経由で瑞樹さん承認取得）</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">作業日報OCR結果（result.json）をDB登録前に二段ゲート（canonical dict照合＋検算）で強制チェックし、workreport.dbへ安全に書込</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">日報写真のVision Read完了後、DB登録の直前に必ず通す（DB書込前の強制チェックポイント）</div></div>
+              <div class="detail-row"><div class="detail-key">Phase構成</div><div class="detail-val">Phase0引継ぎ受取チェック→Phase1-0 MD5重複チェック→Phase1 task_name辞書ゲート→Phase2 kansan検算ゲート→DB書込</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Codex CLI Vision（gpt-5.5）第一選択・Sonnet Visionはfallback／SQLite workreport.db</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val">nippo-agent（DB書込実体・<code>~/.claude/agents/nippo-agent.md</code>）</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>合同会社圓子水産/.claude/skills/workreport-ingest/SKILL.md</code>（+ <code>references/</code> 配下5分冊）</div></div>
+            </div>
+            <div class="detail-note">2026-07-10深夜 SKILL.md 437行→39行に分割リファクタ完了（references/配下にphase0_handoff/phase1_dict/phase2_kansan/codex_roadmap/decisions の5本切出し）。task_name alias未登録は独断learn禁止・必ず親経由で瑞樹さん承認取得</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 動画文字起こし -->
       <div class="portal-card-wrap" data-detail-keywords="Whisper yt-dlp ffmpeg YouTube X Twitter TikTok Instagram 音声 transcribe 文字起こし">
         <a class="portal-link" href="#" onclick="return false" data-keywords="動画 文字起こし Whisper 音声">

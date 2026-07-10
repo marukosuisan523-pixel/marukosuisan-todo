@@ -549,6 +549,75 @@
         </a>
       </div>
 
+      <!-- 団体予約手仕舞スキル（gohan-dantai-workflow） -->
+      <div class="portal-card-wrap" data-detail-keywords="団体予約 JTB 旅物語 太平洋トラベル 寒中炉端 手仕舞 FINAL 更新版 訂正 差替 人数変更 キャンセル 取消 中止 延期 gmail draft docx記入 XML直編集 pdfplumber python-docx agencies.yaml 3点検索 既存追記 misoca invoice_prepay cash_on_site">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="団体予約 JTB 太平洋 手仕舞 FINAL 旅物語 メニュー確定 キャンセル">
+          <div class="icon ic-purple">&#128232;</div>
+          <div class="info"><div class="name">団体予約手仕舞スキル</div><div class="desc">gohan-dantai-workflow — JTB/太平洋トラベル等のFINAL・変更・取消通知をカレンダー既存追記＋書類保存＋記入型返信まで一貫処理</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 560" style="width:100%;max-width:520px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-gohan" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-gohan-alt" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb7185"/></marker>
+              </defs>
+              <rect x="240" y="10" width="200" height="40" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="340" y="35" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">① Gmail受信</text>
+              <path d="M340,50 L340,68" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="70" width="200" height="40" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="340" y="95" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">② 添付DL</text>
+              <path d="M340,110 L340,128" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="130" width="200" height="40" rx="10" fill="#083344" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="340" y="155" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">③ 3点検索</text>
+              <path d="M340,170 L340,188" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="190" width="200" height="40" rx="10" fill="#451a03" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="340" y="215" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">④ 分岐（既存あり？）</text>
+              <path d="M340,230 L340,248" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="460" y="190" width="200" height="52" rx="10" fill="#4c0519" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="560" y="211" text-anchor="middle" fill="#fb7185" font-size="10.5" font-weight="bold" font-family="Meiryo">見つからない/複数候補</text>
+              <text x="560" y="228" text-anchor="middle" fill="#fda4af" font-size="9.5" font-family="Meiryo">→瑞樹さん確認（新規作成禁止）</text>
+              <path d="M440,205 L458,210" stroke="#fb7185" stroke-width="1.3" stroke-dasharray="3,2" marker-end="url(#arrow-gohan-alt)"/>
+              <path d="M560,242 L560,260 L340,260 L340,248" stroke="#fb7185" stroke-width="1.3" stroke-dasharray="3,2" marker-end="url(#arrow-gohan-alt)" fill="none"/>
+
+              <rect x="240" y="250" width="200" height="40" rx="10" fill="#064e3b" stroke="#6ee7b7" stroke-width="1.5"/>
+              <text x="340" y="275" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="bold" font-family="Meiryo">⑤ 書類保存</text>
+              <path d="M340,290 L340,308" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="310" width="200" height="40" rx="10" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="340" y="335" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">⑥ 記入/本文draft作成</text>
+              <path d="M340,350 L340,368" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="370" width="200" height="40" rx="10" fill="#451a03" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="340" y="395" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">⑦ 瑞樹さん承認</text>
+              <path d="M340,410 L340,428" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="430" width="200" height="40" rx="10" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="340" y="455" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">⑧ 送信</text>
+              <path d="M340,470 L340,488" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-gohan)"/>
+
+              <rect x="240" y="490" width="200" height="40" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="340" y="515" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">⑨ verify＋追記＋日記</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">団体予約案内/FINAL/変更/取消の一貫処理（カレンダー既存追記・記入型返信・書類保存）</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">JTB旅物語・太平洋トラベル・寒中炉端等の旅行社からGmailで団体予約案内・手仕舞・FINAL・更新版・取消通知が届いた時</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Python + Gmail API + Google Calendar API + python-docx / pdfplumber</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val">misoca（太平洋トラベル等 invoice_prepay の請求書発行時に連携・Category B別途承認）</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>.claude/skills/gohan-dantai-workflow/</code></div></div>
+            </div>
+            <div class="detail-note">既存イベント追記が原則・新規作成は瑞樹さん確認後のみ／取消系は常に人間確認（自動削除しない）／送信はGmail draft作成までで、実送信は瑞樹さん承認後の別ステップ（Category B）</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Todoボード -->
       <div class="portal-card-wrap" data-detail-keywords="React Babel GAS スプレッドシート localStorage syncCalendarToTodos completeTodo aiChat GitHub 10分トリガー 自動削除 デプロイ">
         <a class="portal-link" href="https://marukosuisan523-pixel.github.io/marukosuisan-todo/" target="_blank" data-keywords="todo タスク 業務">

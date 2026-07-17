@@ -1277,6 +1277,82 @@
         </div>
       </div>
 
+      <!-- 月次シフト投入（payroll-shift-monthly） -->
+      <div class="portal-card-wrap" data-detail-keywords="月次シフト 翌月シフト シフト投入 シフト草案 一括投入 Airshift 下書き 週パターン正本 レジーム 夏 通常 12月 base_week fixes.json 段階分割 都度承認 Vision確認 codex exec スクショ payroll-shift-monthly 01_draft 02_apply 03_verify 04_learnings attendance_rules airshift_apply_fixes 8月草案 341件 9月シフト 10月レジーム検収 12月レジーム検収 流氷シーズン Category B 承認9回">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="月次シフト 翌月 一括 投入 草案 Airshift 下書き レジーム 週パターン 段階承認 Vision">
+          <div class="icon ic-cyan">&#128197;</div>
+          <div class="info"><div class="name">月次シフト投入スキル</div><div class="desc">payroll-shift-monthly — 翌月シフトをAirshift下書きに一括投入（前月CSV→草案JSON→勤務3段階＋休み2段階に分割→都度承認＋Vision確認・公開は瑞樹さん明示指示のみ）</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 620" style="width:100%;max-width:520px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-shiftm" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-shiftm-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+                <marker id="arrow-shiftm-ng" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb7185"/></marker>
+              </defs>
+              <rect x="240" y="10" width="200" height="40" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="340" y="35" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">① 前月確定CSV DL</text>
+              <path d="M340,50 L340,68" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="70" width="200" height="40" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="340" y="95" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">② 週パターン正本と突合</text>
+              <path d="M340,110 L340,128" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="130" width="200" height="40" rx="10" fill="#083344" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="340" y="155" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">③ 月固有調整ヒアリング</text>
+              <path d="M340,170 L340,188" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="190" width="200" height="40" rx="10" fill="#083344" stroke="#22d3ee" stroke-width="1.5"/>
+              <text x="340" y="215" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold" font-family="Meiryo">④ 草案JSON生成</text>
+              <path d="M340,230 L340,248" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="250" width="200" height="40" rx="10" fill="#451a03" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="340" y="275" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">⑤ 自動チェック（codex-worker）</text>
+              <path d="M340,290 L340,308" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="310" width="200" height="40" rx="10" fill="#451a03" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="340" y="335" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">⑥ 一括承認プレビュー</text>
+              <path d="M340,350 L340,368" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="370" width="200" height="40" rx="10" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="340" y="395" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">⑦ 勤務段階1〜3（40件×N）</text>
+              <path d="M340,410 L340,428" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="430" width="200" height="40" rx="10" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="340" y="455" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">⑧ 休み段階Y1・Y2</text>
+              <path d="M340,470 L340,488" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="460" y="370" width="200" height="52" rx="10" fill="#4c0519" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="560" y="391" text-anchor="middle" fill="#fb7185" font-size="10.5" font-weight="bold" font-family="Meiryo">Vision異常 or 件数不一致</text>
+              <text x="560" y="408" text-anchor="middle" fill="#fda4af" font-size="9.5" font-family="Meiryo">→段階停止・瑞樹さん報告</text>
+              <path d="M440,390 L458,390" stroke="#fb7185" stroke-width="1.3" stroke-dasharray="3,2" marker-end="url(#arrow-shiftm-ng)"/>
+              <path d="M440,450 L458,410" stroke="#fb7185" stroke-width="1.3" stroke-dasharray="3,2" marker-end="url(#arrow-shiftm-ng)"/>
+
+              <rect x="240" y="490" width="200" height="40" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="340" y="515" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">⑨ 全体Vision確認</text>
+              <path d="M340,530 L340,548" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-shiftm)"/>
+
+              <rect x="240" y="550" width="200" height="40" rx="10" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="340" y="575" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">⑩ 公開（瑞樹さん明示指示のみ）</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">翌月シフトを Airshift 下書きに一括投入（勤務3段階＋休み2段階に分割・都度承認＋Vision確認・下書き止まり）</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎月15日頃「9月のシフト入れて」「翌月シフト作って」「月次シフト投入」等の月単位一括依頼が来た時。単発〜十数件は payroll-shift-fix 側</div></div>
+              <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Python + Playwright（<code>airshift_apply_fixes.py</code> 無改造）+ codex-worker（草案自動チェック）+ codex-worker-cli（Vision確認）</div></div>
+              <div class="detail-row"><div class="detail-key">正本</div><div class="detail-val"><code>給与処理\シフト投入\週パターン正本.yaml</code>（3レジーム×基準週＋月→レジーム表）／パターン語彙は <code>attendance_rules.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">成果物置き場</div><div class="detail-val"><code>給与処理\シフト投入\YYYYMM\</code>（草案JSON・段階JSON・progress.md・スクショ・自動チェック結果）／tmp/は使わない</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>payroll-shift-fix</code>（単発修正）／<code>shift-share</code>（公開後LINE配信）／<code>roumu-agent</code>（月次オーケストレーション）</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>.claude/skills/payroll-shift-monthly/</code>（SKILL.md + references/01_draft.md / 02_apply.md / 03_verify.md / 04_learnings.md）</div></div>
+            </div>
+            <div class="detail-note">2026-07-17新規構築（案B「手順書＋自動チェック係つき」実装）。8月投入で確立した「7〜9回の段階承認＋Vision確認」型を毎月同じ品質で回せる形にした。Category B維持＝公開（確定通知）は瑞樹さん明示指示があった時だけ実行・スキル側で自動化しない。冬（1〜3月流氷シーズン）に案C（スマホ完結）へ移行する土台。エンジンは無改造（変更禁止）。10月分投入時に通常期レジーム検収・12月分投入時に週4出勤レジーム検収。</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 給与明細LINE送信 -->
       <div class="portal-card-wrap" data-detail-keywords="給与明細 LINE 送信 配信 個別 月次 PDF R2署名URL secure-files-worker files.marukosuisan.app TTL 30日 send_payslip_line.py send_secure_file_line.py roumu-agent 区分 社員 アルバイト registeredName staff_master フルネーム照合 R2_SIGN_SECRET /payslip/send deprecated 410Gone">
         <a class="portal-link" href="#" onclick="return false" data-keywords="給与明細 LINE 送信 個別 月次 R2">
@@ -3744,7 +3820,7 @@ graph LR
       <div class="wf-tl-card act">
         <div class="wf-tl-when">M月 1〜15日</div>
         <div class="wf-tl-what">①シフト作成</div>
-        <div class="wf-tl-skill">payroll-shift-fix（全月パターン自動展開）</div>
+        <div class="wf-tl-skill">payroll-shift-monthly（草案JSON→段階分割→都度承認＋Vision確認）</div>
       </div>
       <div class="wf-tl-card share">
         <div class="wf-tl-when">M月 16〜末日</div>
@@ -3768,15 +3844,16 @@ graph LR
       </div>
     </div>
 
-    <h4>① シフト作成（payroll-shift-fix）</h4>
-    <p>翌月のシフトを Air SHIFT 上に下書きで作成する。自然言語で全月パターンを一括展開できる。</p>
+    <h4>① シフト作成（payroll-shift-monthly / 単発は payroll-shift-fix）</h4>
+    <p>翌月のシフトを Air SHIFT 上に下書きで作成する。月単位一括は <code>payroll-shift-monthly</code>、単発〜十数件は <code>payroll-shift-fix</code>。</p>
     <ol>
-      <li><strong>トリガー</strong>: 「○月のシフト作って」「来月のシフト準備して」</li>
-      <li><strong>動作</strong>: 5月CSVを基に基本曜日パターン抽出→秘書が確認→add_shiftで一括反映</li>
+      <li><strong>トリガー</strong>: 「○月のシフト作って」「翌月シフト」「月次シフト投入」→ payroll-shift-monthly／「○○さん○/○早番」→ payroll-shift-fix</li>
+      <li><strong>動作（月次）</strong>: 前月CSV→<code>週パターン正本.yaml</code>と突合→月固有調整ヒアリング→草案JSON生成→自動チェック→勤務3段階＋休み2段階に分割→都度承認＋Vision確認→下書き保存</li>
       <li><strong>休みも明示入力</strong>: add_yasumi で休み日も赤セル化（モーダル右上「休み」タブで保存）</li>
       <li><strong>既存セル保護</strong>: state=empty 以外は skipped_existing で自動回避</li>
+      <li><strong>公開（確定通知）</strong>: 瑞樹さんの明示指示があった時だけ実行・スキル側で自動化しない（Category B）</li>
     </ol>
-    <div class="wf-tip">瑞樹さんの「先月と特段流れが変わらない」は <strong>基本曜日パターン引継ぎ</strong>。振出/振休は引継がない。</div>
+    <div class="wf-tip">瑞樹さんの「先月と特段流れが変わらない」は <strong>基本曜日パターン引継ぎ</strong>。振出/振休は引継がない。3レジーム（夏7-9月＝週休1日 / 通常10-11月・2-6月 / 冬12月＝週4出勤）で切替。</div>
 
     <h4>② シフト共有（shift-share）</h4>
     <p>確定したシフトをスタッフ全員へLINE配信する。下書きでも画像化可能（Excel経由のため）。</p>
@@ -3794,7 +3871,8 @@ graph LR
     <h4>関連スキル一覧</h4>
     <div class="wf-skills">
       <div class="wf-skill-row head"><div>スキル</div><div>フェーズ</div><div>主な処理</div></div>
-      <div class="wf-skill-row"><div><code>payroll-shift-fix</code></div><div class="wf-skill-phase">作成・修正</div><div>Air書き込み（add_shift / add_yasumi / change_shift / remove_shift）</div></div>
+      <div class="wf-skill-row"><div><code>payroll-shift-monthly</code></div><div class="wf-skill-phase">月次一括投入</div><div>翌月シフト草案→段階分割→都度承認＋Vision確認→下書き保存（公開は瑞樹さん明示指示のみ）</div></div>
+      <div class="wf-skill-row"><div><code>payroll-shift-fix</code></div><div class="wf-skill-phase">単発修正・追加</div><div>Air書き込み（add_shift / add_yasumi / change_shift / remove_shift）</div></div>
       <div class="wf-skill-row"><div><code>shift-share</code></div><div class="wf-skill-phase">共有</div><div>Excel自動DL→画像化→個人LINE→承認→グループLINE</div></div>
       <div class="wf-skill-row"><div><code>payroll-attendance</code></div><div class="wf-skill-phase">確定後</div><div>シフト/勤怠CSV自動DL・打刻整形</div></div>
       <div class="wf-skill-row"><div><code>payroll-rules-learn</code></div><div class="wf-skill-phase">確定後</div><div>修正パターン学習→次回提案</div></div>

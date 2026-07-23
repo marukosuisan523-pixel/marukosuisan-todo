@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23T23:30:05.391473",
+  "generated_at": "2026-07-24T00:00:05.769982",
   "scheduled_tasks": [
     {
       "name": "AirRegi_SalesDL_Hourly",
@@ -126,8 +126,8 @@
       "color": "orange",
       "disabled": false,
       "script": "~/合同会社圓子水産/経理/dashboard/scripts/ec_orders_scheduled.bat",
-      "next_run": "2026/07/23 23:34:09",
-      "last_run": "2026/07/23 23:24:10",
+      "next_run": "2026/07/24 0:04:09",
+      "last_run": "2026/07/23 23:54:10",
       "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\合同会社圓子水産\\経理\\dashboard\\scripts\\start-ec-orders-hidden.vbs\"\"",
@@ -172,8 +172,8 @@
       "color": "purple",
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/gmail-sorter/watchdog.bat",
-      "next_run": "2026/07/23 23:35:40",
-      "last_run": "2026/07/23 23:20:41",
+      "next_run": "2026/07/24 0:05:40",
+      "last_run": "2026/07/23 23:50:41",
       "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\合同会社圓子水産\\gmail-sorter\\watchdog.ps1\"\"",
@@ -287,8 +287,8 @@
       "color": "violet",
       "disabled": false,
       "script": "~/.mempalace/daemon/start_daemon.cmd",
-      "next_run": "2026/07/23 23:58:00",
-      "last_run": "2026/07/23 22:58:01",
+      "next_run": "2026/07/24 0:58:00",
+      "last_run": "2026/07/23 23:58:01",
       "last_result": "0",
       "status": "Ready",
       "action": "C:\\Windows\\System32\\wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\.mempalace\\daemon\\start_daemon.ps1\"\"",
@@ -333,9 +333,9 @@
       "color": "sky",
       "disabled": false,
       "script": "~/合同会社圓子水産/書類/rclone-sync.ps1",
-      "next_run": "2026/07/24 0:00:00",
-      "last_run": "2026/07/23 23:00:01",
-      "last_result": "267014",
+      "next_run": "2026/07/24 1:00:00",
+      "last_run": "2026/07/24 0:00:01",
+      "last_result": "-2147020576",
       "status": "Running",
       "action": "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File C:\\Users\\mizuk\\合同会社圓子水産\\書類\\rclone-sync.ps1\"\"",
       "schedule": "One Time Only, Hourly ",
@@ -425,8 +425,8 @@
       "color": "blue",
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/todo/gcal_sync.py",
-      "next_run": "2026/07/23 23:45:00",
-      "last_run": "2026/07/23 23:30:01",
+      "next_run": "2026/07/24 0:15:00",
+      "last_run": "2026/07/24 0:00:01",
       "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\合同会社圓子水産\\scripts\\todo\\runners\\run-gcal-sync.ps1\"\"",
@@ -448,8 +448,8 @@
       "color": "rose",
       "disabled": false,
       "script": "~/合同会社圓子水産/scripts/todo/health_check.py",
-      "next_run": "2026/07/24 0:00:00",
-      "last_run": "2026/07/23 23:30:01",
+      "next_run": "2026/07/24 0:30:00",
+      "last_run": "2026/07/24 0:00:01",
       "last_result": "0",
       "status": "Ready",
       "action": "wscript.exe C:\\Users\\mizuk\\.claude\\scripts\\powershell-hidden.vbs\" \"C:\\Users\\mizuk\\合同会社圓子水産\\scripts\\todo\\runners\\run-health-check.ps1\"\"",
@@ -693,6 +693,6 @@
       "maruko-suisan": 7,
       "common": 19
     },
-    "failed_tasks": 0
+    "failed_tasks": 1
   }
 }

@@ -1277,6 +1277,94 @@
         </div>
       </div>
 
+      <!-- 派遣タイムカード提出（haken-timecard） -->
+      <div class="portal-card-wrap" data-detail-keywords="派遣 タイムカード ダイブ ワクトリ 派遣元 派遣スタッフ 勤怠CSV haken haken-timecard aggregate_haken_kintai generate_haken_timecard verify_haken_timecard haken_config 月末日 exit3 確定値JSON Gmail下書き 給与フロー対象外 並行トラック Step2h roumu-agent 提出 回帰テスト マスター未登録">
+        <a class="portal-link" href="#" onclick="return false" data-keywords="派遣 タイムカード ダイブ ワクトリ 派遣元 勤怠 提出">
+          <div class="icon ic-amber">&#128203;</div>
+          <div class="info"><div class="name">派遣タイムカード提出</div><div class="desc">勤怠CSV→PDF→検証→Gmail下書き（給与フロー対象外・haken-timecard）</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 240" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-haken" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arrow-haken-ok" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+              </defs>
+              <!-- Step 1: 勤怠CSV -->
+              <rect x="10" y="10" width="120" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="70" y="32" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">1. 勤怠CSV</text>
+              <text x="70" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">3区分混在・派遣抽出</text>
+              <path d="M130,38 L148,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-haken)"/>
+              <!-- Step 2: 集計draft -->
+              <rect x="150" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="215" y="32" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">2. 集計draft</text>
+              <text x="215" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">月末日チェック exit3</text>
+              <path d="M280,38 L298,38" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-haken)"/>
+              <!-- Step 3: 承認①② -->
+              <rect x="300" y="10" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="365" y="32" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">3. 承認①②</text>
+              <text x="365" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">対象者・anomaly確認</text>
+              <path d="M430,38 L448,38" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-haken-ok)"/>
+              <!-- Step 4: 確定JSON+PDF -->
+              <rect x="450" y="10" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="515" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="Meiryo">4. 確定JSON+PDF</text>
+              <text x="515" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">1人1枚 A4縦</text>
+              <!-- Step 5: verify (down) -->
+              <path d="M515,66 L515,84" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-haken)"/>
+              <rect x="450" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="515" y="108" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">5. verify</text>
+              <text x="515" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">PASSまで進まない</text>
+              <path d="M450,114 L432,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-haken)"/>
+              <!-- Step 6: 承認③ -->
+              <rect x="300" y="86" width="130" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="365" y="108" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6. 承認③</text>
+              <text x="365" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">氏名・日数・時間の一覧</text>
+              <path d="M300,114 L282,114" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrow-haken-ok)"/>
+              <!-- Step 7: Gmail下書き -->
+              <rect x="150" y="86" width="130" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="215" y="108" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">7. Gmail下書き</text>
+              <text x="215" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">派遣元ごと・read-back</text>
+              <path d="M150,114 L132,114" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-haken)"/>
+              <!-- Step 8: 手動送信 -->
+              <rect x="10" y="86" width="120" height="56" rx="10" fill="#451a03" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="70" y="108" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">8. 手動送信</text>
+              <text x="70" y="126" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">瑞樹さんが添付・送信</text>
+              <!-- 凡例: スクリプト -->
+              <rect x="10" y="160" width="200" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="20" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">使用スクリプト（給与処理/scripts/）</text>
+              <text x="20" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; aggregate_haken_kintai.py</text>
+              <text x="20" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; generate_haken_timecard.py</text>
+              <text x="20" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; verify_haken_timecard.py</text>
+              <!-- 凡例: 正本・設定 -->
+              <rect x="230" y="160" width="200" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="240" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">正本・設定（給与処理/派遣/）</text>
+              <text x="240" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; haken_config.json = 対象者・宛先</text>
+              <text x="240" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; YYYYMM/ = 確定値JSON+PDF</text>
+              <text x="240" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 前月分の上書き・削除禁止</text>
+              <!-- 凡例: 大原則 -->
+              <rect x="450" y="160" width="220" height="70" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+              <text x="460" y="180" fill="#64748b" font-size="9" font-weight="bold" font-family="Meiryo">大原則（給与フロー対象外）</text>
+              <text x="460" y="196" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; マスター/明細/賃金台帳に載せない</text>
+              <text x="460" y="210" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 支払いは派遣元の請求書ベース</text>
+              <text x="460" y="224" fill="#94a3b8" font-size="8.5" font-family="Meiryo">&#x2022; 月末日欠落=二重防御(exit3+ps1)</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">派遣スタッフ（ダイブ・ワクトリ等）の月次タイムカードPDFを勤怠CSVから自動生成し、機械検証後に派遣元ごとのGmail下書きまで用意。メール送信とPDF添付は瑞樹さんの手作業</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎月の給与処理と並行（roumu-agent Step 2h・給与計算と依存なし）。「派遣のタイムカード」「ダイブに送る」「ワクトリに送る」「派遣元に提出」で発動</div></div>
+              <div class="detail-row"><div class="detail-key">スキル</div><div class="detail-val"><code>haken-timecard</code>（グローバル: <code>~/.claude/skills/haken-timecard/</code>・詳細は <code>references/monthly_workflow.md</code>）</div></div>
+              <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>給与処理/scripts/aggregate_haken_kintai.py</code>（集計・月末日チェック）／<code>generate_haken_timecard.py</code>（PDF）／<code>verify_haken_timecard.py</code>（機械検証）</div></div>
+              <div class="detail-row"><div class="detail-key">設定・正本</div><div class="detail-val"><code>給与処理/派遣/haken_config.json</code>（対象者・派遣元宛先の正本・増減は毎月ここで人手突合）／月次正本=<code>給与処理/派遣/{YYYYMM}/</code>（確定値JSON+PDF）</div></div>
+              <div class="detail-row"><div class="detail-key">フロー連携</div><div class="detail-val">payroll-slip（並行トラック節）／payroll-attendance（月末日チェック）／roumu-agent Step 2h／roumu-progress（ボード2h行・確認は#勤怠修正）</div></div>
+              <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">承認①対象者確認→承認②anomaly確認（overrides記録）→承認③最終確認→Gmail下書き＋<code>list_drafts</code> read-back（送信は手動・CLAUDE.md「取り消し不可な外部操作の鉄則」準拠）</div></div>
+            </div>
+            <div class="detail-note">2026-08-01〜02構築・2026-07実データで回帰テストPASS済み・2026-08月次から本運用。派遣は<strong>給与フロー対象外</strong>（マスター.xlsx未登録・給与明細/賃金台帳を作らない・退職者チェックの網にかからないため対象者増減は haken_config.json 毎月突合が唯一の担保）。<strong>月末日欠落事故（2026-07-31）</strong>=日次バッチが当月分のみ保存のため月替わり直後に前月末日が欠落し派遣元へ誤データ送信→訂正メール。対処=airshift_download_current.ps1 の月初1〜5日前月再取得＋集計側 exit 3 の二重防御済み。数値変更後は古いGmail下書きを必ず作り直す（2026-07に古い数字のまま送信の実事故）</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 月次シフト投入（payroll-shift-monthly） -->
       <div class="portal-card-wrap" data-detail-keywords="月次シフト 翌月シフト シフト投入 シフト草案 一括投入 Airshift 下書き 週パターン正本 レジーム 夏 通常 12月 base_week fixes.json 段階分割 都度承認 Vision確認 codex exec スクショ payroll-shift-monthly 01_draft 02_apply 03_verify 04_learnings attendance_rules airshift_apply_fixes 8月草案 341件 9月シフト 10月レジーム検収 12月レジーム検収 流氷シーズン Category B 承認9回">
         <a class="portal-link" href="#" onclick="return false" data-keywords="月次シフト 翌月 一括 投入 草案 Airshift 下書き レジーム 週パターン 段階承認 Vision">

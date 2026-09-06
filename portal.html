@@ -611,7 +611,7 @@
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">JTB旅物語・太平洋トラベル・寒中炉端等の旅行社からGmailで団体予約案内・手仕舞・FINAL・更新版・取消通知が届いた時</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Python + Gmail API + Google Calendar API + python-docx / pdfplumber</div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val">misoca（太平洋トラベル等 invoice_prepay の請求書発行時に連携・Category B別途承認）</div></div>
-              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>.claude/skills/gohan-dantai-workflow/</code></div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/.claude/skills/gohan-dantai-workflow/</code></div></div>
             </div>
             <div class="detail-note">既存イベント追記が原則・新規作成は瑞樹さん確認後のみ／取消系は常に人間確認（自動削除しない）／送信はGmail draft作成までで、実送信は瑞樹さん承認後の別ステップ（Category B）</div>
           </div>
@@ -1270,7 +1270,7 @@
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val">個人LINEへ先送信→瑞樹さん「OK」→グループへ配信（CLAUDE.md「取り消し不可な外部操作の鉄則」準拠）</div></div>
               <div class="detail-row"><div class="detail-key">配信基盤</div><div class="detail-val"><strong>【2026-06-06 R2移行済】</strong> Cloudflare R2 → <code>files.marukosuisan.app/shift/{YYYY-MM}/{uuid8}_filename.jpg</code> 永続URL → LINE Messaging API直叩き（image type）。旧 <code>line-notify-server /shift/send</code> はRender Free planのephemeral fsで実際は数十分〜数時間でファイル消失する仕様問題があり廃止</div></div>
               <div class="detail-row"><div class="detail-key">送信スクリプト</div><div class="detail-val">正本: <code>scripts/send_shift_to_line_group_r2.py</code>（R2版）／統合: <code>scripts/shift_share_monthly.py</code>（内部でR2版呼出）</div></div>
-              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>.claude/skills/shift-share/SKILL.md</code>／メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">SKILL: <code>~/.claude/skills/shift-share/SKILL.md</code>／メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code></div></div>
             </div>
             <div class="detail-note">2026-05-18新規構築。Air SHIFTの「シフト表を共有・印刷する」純正Excel出力を活用してデータの正確性を担保。CSV(下書き含まず)とは別経路。<strong>2026-06-06 R2永続URL移行</strong>=Render Free planはephemeral filesystemで15分非アクティブspin downでtmpファイル消失するため、60日URLは実態を反映してなかった。Cloudflare R2に切替で本当に永続化。<strong>2026-06-07 Task #10完了</strong>=機微ファイル(<code>/file/send</code>)・給与明細(<code>/payslip/send</code>)も Cloudflare Worker 署名URL方式（<code>secure-files-worker</code>）へ全面移行・両カード参照</div>
           </div>
@@ -1434,7 +1434,7 @@
               <div class="detail-row"><div class="detail-key">正本</div><div class="detail-val"><code>給与処理\シフト投入\週パターン正本.yaml</code>（3レジーム×基準週＋月→レジーム表）／パターン語彙は <code>attendance_rules.md</code></div></div>
               <div class="detail-row"><div class="detail-key">成果物置き場</div><div class="detail-val"><code>給与処理\シフト投入\YYYYMM\</code>（草案JSON・段階JSON・progress.md・スクショ・自動チェック結果）／tmp/は使わない</div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>payroll-shift-fix</code>（単発修正）／<code>shift-share</code>（公開後LINE配信）／<code>roumu-agent</code>（月次オーケストレーション）</div></div>
-              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>.claude/skills/payroll-shift-monthly/</code>（SKILL.md + references/01_draft.md / 02_apply.md / 03_verify.md / 04_learnings.md）</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/.claude/skills/payroll-shift-monthly/</code>（SKILL.md + references/01_draft.md / 02_apply.md / 03_verify.md / 04_learnings.md）</div></div>
             </div>
             <div class="detail-note">2026-07-17新規構築（案B「手順書＋自動チェック係つき」実装）。8月投入で確立した「7〜9回の段階承認＋Vision確認」型を毎月同じ品質で回せる形にした。Category B維持＝公開（確定通知）は瑞樹さん明示指示があった時だけ実行・スキル側で自動化しない。冬（1〜3月流氷シーズン）に案C（スマホ完結）へ移行する土台。エンジンは無改造（変更禁止）。10月分投入時に通常期レジーム検収・12月分投入時に週4出勤レジーム検収。</div>
           </div>
@@ -1682,7 +1682,7 @@
             <div class="detail-grid">
               <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">PDFをCloudflare R2にアップロード→<code>files.marukosuisan.app</code>配下の公開URLを生成→LINE Push送信。URLは期限なしで、受信者が誰に転送しても開ける</div></div>
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">「○○をLINEで送って、誰に転送しても開けるように」「期限なしで」「みんなに渡せる形で」「長期保存」「転送OK」と指示／取引先や関係者に渡す書類で「受け取った人がさらに転送して使う」想定</div></div>
-              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python TODO管理/line-notify-server/scripts/send_pdf_longterm_line.py --to &lt;氏名orUID&gt; --file &lt;PDF&gt; --message &lt;文面&gt; --confirm --yes</code></div></div>
+              <div class="detail-row"><div class="detail-key">CLI</div><div class="detail-val"><code>python .system/code/line-notify-server/scripts/send_pdf_longterm_line.py --to &lt;氏名orUID&gt; --file &lt;PDF&gt; --message &lt;文面&gt; --confirm --yes</code></div></div>
               <div class="detail-row"><div class="detail-key">ID不明時のフォールバック</div><div class="detail-val"><code>--to "まるこみずき"</code>で瑞樹さん本人(<code>U308c28cbd8280efbd386cbb223c14564</code>)へ送信→LINE手動転送。アドレス帳に無い相手にも届けられる</div></div>
               <div class="detail-row"><div class="detail-key">承認フロー</div><div class="detail-val"><code>--to</code>必須1名のみ・<code>--confirm</code>明示フラグ・<code>--yes</code>でEnter確認スキップ（既存send_secure_file_line.pyと同パターン）</div></div>
               <div class="detail-row"><div class="detail-key">ストレージ</div><div class="detail-val">Cloudflare R2 bucket=<code>marukosuisan-files</code>（Asia-Pacific・10GB/月無料枠・S3互換・egress無料）／APIトークン名=<code>LINE PDF Send</code>（Object Read &amp; Write・marukosuisan-files限定・Forever TTL）</div></div>
@@ -1690,7 +1690,7 @@
               <div class="detail-row"><div class="detail-key">セキュリティ</div><div class="detail-val">公開URLは推測困難（UUID 8桁 + 日付パス）だが、URLを知っている人は全員アクセス可能。⚠️機微情報（給与明細・契約書）は短期版(/file/send)を使う</div></div>
               <div class="detail-row"><div class="detail-key">LINE送信方式</div><div class="detail-val">LINE Messaging API（<code>api.line.me/v2/bot/message/push</code>）を直叩き。onrender経由しないのでスリープ問題回避・低遅延</div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>line-send</code>スキルが短期版/長期版の自動分岐・トリガーで適切な方を選択</div></div>
-              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code>／実装: <code>TODO管理/line-notify-server/scripts/send_pdf_longterm_line.py</code>／スキル: <code>.claude/skills/line-send/SKILL.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">参照</div><div class="detail-val">メモリ: <code>~/.claude/shared-memory/project_line_pdf_longterm.md</code>／実装: <code>.system/code/line-notify-server/scripts/send_pdf_longterm_line.py</code>／スキル: <code>~/.claude/skills/line-send/SKILL.md</code></div></div>
             </div>
             <div class="detail-note">2026-06-06新規構築。発端=「LINE経由でPDFを送ると、転送した相手が開けない」問題（LINE一時URLは送信者と受信者専用）→ 既存/file/sendは最大TTL7日でRender無料プランだと数日でファイル消失リスク → R2永続ストレージ+独自ドメインで「期限なし・転送OK」を実現。瑞樹さん本人へのフォールバック設計でアドレス帳未登録相手にも届けられる。⚠️副次発見=既存/shift/send(60日URL)・/file/send(7日URL)もRender無料プランの<code>/tmp</code>使用で実は数日でファイル消失している可能性大（要検証・別タスク）</div>
           </div>
@@ -1792,7 +1792,7 @@
               <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">スタッフがLINEで送った日報画像をDiscordへ自動転送、Claude常駐セッションで自動解析</div></div>
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">退勤時にスタッフが業務通知LINEグループまたはDMに写真送信</div></div>
               <div class="detail-row"><div class="detail-key">経路</div><div class="detail-val">LINE Bot → Render Express → Discord webhook → Claude Code Discord plugin</div></div>
-              <div class="detail-row"><div class="detail-key">実装場所</div><div class="detail-val"><code>TODO管理/line-notify-server/server.js</code> の <code>/webhook</code> 内 image処理</div></div>
+              <div class="detail-row"><div class="detail-key">実装場所</div><div class="detail-val"><code>.system/code/line-notify-server/server.js</code> の <code>/webhook</code> 内 image処理</div></div>
               <div class="detail-row"><div class="detail-key">Discord ch</div><div class="detail-val">#作業日報（id: 1497758275809054800）</div></div>
               <div class="detail-row"><div class="detail-key">解析担当</div><div class="detail-val">副社長 (常駐clauded) + <code>nippo-agent</code></div></div>
               <div class="detail-row"><div class="detail-key">既知課題</div><div class="detail-val">Render無料プランのコールドスタートで初回送信が届かない場合あり→2回送り対策</div></div>
@@ -1894,7 +1894,7 @@
               <div class="detail-row"><div class="detail-key">Phase構成</div><div class="detail-val">Phase0引継ぎ受取チェック→Phase1-0 MD5重複チェック→Phase1 task_name辞書ゲート→Phase2 kansan検算ゲート→DB書込</div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Codex CLI Vision（gpt-5.5）第一選択・Sonnet Visionはfallback／SQLite workreport.db</div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val">nippo-agent（DB書込実体・<code>~/.claude/agents/nippo-agent.md</code>）</div></div>
-              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>合同会社圓子水産/.claude/skills/workreport-ingest/SKILL.md</code>（+ <code>references/</code> 配下5分冊）</div></div>
+              <div class="detail-row"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>~/.claude/skills/workreport-ingest/SKILL.md</code>（+ <code>references/</code> 配下5分冊）</div></div>
             </div>
             <div class="detail-note">2026-07-10深夜 SKILL.md 437行→39行に分割リファクタ完了（references/配下にphase0_handoff/phase1_dict/phase2_kansan/codex_roadmap/decisions の5本切出し）。task_name alias未登録は独断learn禁止・必ず親経由で瑞樹さん承認取得</div>
           </div>
@@ -1949,7 +1949,7 @@
               <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">YouTube・X・TikTokなどの動画を自動でダウンロードし、音声をテキストに変換する</div></div>
               <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">動画の内容を確認したいとき。「この動画を文字起こしして」とURLを渡すだけ</div></div>
               <div class="detail-row"><div class="detail-key">スクリプト</div><div class="detail-val"><code>scripts/transcribe.py</code></div></div>
-              <div class="detail-row"><div class="detail-key">スキル定義</div><div class="detail-val"><code>.claude/skills/video-transcribe/SKILL.md</code></div></div>
+              <div class="detail-row"><div class="detail-key">スキル定義</div><div class="detail-val"><code>~/.claude/skills/video-transcribe/SKILL.md</code></div></div>
               <div class="detail-row"><div class="detail-key">モデル</div><div class="detail-val">Whisper small（CPU only / GPU無し）</div></div>
               <div class="detail-row"><div class="detail-key">対応</div><div class="detail-val">YouTube / X / TikTok / Instagram / ローカルファイル</div></div>
               <div class="detail-row"><div class="detail-key">出力先</div><div class="detail-val"><code>文字起こし/</code></div></div>

@@ -504,6 +504,34 @@
     .freight-table { font-size: 0.75rem; min-width: 760px; }
     .freight-table th, .freight-table td { padding: 6px 6px; }
   }
+  .price-heading { color: #e2e8f0; margin-bottom: 12px; }
+  .price-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: #e2e8f0; font-size: 0.85rem; margin-bottom: 18px; }
+  .price-missing-count { color: #fb7185; font-weight: 700; }
+  .price-formula { background: #1e293b; border-left: 3px solid #38bdf8; padding: 12px 16px; border-radius: 6px; margin-bottom: 28px; font-size: 0.88rem; color: #e2e8f0; }
+  .price-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; color: #e2e8f0; }
+  .price-control-label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; max-width: 100%; font-size: 0.85rem; }
+  .price-input, .price-select, .price-reload { box-sizing: border-box; max-width: 100%; min-width: 0; padding: 8px 10px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; font: inherit; }
+  .price-input { width: 280px; }
+  .price-reload { color: #38bdf8; cursor: pointer; }
+  .price-reload:disabled { opacity: 0.6; cursor: wait; }
+  .price-table-wrap { box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; background: #1e293b; border-radius: 8px; padding: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .price-table { width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 0.82rem; color: #e2e8f0; }
+  .price-table th, .price-table td { padding: 8px 10px; border-bottom: 1px solid #334155; white-space: nowrap; }
+  .price-table th { background: #0f172a; color: #94a3b8; font-weight: 600; font-size: 0.75rem; text-align: center; }
+  .price-cell-text { text-align: left; }
+  .price-cell-number { text-align: right; }
+  .price-cell-missing, .price-cell-zero { color: #fb7185; font-weight: 600; text-align: right; }
+  .price-status { padding: 12px; color: #e2e8f0; font-size: 0.85rem; }
+  .price-error { color: #fb7185; white-space: normal; overflow-wrap: anywhere; }
+  @media (max-width: 600px) {
+    .price-heading { font-size: 1.25rem; }
+    .price-meta, .price-formula, .price-control-label, .price-reload, .price-status { font-size: 0.78rem; }
+    .price-formula { padding: 10px 12px; }
+    .price-input, .price-select, .price-reload { padding: 6px; }
+    .price-table { font-size: 0.75rem; min-width: 900px; }
+    .price-table th { font-size: 0.7rem; }
+    .price-table th, .price-table td { padding: 6px; }
+  }
 </style>
 </head>
 <body>
@@ -521,6 +549,7 @@
     <button class="tab" data-page="map">システムマップ</button>
     <button class="tab" data-page="workflow">ワークフロー</button>
     <button class="tab" data-page="freight">運賃表</button>
+    <button class="tab" data-page="price">価格表</button>
   </div>
 </div>
 
@@ -4202,6 +4231,38 @@ graph LR
   </div>
 </div>
 
+<div class="page" id="price">
+  <h2 class="price-heading">販売価格表</h2>
+  <div class="price-meta">
+    <span>データ元: 在庫管理DB</span>
+    <span id="price-generated">データ取得: 未取得（DBを読んだ時刻・価格改定日時ではありません）</span>
+    <span id="price-total">商品数: —</span>
+    <strong class="price-missing-count" id="price-missing">価格未登録 —件</strong>
+  </div>
+  <div class="price-formula">※ 金額が税込か税抜かはDBに定義がありません（未確定）。確認後にこの注記を更新します。</div>
+  <div class="price-controls">
+    <label class="price-control-label" for="price-search">商品名・商品コード
+      <input class="price-input" id="price-search" type="search" placeholder="商品名・商品コードで検索">
+    </label>
+    <label class="price-control-label" for="price-category">カテゴリ
+      <select class="price-select" id="price-category">
+        <option value="">すべて</option>
+        <option value="uncategorized">未分類</option>
+      </select>
+    </label>
+    <button class="price-reload" id="price-reload" type="button">更新</button>
+  </div>
+  <div class="price-table-wrap">
+    <p class="price-status price-error" id="price-error" role="alert" hidden></p>
+    <p class="price-status" id="price-status" role="status">価格表を開くとデータを取得します。</p>
+    <table class="price-table" id="price-table">
+      <thead><tr id="price-header"><th scope="col">商品コード</th><th scope="col">商品名</th><th scope="col">規格</th><th scope="col">単位</th><th scope="col">カテゴリ</th><th scope="col">基本価格</th></tr></thead>
+      <tbody id="price-body"></tbody>
+    </table>
+    <p class="price-status" id="price-empty" role="status" hidden>該当する商品はありません。</p>
+  </div>
+</div>
+
 </div><!-- /.content -->
 
 <!-- Portal Detail Modal (全カード共通・toggleDetailで内容流し込み) -->
@@ -4820,6 +4881,143 @@ graph LR
       document.getElementById('auto-health-sub').textContent = err.message;
     });
 </script>
+<script>
+(function(){
+  const search = document.getElementById('price-search');
+  const category = document.getElementById('price-category');
+  const reload = document.getElementById('price-reload');
+  const header = document.getElementById('price-header');
+  const body = document.getElementById('price-body');
+  const status = document.getElementById('price-status');
+  const error = document.getElementById('price-error');
+  const empty = document.getElementById('price-empty');
+  let loaded = false;
+  let loading = false;
+  let products = [];
+  let channels = [];
+  let categories = [];
+  const numberFormat = new Intl.NumberFormat('ja-JP');
+
+  function textCell(row, value) {
+    const cell = document.createElement('td');
+    cell.className = 'price-cell-text';
+    cell.textContent = value == null ? '—' : String(value);
+    row.appendChild(cell);
+  }
+
+  function priceCell(row, value) {
+    const cell = document.createElement('td');
+    if (value == null) {
+      cell.className = 'price-cell-missing';
+      cell.textContent = '未登録';
+    } else if (value === 0) {
+      cell.className = 'price-cell-zero';
+      cell.textContent = '0円登録';
+    } else {
+      cell.className = 'price-cell-number';
+      cell.textContent = numberFormat.format(value);
+    }
+    row.appendChild(cell);
+  }
+
+  function render() {
+    const query = search.value.toLowerCase();
+    const selected = category.value;
+    const fragment = document.createDocumentFragment();
+    let count = 0;
+    products.forEach(product => {
+      const matchesSearch = [product.name, product.display_name, product.code]
+        .some(value => value != null && String(value).toLowerCase().includes(query));
+      const matchesCategory = selected === '' || (selected === 'uncategorized'
+        ? product.category === null
+        : product.category === categories[Number(selected)]);
+      if (!matchesSearch || !matchesCategory) return;
+      const row = document.createElement('tr');
+      textCell(row, product.code);
+      textCell(row, product.name);
+      textCell(row, product.size);
+      textCell(row, product.unit_name);
+      textCell(row, product.category === null ? '未分類' : product.category);
+      priceCell(row, product.default_price);
+      channels.forEach(channel => priceCell(row, product.prices[channel.key]));
+      fragment.appendChild(row);
+      count += 1;
+    });
+    body.replaceChildren(fragment);
+    empty.hidden = count !== 0;
+  }
+
+  function updateCategories() {
+    const previous = category.value;
+    const previousCategory = categories[Number(previous)];
+    categories = Array.from(new Set(products.map(product => product.category).filter(value => value !== null)));
+    category.replaceChildren();
+    function option(value, label) {
+      const item = document.createElement('option');
+      item.value = value;
+      item.textContent = label;
+      category.appendChild(item);
+    }
+    option('', 'すべて');
+    categories.forEach((name, index) => option(String(index), name));
+    option('uncategorized', '未分類');
+    if (previous === 'uncategorized') category.value = previous;
+    else if (previous !== '' && categories.includes(previousCategory)) {
+      category.value = String(categories.indexOf(previousCategory));
+    }
+  }
+
+  async function loadPrices(force) {
+    if (loading || (loaded && !force)) return;
+    loading = true;
+    reload.disabled = true;
+    error.hidden = true;
+    status.hidden = false;
+    status.textContent = '価格データを取得中…';
+    try {
+      const response = await fetch('/product_prices.json', { cache: 'no-store' });
+      const data = await response.json();
+      if (data.error != null) {
+        throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error));
+      }
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      products = data.products;
+      channels = data.channels;
+      while (header.children.length > 6) header.lastElementChild.remove();
+      channels.forEach(channel => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = channel.label;
+        header.appendChild(cell);
+      });
+      document.getElementById('price-generated').textContent = 'データ取得: ' + data.generated_at.replace('T', ' ')
+        + '（DBを読んだ時刻・価格改定日時ではありません）';
+      document.getElementById('price-total').textContent = '商品数: ' + data.summary.total + '件';
+      document.getElementById('price-missing').textContent = '価格未登録 ' + data.summary.no_price_at_all + '件';
+      updateCategories();
+      render();
+      loaded = true;
+    } catch (err) {
+      error.textContent = '価格データの取得に失敗しました: ' + err.message;
+      error.hidden = false;
+    } finally {
+      loading = false;
+      reload.disabled = false;
+      status.hidden = true;
+    }
+  }
+
+  search.addEventListener('input', () => { if (loaded) render(); });
+  category.addEventListener('change', () => { if (loaded) render(); });
+  reload.addEventListener('click', () => loadPrices(true));
+  document.querySelector(".tab[data-page='price']").addEventListener('click', () => loadPrices(false));
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#price') loadPrices(false);
+  });
+  if (location.hash === '#price') loadPrices(false);
+})();
+</script>
+
 
 </body>
 </html>

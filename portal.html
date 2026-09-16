@@ -4239,7 +4239,7 @@ graph LR
     <span id="price-total">商品数: —</span>
     <strong class="price-missing-count" id="price-missing">価格未登録 —件</strong>
   </div>
-  <div class="price-formula">※ 基本価格・卸70・卸80 は税抜。食べチョクは本店価格（税込）に手数料19.7%を乗せた価格。出典＝商品管理マスター「販売先マスター」（卸(0.7)＝税抜×0.7 と明記）</div>
+  <div class="price-formula">※ 基本価格は税込。卸70・卸80 は税抜。食べチョクは本店価格（税込）に手数料19.7%を乗せた価格。基本価格の「※」印は税込が未登録のため税抜×1.08で計算した参考値。出典＝商品管理マスター「販売先マスター」（卸(0.7)＝税抜×0.7 と明記）</div>
   <div class="price-controls">
     <label class="price-control-label" for="price-search">商品名・商品コード
       <input class="price-input" id="price-search" type="search" placeholder="商品名・商品コードで検索">
@@ -4256,7 +4256,7 @@ graph LR
     <p class="price-status price-error" id="price-error" role="alert" hidden></p>
     <p class="price-status" id="price-status" role="status">価格表を開くとデータを取得します。</p>
     <table class="price-table" id="price-table">
-      <thead><tr id="price-header"><th scope="col">商品コード</th><th scope="col">商品名</th><th scope="col">規格</th><th scope="col">単位</th><th scope="col">カテゴリ</th><th scope="col">基本価格</th></tr></thead>
+      <thead><tr id="price-header"><th scope="col">商品コード</th><th scope="col">商品名</th><th scope="col">規格</th><th scope="col">単位</th><th scope="col">カテゴリ</th><th scope="col">基本価格（税込）</th></tr></thead>
       <tbody id="price-body"></tbody>
     </table>
     <p class="price-status" id="price-empty" role="status" hidden>該当する商品はありません。</p>
@@ -4920,6 +4920,28 @@ graph LR
     row.appendChild(cell);
   }
 
+  function basePriceCell(row, product) {
+    const honten = product.honten_zeikomi;
+    if (honten != null && honten !== 0) {
+      priceCell(row, honten);
+      return;
+    }
+    const base = product.default_price;
+    const cell = document.createElement('td');
+    if (base == null) {
+      cell.className = 'price-cell-missing';
+      cell.textContent = '未登録';
+    } else if (base === 0) {
+      cell.className = 'price-cell-zero';
+      cell.textContent = '0円登録';
+    } else {
+      cell.className = 'price-cell-number';
+      cell.textContent = numberFormat.format(Math.round(base * 1.08)) + '※';
+      cell.title = '税込が未登録のため 税抜' + numberFormat.format(base) + '×1.08 で計算した参考値';
+    }
+    row.appendChild(cell);
+  }
+
   function render() {
     const query = search.value.toLowerCase();
     const selected = category.value;
@@ -4938,7 +4960,7 @@ graph LR
       textCell(row, product.size);
       textCell(row, product.unit_name);
       textCell(row, product.category === null ? '未分類' : product.category);
-      priceCell(row, product.default_price);
+      basePriceCell(row, product);
       channels.forEach(channel => priceCell(row, product.prices[channel.key]));
       fragment.appendChild(row);
       count += 1;

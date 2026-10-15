@@ -953,10 +953,10 @@
       </div>
 
       <!-- 会計ダッシュボード -->
-      <div class="portal-card-wrap" data-detail-keywords="Next.js SQLite Recharts 日別 月別 年間 Airレジ カラーミー 食べチョク さとふる Gmailメールパース sales.db dev.db accounting.db 経費 利益 固定費">
-        <a class="portal-link" href="https://keiri.marukosuisan.app" target="_blank" data-keywords="経理 ダッシュボード 売上 経費 利益 集計 グラフ 会計">
+      <div class="portal-card-wrap" data-detail-keywords="Next.js SQLite Recharts 日別 月別 年間 Airレジ カラーミー 食べチョク さとふる Gmailメールパース sales.db dev.db accounting.db 経費 利益 固定費 元帳 総勘定元帳 着地見込み 変動費率 材料費 人件費 派遣費 賃金台帳 付け替え 対象月 発生主義 会計年度 損益分岐 固定費 経費ページ 借入返済 Airシフト 失敗通知 monthly-report accounting misoca colorme-orders ledger lib/fiscal-year 打刻 スマホ 卸売 税込">
+        <a class="portal-link" href="https://keiri.marukosuisan.app" target="_blank" data-keywords="経理 ダッシュボード 売上 経費 利益 集計 グラフ 会計 会計 keiri dashboard ダッシュボード 元帳 着地見込み 損益 月次 年間 経費 利益 売上 本番 localhost:3001 総勘定元帳 発生主義 人件費 変動費">
           <div class="icon ic-emerald">&#128200;</div>
-          <div class="info"><div class="name">会計ダッシュボード</div><div class="desc">売上・経費・利益の可視化（6ページ）</div></div>
+          <div class="info"><div class="name">会計ダッシュボード</div><div class="desc">売上・経費・利益の可視化（元帳ベース・会計年度）</div></div>
           <span class="badge badge-live">稼働中</span>
           <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
         </a>
@@ -995,16 +995,53 @@
               <text x="490" y="131" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold" font-family="Meiryo">6画面表示</text>
               <text x="490" y="149" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">サマリー/日別/月別/年間/経費</text>
             </svg>
+            <svg viewBox="0 0 680 170" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="arrow-dash-ledger" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker></defs>
+              <text x="10" y="22" fill="#94a3b8" font-size="11" font-weight="bold" font-family="Meiryo">元帳フロー（2026-10-15追加）</text>
+              <rect x="10" y="45" width="110" height="56" rx="10" fill="#1e3a5f" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="65" y="65" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="bold" font-family="Meiryo">元帳PDF</text>
+              <text x="65" y="81" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">円簿会計</text>
+              <path d="M120,73 L138,73" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash-ledger)"/>
+              <rect x="140" y="45" width="110" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="195" y="65" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">CSV化</text>
+              <text x="195" y="81" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">parse_ledger_pdf.py</text>
+              <path d="M250,73 L268,73" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash-ledger)"/>
+              <rect x="270" y="45" width="110" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="325" y="65" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">ledger取込</text>
+              <text x="325" y="81" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">import_ledger.py</text>
+              <text x="325" y="93" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">月単位入替</text>
+              <path d="M380,73 L398,73" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash-ledger)"/>
+              <rect x="400" y="45" width="110" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="455" y="65" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">対象月に付け替え</text>
+              <text x="455" y="81" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">ledger-accrual.ts</text>
+              <path d="M510,73 L528,73" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-dash-ledger)"/>
+              <rect x="530" y="45" width="110" height="56" rx="10" fill="#14532d" stroke="#4ade80" stroke-width="1.5"/>
+              <text x="585" y="65" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold" font-family="Meiryo">着地見込み／経費ページ</text>
+              <text x="585" y="81" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">実際+予想・元帳ベース</text>
+              <rect x="280" y="121" width="350" height="43" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="455" y="134" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="bold" font-family="Meiryo">請求書照合</text>
+              <text x="455" y="146" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">build_ledger_accrual_overrides.py</text>
+              <text x="455" y="158" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">→ ledger_accrual_overrides.json</text>
+              <path d="M455,121 L455,103" fill="none" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow-dash-ledger)"/>
+            </svg>
             <div class="detail-grid">
-              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">海鮮丼店・EC全チャネルの売上・経費・利益をグラフで一覧表示。日別・月別・商品別の分析ができる</div></div>
-              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎日の売上確認、月次の振り返り、確定申告の準備に使う</div></div>
-              <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://keiri.marukosuisan.app" target="_blank">https://keiri.marukosuisan.app</a></div></div>
+              <div class="detail-row"><div class="detail-key">何ができる？</div><div class="detail-val">海鮮丼店・EC全チャネル・卸売の売上・経費・利益をグラフで一覧表示。当期は総勘定元帳（円簿）を取り込み、費用を請求書の対象月に付け替えて、月別・年間（会計年度3月〜翌2月）・着地見込み・経費・損益分岐を元帳ベースで出す。スマホ表示対応</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">毎日の売上確認、月次の振り返り、確定申告の準備に使う。着地見込みの確認</div></div>
+              <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val">本番 <a href="http://localhost:3001" target="_blank">http://localhost:3001</a> ／ <a href="https://keiri.marukosuisan.app" target="_blank">https://keiri.marukosuisan.app</a></div></div>
               <div class="detail-row"><div class="detail-key">技術</div><div class="detail-val">Next.js 16 + SQLite + Recharts + shadcn/ui</div></div>
-              <div class="detail-row"><div class="detail-key">データ源</div><div class="detail-val">sales.db（Airレジ）+ dev.db（EC注文）+ accounting.db（経費）</div></div>
+              <div class="detail-row"><div class="detail-key">データ源</div><div class="detail-val">sales.db（Airレジ）+ dev.db（EC注文）+ accounting.db（経費・ledger＝総勘定元帳）+ wholesale_orders（卸売・税込 amount_incl_tax／Misoca納品書の税込合計にそろえる）+ data/chingin_daicho_2026.json（賃金台帳）</div></div>
               <div class="detail-row"><div class="detail-key">チャネル</div><div class="detail-val">海鮮丼 / カラーミー / 食べチョク / さとふる</div></div>
               <div class="detail-row"><div class="detail-key">画面</div><div class="detail-val">サマリー / 本日 / 日別明細 / 月別集計 / 年間集計 / 経費</div></div>
+              <div class="detail-row"><div class="detail-key">変動費・人件費</div><div class="detail-val">変動費率は共通化（今期は材料費40%固定・<code>lib/variable-rate.ts</code>）。人件費は打刻実績。派遣費＝派遣元×月の単価×勤務時間（<code>scripts/haken_rates.json</code>）。社員は賃金台帳の直近3か月中央値（<code>lib/labor-wage-ledger.ts</code>。<code>data/chingin_daicho_2026.json</code> は Windows 側で賃金台帳.xlsx から書き出す）</div></div>
+              <div class="detail-row"><div class="detail-key">着地見込み</div><div class="detail-val">「実際（3/1〜昨日）／予想（今日〜2月末）」に分離。借入返済は全月から引く（銀行実績）</div></div>
+              <div class="detail-row"><div class="detail-key">元帳の取込</div><div class="detail-val">2026年3〜8月の総勘定元帳（円簿）をPDFから取込：<code>scripts/parse_ledger_pdf.py</code> → <code>scripts/import_ledger.py</code>。取込は月単位の入れ替え（前期を消さない）</div></div>
+              <div class="detail-row"><div class="detail-key">対象月の付け替え</div><div class="detail-val">元帳の費用を請求書の対象月に付け替え（<code>lib/ledger-accrual.ts</code>）。摘要の「○月分」と受領請求書を照合（<code>scripts/build_ledger_accrual_overrides.py</code> → <code>data/ledger_accrual_overrides.json</code>）。元帳がある月は元帳から算出（成績表の利益は参考表示）</div></div>
+              <div class="detail-row"><div class="detail-key">年間・経費・固定費</div><div class="detail-val">年間・月別は会計年度（3月〜翌2月・<code>lib/fiscal-year.ts</code>）。経費ページは元帳ベース（<code>lib/ledger-expenses.ts</code>・元帳未取込の月は明示）。固定費は元帳から（毎月払い=直近3か月中央値・それ以外=12か月合計÷12・<code>lib/breakeven.ts</code>）</div></div>
+              <div class="detail-row"><div class="detail-key">Airシフト取込監視</div><div class="detail-val">失敗通知 <code>scripts/airshift_status.py</code>（連続2回失敗 or 24時間成功なしで Discord に1回）</div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>monthly-report</code> / <code>accounting</code> / <code>misoca</code> / <code>colorme-orders</code></div></div>
               <div class="detail-row"><div class="detail-key">パス</div><div class="detail-val"><code>経理/dashboard/</code></div></div>
             </div>
+            <div class="detail-note">2026-10-13 変動費率共通化・その他の経費・人件費実績化・着地見込みの実際/予想分離・スマホ対応。2026-10-15 当期元帳取込・対象月付け替え・卸売税込統一・会計年度化・経費/固定費/人件費を元帳ベースに・Airシフト失敗通知。運用注意：①元帳を取り込み直したら <code>build_ledger_accrual_overrides.py</code> も再実行。②元帳の最新月は翌月分の請求が未取込のため費用が少なめ。③9月以降は元帳未取込で推計。④ECの送料の扱い（2025年カラーミー・食べチョク）は未統一（カラーミーAPI直結の切替に合わせて直す）</div>
           </div>
         </div>
       </div>

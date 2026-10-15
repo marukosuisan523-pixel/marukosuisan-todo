@@ -828,6 +828,7 @@
               <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://zaiko.marukosuisan.app/completion-report" target="_blank">https://zaiko.marukosuisan.app/completion-report</a></div></div>
               <div class="detail-row"><div class="detail-key">単位</div><div class="detail-val">ヤマヤ委託は毎回選択・前回の単位が自動で入る。水産加工・ご飯や用は品目の登録単位（無ければZAICOの単位）に固定</div></div>
               <div class="detail-row"><div class="detail-key">送信・失敗記録</div><div class="detail-val">二重送信防止。ZAICO反映失敗は「失敗」として報告記録に残る</div></div>
+              <div class="detail-row"><div class="detail-key">取り消し</div><div class="detail-val">各報告の「取り消し」で巻き戻し（画面内で確認）。在庫に足した分をZAICOから引く・在庫不足なら引かずに止める・二重取り消し不可。取り消し済みは履歴に残り合計から除外。POST /api/completion-reports/{id}/revert（2026-10-16追加）</div></div>
               <div class="detail-row detail-full"><div class="detail-key">技術</div><div class="detail-val">Next.js + Prisma（SQLite <code>dev.db</code>）。<code>completion_targets</code>（報告対象71件＝正本）/ <code>completion_reports</code>（報告記録）。ZAICO API GET→PUT（10秒タイムアウト）</div></div>
               <div class="detail-row detail-full"><div class="detail-key">エンドポイント</div><div class="detail-val"><code>GET /api/completion-targets</code> ／ <code>GET /api/completion-reports</code> ／ <code>POST /api/completion-reports</code></div></div>
               <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>misoca</code>（ヤマヤ委託の納品書作成）</div></div>

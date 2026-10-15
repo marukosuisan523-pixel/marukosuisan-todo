@@ -784,6 +784,60 @@
         </div>
       </div>
 
+      <!-- 完成報告 -->
+      <div class="portal-card-wrap" data-detail-keywords="完成報告 完成数 加工 製品 報告 ヤマヤ 委託 納品書 在庫加算 ZAICO 水産加工 ご飯や用 Next.js Prisma SQLite dev.db completion-report completion_targets completion_reports completion-targets completion-reports 71件 単位 二重送信防止 失敗">
+        <a class="portal-link" href="https://zaiko.marukosuisan.app/completion-report" target="_blank" data-keywords="完成報告 完成数 加工 製品 報告 ヤマヤ 委託 納品書 在庫加算 ZAICO">
+          <div class="icon ic-amber">&#128230;</div>
+          <div class="info"><div class="name">完成報告</div><div class="desc">在庫管理アプリ /completion-report・完成数の報告と在庫加算</div></div>
+          <span class="badge badge-live">稼働中</span>
+          <button class="expand-btn" onclick="toggleDetail(event, this)" aria-label="詳細を表示">&#9660;</button>
+        </a>
+        <div class="detail-panel">
+          <div class="detail-inner">
+            <!-- ワークフロー図解 -->
+            <svg viewBox="0 0 680 200" style="width:100%;max-width:680px;margin:0 auto 16px;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-completion-report" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+              </defs>
+              <!-- スタッフ → 完成報告画面 -->
+              <rect x="10" y="65" width="110" height="56" rx="10" fill="#1e3a5f" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="65" y="87" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold" font-family="Meiryo">加工スタッフ</text>
+              <text x="65" y="105" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">スマホ</text>
+              <path d="M120,93 L148,93" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-completion-report)"/>
+              <rect x="150" y="65" width="180" height="56" rx="10" fill="#1e3a5f" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="240" y="87" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Meiryo">完成報告画面</text>
+              <text x="240" y="105" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">区分タブ → 製品 → 完成数 → 送信</text>
+              <!-- 区分によって在庫加算 / 記録のみへ分岐 -->
+              <path d="M330,93 L350,93 L350,38 L378,38" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-completion-report)"/>
+              <path d="M350,93 L350,138 L378,138" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-completion-report)"/>
+              <rect x="380" y="10" width="290" height="56" rx="10" fill="#14332a" stroke="#34d399" stroke-width="1.5"/>
+              <text x="525" y="32" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Meiryo">水産加工 / ご飯や用：ZAICO在庫＋</text>
+              <text x="525" y="50" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">完成数を加算・加算前後の数を記録</text>
+              <rect x="380" y="110" width="150" height="56" rx="10" fill="#2d1a3d" stroke="#c084fc" stroke-width="1.5"/>
+              <text x="455" y="132" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="bold" font-family="Meiryo">ヤマヤ委託：記録のみ</text>
+              <text x="455" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">在庫に足さない</text>
+              <path d="M530,138 L558,138" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow-completion-report)"/>
+              <rect x="560" y="110" width="110" height="56" rx="10" fill="#2d1a3d" stroke="#c084fc" stroke-width="1.5"/>
+              <text x="615" y="132" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="bold" font-family="Meiryo">納品書</text>
+              <text x="615" y="150" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">一覧から拾う</text>
+              <text x="340" y="190" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Meiryo">緑：在庫加算 ／ 紫：記録のみ・納品書作成時に利用</text>
+            </svg>
+            <div class="detail-grid">
+              <div class="detail-row detail-full"><div class="detail-key">何ができる？</div><div class="detail-val">加工スタッフが「区分タブ（水産加工/ご飯や用/ヤマヤ委託）→製品→完成数→送信」で完成した製品を報告。<strong>水産加工・ご飯や用はZAICO在庫に完成数を加算</strong>し、加算前後の数を記録。<strong>ヤマヤ委託は記録のみ</strong>（在庫に足さない・納品書作成時に一覧から拾う）</div></div>
+              <div class="detail-row"><div class="detail-key">いつ使う？</div><div class="detail-val">加工して製品が完成したとき／ヤマヤ委託の納品書を作るとき（一覧 <a href="https://zaiko.marukosuisan.app/completion-report/list" target="_blank"><code>/completion-report/list</code></a>）</div></div>
+              <div class="detail-row"><div class="detail-key">URL</div><div class="detail-val"><a href="https://zaiko.marukosuisan.app/completion-report" target="_blank">https://zaiko.marukosuisan.app/completion-report</a></div></div>
+              <div class="detail-row"><div class="detail-key">単位</div><div class="detail-val">ヤマヤ委託は毎回選択・前回の単位が自動で入る。水産加工・ご飯や用は品目の登録単位（無ければZAICOの単位）に固定</div></div>
+              <div class="detail-row"><div class="detail-key">送信・失敗記録</div><div class="detail-val">二重送信防止。ZAICO反映失敗は「失敗」として報告記録に残る</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">技術</div><div class="detail-val">Next.js + Prisma（SQLite <code>dev.db</code>）。<code>completion_targets</code>（報告対象71件＝正本）/ <code>completion_reports</code>（報告記録）。ZAICO API GET→PUT（10秒タイムアウト）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">エンドポイント</div><div class="detail-val"><code>GET /api/completion-targets</code> ／ <code>GET /api/completion-reports</code> ／ <code>POST /api/completion-reports</code></div></div>
+              <div class="detail-row"><div class="detail-key">関連スキル</div><div class="detail-val"><code>misoca</code>（ヤマヤ委託の納品書作成）</div></div>
+              <div class="detail-row detail-full"><div class="detail-key">ファイル場所</div><div class="detail-val"><code>在庫管理/app/src/app/completion-report/</code> ／ <code>在庫管理/app/src/lib/completion-report.ts</code> ／ <code>在庫管理/app/src/lib/zaico-adjust.ts</code><br>対象一覧の元データ：<code>在庫管理/data/completion_report/targets_20261015.json</code></div></div>
+            </div>
+            <div class="detail-note">2026-10-15構築。対象の仕分けは瑞樹さん判断（水産加工55・ご飯や用9・ヤマヤ委託7）。ZAICOに単位未設定の2品（鮭手羽・無塩骨抜きさば500g）は送信不可。</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Amazon注文履歴 自動同期 -->
       <div class="portal-card-wrap" data-detail-keywords="Amazon注文 OrderMark Gmail OAuth ASIN 発注済み同期 amazon-order-sync auto-confirm@amazon.co.jp B0... 毎日22:00 タスクスケジューラ HealthMonitor 在庫管理 発注ページ 自動補正">
         <a class="portal-link" data-keywords="amazon 注文同期 発注済み 自動補正 gmail">
